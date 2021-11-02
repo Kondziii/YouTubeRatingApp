@@ -12,7 +12,10 @@ export default defineComponent({
     const store = useStore();
     const ChannelActions = useChannelActions();
 
-    store.dispatch(ChannelActions.fetchSimilarChannelsByTitle, 'cbxcvbcvbcvb');
+    store.dispatch(
+      ChannelActions.fetchSimilarChannelsByUrl,
+      'https://www.youtube.com/c/SonnySangha'
+    );
 
     return {};
   },

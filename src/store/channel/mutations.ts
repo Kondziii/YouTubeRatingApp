@@ -3,11 +3,11 @@ import { ChannelBasic, ChannelWithStats } from '@/types/Channel';
 import { MutationTree } from 'vuex';
 
 export enum ChannelMutations {
-  SET_CHANNEL = 'SET_CHANNEL',
+  SET_CHANNELS = 'SET_CHANNELS',
 }
 
 export default {
-  [ChannelMutations.SET_CHANNEL](
+  [ChannelMutations.SET_CHANNELS](
     state,
     payload: Array<ChannelWithStats> | ChannelBasic
   ): void {
