@@ -3,7 +3,7 @@ import { GetterTree } from 'vuex';
 import { ChannelState } from './types';
 
 export default {
-  channel(state) {
+  channels(state) {
     return state.channels;
   },
 } as GetterTree<ChannelState, RootState>;

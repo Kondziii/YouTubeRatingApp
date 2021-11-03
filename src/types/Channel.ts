@@ -37,6 +37,17 @@ type ChannelStatistics = {
   viewCount: number;
 };
 
+type ChannelContentDetails = {
+  contentDetails: {
+    relatedPlaylists: {
+      likes: string;
+      uploads: string;
+    };
+  };
+};
+
 type ChannelWithStats = ChannelBasic & ChannelStatistics;
 
-export { ChannelBasic, ChannelWithStats };
+type ChannelFullInfo = ChannelWithStats & ChannelContentDetails;
+
+export { ChannelBasic, ChannelWithStats, ChannelFullInfo };
