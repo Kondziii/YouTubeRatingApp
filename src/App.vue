@@ -1,47 +1,64 @@
 <template>
-  <div class="root"></div>
+  <div class="root">
+    <router-view></router-view>
+  </div>
 </template>
 
 <script lang="ts">
 import { defineComponent } from 'vue';
-import ytApi from './data/yt-api';
-import Channel_url from './enums/Channel_url';
-import { useStore } from './store';
-import { useChannelActions } from './store/channel/actions';
+// import { useStore } from './store';
+// import { useChannelActions } from './store/channel/actions';
 
 export default defineComponent({
   setup() {
-    const store = useStore();
-    const ChannelActions = useChannelActions();
+    // const store = useStore();
+    // const ChannelActions = useChannelActions();
 
     return {};
   },
 });
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
 .root {
+  // background: #30353b;
   width: 100%;
   height: 100vh;
-  background-image: url('./assets/background_1.jpg');
-  background-position: center;
-  background-size: cover;
+  overflow: hidden;
   position: relative;
+  background-image: url('./assets/background_1.jpg');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
 }
 
 .root::before {
   content: '';
+  background: rgba(0, 0, 0, 0.3);
   position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100vh;
-  background-color: rgba(100, 100, 100, 0.3);
+  top: 0px;
+  right: 0px;
+  bottom: 0px;
+  left: 0px;
+}
+
+@keyframes gradient {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
 }
 
 * {
   padding: 0;
   margin: 0;
   box-sizing: border-box;
+  font-family: 'Roboto', sans-serif;
+  font-weight: 400;
 }
 </style>
