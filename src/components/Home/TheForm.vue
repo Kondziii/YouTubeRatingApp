@@ -43,6 +43,65 @@
           ]"
           v-model="userInput"
         />
+        <div
+          class="advanced-settings-btn"
+          @click="setIsAdvancedSettingsVisible"
+        >
+          <q-icon
+            v-if="isAdvancedSettingsVisible"
+            name="arrow_drop_up"
+          ></q-icon>
+          {{
+            !isAdvancedSettingsVisible
+              ? 'Otwórz ustawienia zaawansowane'
+              : 'Schowaj ustawienia zaawansowane'
+          }}<q-icon
+            v-if="!isAdvancedSettingsVisible"
+            name="arrow_drop_down"
+          ></q-icon>
+        </div>
+        <section class="advanced-settings" v-if="isAdvancedSettingsVisible">
+          <div class="q-gutter-sm">
+            <q-label color="grey">
+              Minimalna liczba komentarzy: {{ commentsLimit }}
+            </q-label>
+            <q-slider :min="0" :max="100" color="red" v-model="commentsLimit" />
+            <div>
+              <q-toggle v-model="useTime" color="red" />
+              <q-label>{{
+                !useTime
+                  ? 'Nie uwzględniaj ram czasowych'
+                  : 'Uwzględniaj ramy czasowe'
+              }}</q-label>
+            </div>
+
+            <div v-if="useTime">
+              <div class="date-container">
+                <q-label>Od</q-label>
+                <q-date
+                  mask="YYYY-MM-DD"
+                  landscape
+                  v-model="beginDate"
+                  color="red"
+                />
+              </div>
+              <div class="date-container">
+                <q-label>Do</q-label>
+                <q-date
+                  mask="YYYY-MM-DD"
+                  landscape
+                  v-model="endDate"
+                  color="red"
+                />
+              </div>
+            </div>
+            <q-checkbox
+              v-model="useSubComments"
+              label="Uwzględniaj podkomentarze"
+              color="red"
+            />
+          </div>
+        </section>
 
         <div
           :style="{
@@ -57,6 +116,7 @@
             flat
             class="q-ml-sm"
             color="red"
+            @click="isAdvancedSettingsVisible = !isAdvancedSettingsVisible"
           />
           <q-btn label="Przejdź do oceny" type="submit" color="red" />
         </div>
@@ -112,6 +172,16 @@ export default defineComponent({
       return '';
     });
 
+    const isAdvancedSettingsVisible = ref<boolean>(false);
+    const setIsAdvancedSettingsVisible = () => {
+      isAdvancedSettingsVisible.value = !isAdvancedSettingsVisible.value;
+    };
+    const commentsLimit = ref<number>(10);
+    const useTime = ref<boolean>(false);
+    const useSubComments = ref<boolean>(true);
+    const beginDate = ref<string>(new Date().toISOString().split('T')[0]);
+    const endDate = ref<string>(new Date().toISOString().split('T')[0]);
+
     return {
       selectedTab,
       options,
@@ -119,6 +189,13 @@ export default defineComponent({
       userInput,
       inputLabel,
       inputHint,
+      isAdvancedSettingsVisible,
+      setIsAdvancedSettingsVisible,
+      commentsLimit,
+      useTime,
+      useSubComments,
+      beginDate,
+      endDate,
     };
   },
 });
@@ -128,10 +205,11 @@ export default defineComponent({
 @import '/src/styles/quasar.variables.scss';
 
 .my-card {
-  width: 50%;
+  width: 60%;
   padding: 2em 3em;
   border-radius: 15px;
   box-shadow: 2px 4px rgba(255, 255, 255, 0.5);
+  margin: 5em 0;
 }
 
 .header-container {
@@ -166,11 +244,11 @@ export default defineComponent({
 }
 
 a {
-  color: red;
+  color: $red-8;
 }
 
 a:hover {
-  color: rgb(165, 22, 22);
+  color: $red-10;
 }
 
 .tab {
@@ -191,5 +269,23 @@ a:hover {
   display: flex;
   justify-content: center;
   align-items: center;
+}
+
+.advanced-settings-btn {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  margin: auto;
+  margin-top: 1em;
+  color: $red-8;
+  cursor: pointer;
+}
+
+.date-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
 }
 </style>

@@ -21,15 +21,17 @@ export default defineComponent({
 
 <style lang="scss">
 .root {
-  // background: #30353b;
   width: 100%;
-  height: 100vh;
+  min-height: 100vh;
   overflow: hidden;
   position: relative;
   background-image: url('./assets/background_1.jpg');
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .root::before {
