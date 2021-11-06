@@ -1,5 +1,6 @@
 <template>
   <div class="root">
+    <div class="background" />
     <router-view></router-view>
   </div>
 </template>
@@ -25,16 +26,24 @@ export default defineComponent({
   min-height: 100vh;
   overflow: hidden;
   position: relative;
-  background-image: url('./assets/i1.jpg');
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
   display: flex;
   justify-content: center;
   align-items: center;
 }
 
-.root::before {
+.background {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100vh;
+  background-image: url('./assets/i1.jpg');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+.background::before {
   content: '';
   background: rgba(0, 0, 0, 0.5);
   position: absolute;
