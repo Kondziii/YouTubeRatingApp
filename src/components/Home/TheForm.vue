@@ -37,7 +37,7 @@
           <q-slider :min="0" :max="100" color="red" v-model="commentsLimit" />
         </div>
 
-        <div>
+        <div v-if="selectedTab !== 'videos'">
           <q-toggle v-model="useTime" color="red" />
           <label>{{
             !useTime
@@ -52,8 +52,9 @@
               class="date-input"
               filled
               label="Od"
+              color="black"
               v-model="beginDate"
-              :rules="['date']"
+              :rules="[(v) => dateRules(v)]"
             >
               <template v-slot:append>
                 <q-icon name="event" class="cursor-pointer">
@@ -62,7 +63,7 @@
                     transition-show="scale"
                     transition-hide="scale"
                   >
-                    <q-date v-model="date">
+                    <q-date v-model="beginDate" color="red" mask="DD/MM/YYYY">
                       <div class="row items-center justify-end">
                         <q-btn v-close-popup label="Close" color="red" flat />
                       </div>
@@ -76,9 +77,10 @@
             <q-input
               class="date-input"
               filled
+              color="black"
               v-model="endDate"
               label="Do"
-              :rules="['date']"
+              :rules="[(v) => dateRules(v)]"
             >
               <template v-slot:append>
                 <q-icon name="event" class="cursor-pointer">
@@ -87,7 +89,7 @@
                     transition-show="scale"
                     transition-hide="scale"
                   >
-                    <q-date v-model="date">
+                    <q-date v-model="endDate" color="red" mask="DD/MM/YYYY">
                       <div class="row items-center justify-end">
                         <q-btn v-close-popup label="Close" color="red" flat />
                       </div>
@@ -97,6 +99,7 @@
               </template>
             </q-input>
           </div>
+          <label v-if="dateErr" class="err-label">Nieprawidłowe daty</label>
         </div>
         <q-checkbox
           v-model="useSubComments"
@@ -127,14 +130,20 @@
 
 <script lang="ts">
 import { computed, defineComponent } from 'vue';
-import { ref } from 'vue';
-import { useRoute } from 'vue-router';
+import { ref, watch } from 'vue';
 const COMMENTS_LIMIT = 10;
 
 export default defineComponent({
   name: 'TheForm',
-  setup() {
-    const route = useRoute();
+
+  props: {
+    selectedTab: {
+      type: String,
+      required: true,
+    },
+  },
+
+  setup(props) {
     const type = ref<string>('title');
     const options = [
       {
@@ -149,14 +158,26 @@ export default defineComponent({
 
     const userInput = ref<string>('');
     const inputLabel = computed(() => {
-      if (type.value === 'title') return 'Podaj nazwę kanału*';
-      else if (type.value === 'url') return 'Podaj link do kanału*';
+      if (props.selectedTab === 'channels') {
+        if (type.value === 'title') return 'Podaj nazwę kanału*';
+        else if (type.value === 'url') return 'Podaj link do kanału*';
+      } else if (props.selectedTab === 'videos') {
+        if (type.value === 'title') return 'Podaj nazwę filmiku*';
+        else if (type.value === 'url') return 'Podaj link do filmiku*';
+      }
       return '';
     });
     const inputHint = computed(() => {
-      if (type.value === 'title') return 'Na przykład: Google Developers';
-      else if (type.value === 'url')
-        return 'Na przykład: https://www.youtube.com/channel/UC0rqucBdTuFTjJiefW5t-IQ';
+      if (props.selectedTab === 'channels') {
+        if (type.value === 'title') return 'Na przykład: Google Developers';
+        else if (type.value === 'url')
+          return 'Na przykład: https://www.youtube.com/channel/UC0rqucBdTuFTjJiefW5t-IQ';
+      } else if (props.selectedTab === 'videos') {
+        if (type.value === 'title')
+          return 'Na przykład: Google Coding Interview With A Normal Software Engineer';
+        else if (type.value === 'url')
+          return 'Na przykład: https://www.youtube.com/watch?v=rw4s4M3hFfs&ab_channel=Cl%C3%A9mentMihailescu';
+      }
       return '';
     });
 
@@ -164,17 +185,42 @@ export default defineComponent({
     const setIsAdvancedSettingsVisible = () => {
       isAdvancedSettingsVisible.value = !isAdvancedSettingsVisible.value;
     };
+
     const commentsLimit = ref<number>(COMMENTS_LIMIT);
     const useTime = ref<boolean>(false);
     const useSubComments = ref<boolean>(true);
     const beginDate = ref<string>('');
     const endDate = ref<string>('');
 
+    const dateRules = (value: string) => {
+      if (!value || value.length === 0) {
+        return 'Pole nie może być puste';
+      } else if (!/^(\d{1,2})\/(\d{1,2})\/(\d{4})$/.test(value)) {
+        return 'Nieprawidłowy format, przykład 1/01/2021';
+      }
+    };
+
+    const dateErr = ref<boolean>(false);
+
+    watch([beginDate, endDate], (currValues) => {
+      if (currValues[0] !== '' && currValues[1] !== '') {
+        const date1 = new Date(currValues[0].split('/').reverse().join());
+        const date2 = new Date(currValues[1].split('/').reverse().join());
+
+        if (date1 > date2) {
+          dateErr.value = true;
+        }
+      } else {
+        dateErr.value = false;
+      }
+    });
+
     const reset = () => {
       commentsLimit.value = COMMENTS_LIMIT;
       useTime.value = false;
       useSubComments.value = true;
-      beginDate.value = endDate.value = new Date().toISOString().split('T')[0];
+      beginDate.value = '';
+      endDate.value = '';
       userInput.value = '';
       isAdvancedSettingsVisible.value = false;
     };
@@ -193,6 +239,8 @@ export default defineComponent({
       beginDate,
       endDate,
       reset,
+      dateRules,
+      dateErr,
     };
   },
 });
@@ -269,5 +317,10 @@ export default defineComponent({
 .date-input {
   width: 90%;
   margin: 0 auto;
+}
+
+.err-label {
+  font-size: 12px;
+  color: $negative;
 }
 </style>

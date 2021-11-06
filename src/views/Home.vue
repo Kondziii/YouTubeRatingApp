@@ -14,7 +14,12 @@
           </q-tabs>
         </section>
         <div :style="{ width: '90%', margin: '0 auto' }">
-          <router-view></router-view>
+          <q-card-section>
+            <router-view
+              :selectedTab="selectedTab"
+              :key="route.path"
+            ></router-view>
+          </q-card-section>
         </div>
       </q-card>
     </div>
@@ -22,9 +27,9 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, provide } from 'vue';
-// import TheForm from '@/components/Home/TheForm.vue';
+import { defineComponent, computed } from 'vue';
 import TheHeader from '@/components/Home/TheHeader.vue';
+import { useRoute } from 'vue-router';
 
 export default defineComponent({
   name: 'Home',
@@ -32,7 +37,15 @@ export default defineComponent({
   components: { TheHeader },
 
   setup() {
-    return {};
+    const route = useRoute();
+    const selectedTab = computed(() =>
+      route.path.includes('/evaluate/videos') ? 'videos' : 'channels'
+    );
+
+    return {
+      selectedTab,
+      route,
+    };
   },
 });
 </script>
