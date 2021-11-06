@@ -25,7 +25,7 @@ export default defineComponent({
   min-height: 100vh;
   overflow: hidden;
   position: relative;
-  background-image: url('./assets/background_1.jpg');
+  background-image: url('./assets/i1.jpg');
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
@@ -36,7 +36,7 @@ export default defineComponent({
 
 .root::before {
   content: '';
-  background: rgba(0, 0, 0, 0.3);
+  background: rgba(0, 0, 0, 0.5);
   position: absolute;
   top: 0px;
   right: 0px;

@@ -13,14 +13,7 @@
             /></router-link>
           </q-tabs>
         </section>
-        <div :style="{ width: '90%', margin: '0 auto' }">
-          <q-card-section>
-            <router-view
-              :selectedTab="selectedTab"
-              :key="route.path"
-            ></router-view>
-          </q-card-section>
-        </div>
+        <router-view :selectedTab="selectedTab" :key="route.path"></router-view>
       </q-card>
     </div>
   </div>
@@ -59,13 +52,16 @@ export default defineComponent({
   display: flex;
   justify-content: center;
   align-items: center;
+  backdrop-filter: contrast(110%);
 }
 
 .my-card {
   border-radius: 15px;
-  box-shadow: 2px 4px rgba(255, 255, 255, 0.5);
+  background: rgba(0, 0, 0, 0.7);
+  box-shadow: 0 0 1em rgba(255, 255, 255, 0.4);
   margin: 3em 1em;
   overflow: hidden;
+  color: white;
 }
 
 .selection-container {
@@ -79,12 +75,13 @@ export default defineComponent({
 
 a {
   text-decoration: none;
-  color: white;
+  color: #eee;
   width: 100%;
-  background: $red-11;
+  background: $red-4;
 }
 
 .router-link-active {
   background: $red;
+  color: white;
 }
 </style>

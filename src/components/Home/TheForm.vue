@@ -1,120 +1,132 @@
 <template>
-  <q-form @submit="onSubmit" @reset="onReset" class="q-gutter-md q-mx-sm">
-    <q-option-group
-      class="option-container"
-      :options="options"
-      color="red"
-      inline
-      v-model="type"
-    />
-    <q-input
-      filled
-      color="black"
-      class="input"
-      :label="inputLabel"
-      :hint="inputHint"
-      lazy-rules
-      :rules="[(val) => (val && val.length > 0) || 'Pole nie może być puste!']"
-      v-model="userInput"
-    />
-    <div class="advanced-settings-btn" @click="setIsAdvancedSettingsVisible">
-      <q-icon v-if="isAdvancedSettingsVisible" name="arrow_drop_up"></q-icon>
-      {{
-        !isAdvancedSettingsVisible
-          ? 'Otwórz ustawienia zaawansowane'
-          : 'Schowaj ustawienia zaawansowane'
-      }}<q-icon
-        v-if="!isAdvancedSettingsVisible"
-        name="arrow_drop_down"
-      ></q-icon>
-    </div>
-    <section class="advanced-settings" v-if="isAdvancedSettingsVisible">
-      <div class="q-gutter-md">
-        <div>
-          <label color="grey">
-            Minimalna liczba komentarzy: {{ commentsLimit }}
-          </label>
-          <q-slider :min="0" :max="100" color="red" v-model="commentsLimit" />
-        </div>
-
-        <div v-if="selectedTab !== 'videos'">
-          <q-toggle v-model="useTime" color="red" />
-          <label>{{
-            !useTime
-              ? 'Nie uwzględniaj ram czasowych'
-              : 'Uwzględniaj ramy czasowe'
-          }}</label>
-        </div>
-
-        <div v-if="useTime" class="row justify-center align-center">
-          <div class="col-xs-12 col-sm-6">
-            <q-input
-              class="date-input"
-              filled
-              label="Od"
-              color="black"
-              v-model="beginDate"
-              :rules="[(v) => dateRules(v)]"
-            >
-              <template v-slot:append>
-                <q-icon name="event" class="cursor-pointer">
-                  <q-popup-proxy
-                    ref="qDateProxy"
-                    transition-show="scale"
-                    transition-hide="scale"
-                  >
-                    <q-date v-model="beginDate" color="red" mask="DD/MM/YYYY">
-                      <div class="row items-center justify-end">
-                        <q-btn v-close-popup label="Close" color="red" flat />
-                      </div>
-                    </q-date>
-                  </q-popup-proxy>
-                </q-icon>
-              </template>
-            </q-input>
-          </div>
-          <div class="col-xs-12 col-sm-6">
-            <q-input
-              class="date-input"
-              filled
-              color="black"
-              v-model="endDate"
-              label="Do"
-              :rules="[(v) => dateRules(v)]"
-            >
-              <template v-slot:append>
-                <q-icon name="event" class="cursor-pointer">
-                  <q-popup-proxy
-                    ref="qDateProxy"
-                    transition-show="scale"
-                    transition-hide="scale"
-                  >
-                    <q-date v-model="endDate" color="red" mask="DD/MM/YYYY">
-                      <div class="row items-center justify-end">
-                        <q-btn v-close-popup label="Close" color="red" flat />
-                      </div>
-                    </q-date>
-                  </q-popup-proxy>
-                </q-icon>
-              </template>
-            </q-input>
-          </div>
-          <label v-if="dateErr" class="err-label">Nieprawidłowe daty</label>
-        </div>
-        <q-checkbox
-          v-model="useSubComments"
-          label="Uwzględniaj podkomentarze"
-          color="red"
-        />
+  <q-form @submit="onSubmit" @reset="onReset" class="q-gutter-md">
+    <q-card-section class="q-mx-xl">
+      <q-option-group
+        class="option-container"
+        :options="options"
+        color="red"
+        inline
+        dark
+        v-model="type"
+      />
+      <q-input
+        filled
+        color="black"
+        dark
+        label-color="white"
+        class="input"
+        :label="inputLabel"
+        :hint="inputHint"
+        lazy-rules
+        :rules="[
+          (val) => (val && val.length > 0) || 'Pole nie może być puste!',
+        ]"
+        v-model="userInput"
+      />
+      <div class="advanced-settings-btn" @click="setIsAdvancedSettingsVisible">
+        <q-icon v-if="isAdvancedSettingsVisible" name="arrow_drop_up"></q-icon>
+        {{
+          !isAdvancedSettingsVisible
+            ? 'Otwórz ustawienia zaawansowane'
+            : 'Schowaj ustawienia zaawansowane'
+        }}<q-icon
+          v-if="!isAdvancedSettingsVisible"
+          name="arrow_drop_down"
+        ></q-icon>
       </div>
-    </section>
-    <div
-      :style="{
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'end',
-      }"
-    >
+      <section class="advanced-settings" v-if="isAdvancedSettingsVisible">
+        <div class="q-gutter-md">
+          <div>
+            <q-slider
+              dark
+              :min="0"
+              :max="100"
+              color="red"
+              :label-value="'Minimalna liczba komentarzy: ' + commentsLimit"
+              label-always
+              v-model="commentsLimit"
+            />
+          </div>
+
+          <div v-if="selectedTab !== 'videos'">
+            <q-toggle dark v-model="useTime" color="red" />
+            <label>{{
+              !useTime
+                ? 'Nie uwzględniaj ram czasowych'
+                : 'Uwzględniaj ramy czasowe'
+            }}</label>
+          </div>
+
+          <div v-if="useTime" class="row justify-center align-center">
+            <div class="col-xs-12 col-sm-6">
+              <q-input
+                class="date-input"
+                filled
+                label="Od"
+                color="black"
+                dark
+                label-color="white"
+                v-model="beginDate"
+                :rules="[(v) => dateRules(v)]"
+              >
+                <template v-slot:append>
+                  <q-icon name="event" class="cursor-pointer">
+                    <q-popup-proxy
+                      ref="qDateProxy"
+                      transition-show="scale"
+                      transition-hide="scale"
+                    >
+                      <q-date v-model="beginDate" color="red" mask="DD/MM/YYYY">
+                        <div class="row items-center justify-end">
+                          <q-btn v-close-popup label="Close" color="red" flat />
+                        </div>
+                      </q-date>
+                    </q-popup-proxy>
+                  </q-icon>
+                </template>
+              </q-input>
+            </div>
+            <div class="col-xs-12 col-sm-6">
+              <q-input
+                class="date-input"
+                filled
+                dark
+                label-color="white"
+                color="black"
+                v-model="endDate"
+                label="Do"
+                :rules="[(v) => dateRules(v)]"
+              >
+                <template v-slot:append>
+                  <q-icon name="event" class="cursor-pointer">
+                    <q-popup-proxy
+                      ref="qDateProxy"
+                      transition-show="scale"
+                      transition-hide="scale"
+                    >
+                      <q-date v-model="endDate" color="red" mask="DD/MM/YYYY">
+                        <div class="row items-center justify-end">
+                          <q-btn v-close-popup label="Close" color="red" flat />
+                        </div>
+                      </q-date>
+                    </q-popup-proxy>
+                  </q-icon>
+                </template>
+              </q-input>
+            </div>
+            <label v-if="dateErr" class="err-label">Nieprawidłowe daty</label>
+          </div>
+          <q-checkbox
+            v-model="useSubComments"
+            label="Uwzględniaj podkomentarze"
+            color="red"
+            dark
+          />
+        </div>
+      </section>
+    </q-card-section>
+    <q-separator dark />
+    <q-card-actions class="flex justify-end align-center q-ma-md">
       <q-btn
         label="Zresetuj"
         type="reset"
@@ -124,7 +136,7 @@
         @click="reset"
       />
       <q-btn label="Przejdź do oceny" type="submit" color="red" />
-    </div>
+    </q-card-actions>
   </q-form>
 </template>
 

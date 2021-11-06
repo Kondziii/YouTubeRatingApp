@@ -4,11 +4,11 @@
       Czy chcesz zobaczyć jak odbierany jest kanał lub filmik przez widzów
       portalu
       <a href="https://www.youtube.com/" target="_blank"
-        ><img class="logo" src="../../assets/youtube.png"
+        ><img class="logo" src="../../assets/logo-yt.png"
       /></a>
       na podstawie komentarzy?
     </h2>
-
+    <q-separator dark />
     <div class="q-pl-lg q-my-lg">
       <p class="content-header q-pr-xs">
         Jeśli tak to dobrze trafiłeś, wypełnij pole i przejdź do oceny.
@@ -37,15 +37,15 @@ export default defineComponent({
   font-size: 1.8em;
   font-weight: 400;
   line-height: 160%;
-  background: #eee;
+  // background: #eee;
 }
 
 .logo {
-  height: 30px;
+  height: 40px;
   width: auto;
   margin-left: 5px;
   margin-right: 5px;
-  vertical-align: -5px;
+  vertical-align: -10px;
 }
 
 .content-header {
