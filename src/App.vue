@@ -1,16 +1,23 @@
 <template>
-  <div class="root">
+  <q-layout class="root">
     <div class="background" />
-    <router-view></router-view>
-  </div>
+    <router-view :style="{ marginBottom: '20vh' }"></router-view>
+    <the-footer></the-footer>
+  </q-layout>
 </template>
 
 <script lang="ts">
 import { defineComponent } from 'vue';
+import TheFooter from '@/components/TheFooter.vue';
+// import TheFooter from '@/components/TheFooter.vue';
 // import { useStore } from './store';
 // import { useChannelActions } from './store/channel/actions';
 
 export default defineComponent({
+  components: {
+    TheFooter,
+  },
+
   setup() {
     // const store = useStore();
     // const ChannelActions = useChannelActions();
@@ -23,7 +30,7 @@ export default defineComponent({
 <style lang="scss">
 .root {
   width: 100%;
-  min-height: 100vh;
+  min-height: 100vh !important;
   overflow: hidden;
   position: relative;
   display: flex;
@@ -37,7 +44,7 @@ export default defineComponent({
   left: 0;
   width: 100%;
   height: 100vh;
-  background-image: url('./assets/i1.jpg');
+  background-image: url('./assets/background.jpg');
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;

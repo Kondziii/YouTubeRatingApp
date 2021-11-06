@@ -129,7 +129,11 @@
                   </template>
                 </q-input>
               </div>
-              <label v-if="dateErr" class="err-label">Nieprawidłowe daty</label>
+              <transition name="err">
+                <label v-show="dateErr" class="err-label"
+                  >Nieprawidłowe daty!</label
+                >
+              </transition>
             </div>
           </transition>
           <q-checkbox
@@ -235,12 +239,15 @@ export default defineComponent({
         const date1 = new Date(currValues[0].split('/').reverse().join());
         const date2 = new Date(currValues[1].split('/').reverse().join());
 
-        if (date1 > date2) {
+        if (date1.getTime() > date2.getTime()) {
           dateErr.value = true;
+        } else {
+          dateErr.value = false;
         }
       } else {
         dateErr.value = false;
       }
+      console.log(dateErr.value);
     });
 
     const reset = () => {
@@ -353,12 +360,14 @@ export default defineComponent({
 }
 
 .settings-enter-active,
-.date-enter-active {
+.date-enter-active,
+.err-enter-active {
   animation: slide-down 0.3s ease-in-out;
 }
 
 .settings-leave-active,
-.date-leave-active {
+.date-leave-active,
+.err-leave-active {
   animation: slide-down 0.3s ease-in-out reverse;
 }
 
