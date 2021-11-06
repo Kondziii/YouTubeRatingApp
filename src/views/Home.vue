@@ -52,7 +52,7 @@ export default defineComponent({
   display: flex;
   justify-content: center;
   align-items: center;
-  backdrop-filter: contrast(110%);
+  backdrop-filter: contrast(120%);
 }
 
 .my-card {
@@ -61,7 +61,7 @@ export default defineComponent({
   box-shadow: 0 0 1em rgba(255, 255, 255, 0.4);
   margin: 3em 1em;
   overflow: hidden;
-  color: white;
+  color: $grey-3;
 }
 
 .selection-container {

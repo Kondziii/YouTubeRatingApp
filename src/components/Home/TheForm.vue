@@ -13,7 +13,7 @@
         filled
         color="black"
         dark
-        label-color="white"
+        label-color="grey-3"
         class="input"
         :label="inputLabel"
         :hint="inputHint"
@@ -34,8 +34,8 @@
           name="arrow_drop_down"
         ></q-icon>
       </div>
-      <section class="advanced-settings" v-if="isAdvancedSettingsVisible">
-        <div class="q-gutter-md">
+      <transition tag="section" class="advanced-settings" name="settings">
+        <div class="q-gutter-md" v-if="isAdvancedSettingsVisible">
           <div>
             <q-slider
               dark
@@ -57,65 +57,81 @@
             }}</label>
           </div>
 
-          <div v-if="useTime" class="row justify-center align-center">
-            <div class="col-xs-12 col-sm-6">
-              <q-input
-                class="date-input"
-                filled
-                label="Od"
-                color="black"
-                dark
-                label-color="white"
-                v-model="beginDate"
-                :rules="[(v) => dateRules(v)]"
-              >
-                <template v-slot:append>
-                  <q-icon name="event" class="cursor-pointer">
-                    <q-popup-proxy
-                      ref="qDateProxy"
-                      transition-show="scale"
-                      transition-hide="scale"
-                    >
-                      <q-date v-model="beginDate" color="red" mask="DD/MM/YYYY">
-                        <div class="row items-center justify-end">
-                          <q-btn v-close-popup label="Close" color="red" flat />
-                        </div>
-                      </q-date>
-                    </q-popup-proxy>
-                  </q-icon>
-                </template>
-              </q-input>
+          <transition name="date">
+            <div v-if="useTime" class="row justify-center align-center">
+              <div class="col-xs-12 col-sm-6">
+                <q-input
+                  class="date-input"
+                  filled
+                  label="Od"
+                  color="black"
+                  dark
+                  label-color="grey-3"
+                  v-model="beginDate"
+                  :rules="[(v) => dateRules(v)]"
+                >
+                  <template v-slot:append>
+                    <q-icon name="event" class="cursor-pointer">
+                      <q-popup-proxy
+                        ref="qDateProxy"
+                        transition-show="scale"
+                        transition-hide="scale"
+                      >
+                        <q-date
+                          v-model="beginDate"
+                          color="red"
+                          mask="DD/MM/YYYY"
+                        >
+                          <div class="row items-center justify-end">
+                            <q-btn
+                              v-close-popup
+                              label="Close"
+                              color="red"
+                              flat
+                            />
+                          </div>
+                        </q-date>
+                      </q-popup-proxy>
+                    </q-icon>
+                  </template>
+                </q-input>
+              </div>
+              <div class="col-xs-12 col-sm-6">
+                <q-input
+                  class="date-input"
+                  filled
+                  dark
+                  label-color="grey-3"
+                  color="black"
+                  v-model="endDate"
+                  label="Do"
+                  :rules="[(v) => dateRules(v)]"
+                >
+                  <template v-slot:append>
+                    <q-icon name="event" class="cursor-pointer">
+                      <q-popup-proxy
+                        ref="qDateProxy"
+                        transition-show="scale"
+                        transition-hide="scale"
+                      >
+                        <q-date v-model="endDate" color="red" mask="DD/MM/YYYY">
+                          <div class="row items-center justify-end">
+                            <q-btn
+                              v-close-popup
+                              label="Close"
+                              color="red"
+                              flat
+                            />
+                          </div>
+                        </q-date>
+                      </q-popup-proxy>
+                    </q-icon>
+                  </template>
+                </q-input>
+              </div>
+              <label v-if="dateErr" class="err-label">Nieprawidłowe daty</label>
             </div>
-            <div class="col-xs-12 col-sm-6">
-              <q-input
-                class="date-input"
-                filled
-                dark
-                label-color="white"
-                color="black"
-                v-model="endDate"
-                label="Do"
-                :rules="[(v) => dateRules(v)]"
-              >
-                <template v-slot:append>
-                  <q-icon name="event" class="cursor-pointer">
-                    <q-popup-proxy
-                      ref="qDateProxy"
-                      transition-show="scale"
-                      transition-hide="scale"
-                    >
-                      <q-date v-model="endDate" color="red" mask="DD/MM/YYYY">
-                        <div class="row items-center justify-end">
-                          <q-btn v-close-popup label="Close" color="red" flat />
-                        </div>
-                      </q-date>
-                    </q-popup-proxy>
-                  </q-icon>
-                </template>
-              </q-input>
-            </div>
-            <label v-if="dateErr" class="err-label">Nieprawidłowe daty</label>
-          </div>
+          </transition>
           <q-checkbox
             v-model="useSubComments"
             label="Uwzględniaj podkomentarze"
@@ -123,7 +139,7 @@
             dark
           />
         </div>
-      </section>
+      </transition>
     </q-card-section>
     <q-separator dark />
     <q-card-actions class="flex justify-end align-center q-ma-md">
@@ -334,5 +350,26 @@ export default defineComponent({
 .err-label {
   font-size: 12px;
   color: $negative;
+}
+
+.settings-enter-active,
+.date-enter-active {
+  animation: slide-down 0.3s ease-in-out;
+}
+
+.settings-leave-active,
+.date-leave-active {
+  animation: slide-down 0.3s ease-in-out reverse;
+}
+
+@keyframes slide-down {
+  from {
+    transform: translateY(-100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 100%;
+  }
 }
 </style>
