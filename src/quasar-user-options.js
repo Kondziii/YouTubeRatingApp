@@ -1,4 +1,5 @@
 import './styles/quasar.scss';
+import 'quasar/dist/quasar.addon.css';
 import '@quasar/extras/material-icons/material-icons.css';
 import '@quasar/extras/material-icons-outlined/material-icons-outlined.css';
 import '@quasar/extras/material-icons-round/material-icons-round.css';

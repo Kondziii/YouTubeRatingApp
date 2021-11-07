@@ -9,7 +9,7 @@
       na podstawie komentarzy?
     </h2>
     <q-separator dark />
-    <div class="q-pl-lg q-my-lg">
+    <div class="q-px-sm q-my-lg">
       <p class="content-header q-pr-xs">
         Jeśli tak to dobrze trafiłeś, wypełnij pole i przejdź do oceny.
       </p>
@@ -34,29 +34,30 @@ export default defineComponent({
 @import '/src/styles/quasar.variables.scss';
 
 .header {
-  font-size: 1.8em;
+  font-size: 1.5em;
   font-weight: 400;
   line-height: 160%;
-  // background: #eee;
 }
 
 .logo {
-  height: 40px;
+  height: 25px;
   width: auto;
   margin-left: 5px;
   margin-right: 5px;
-  vertical-align: -10px;
+  vertical-align: -7px;
 }
 
 .content-header {
-  font-size: 1.1rem;
+  font-size: 1em;
+  margin: 0 5px;
   display: inline-block;
 }
 
 a {
   color: $red;
-  font-size: 1.1rem;
+  font-size: 1em;
   display: inline-block;
+  transition: 0.3s;
 }
 
 a:hover {
@@ -65,5 +66,19 @@ a:hover {
 
 p {
   margin: 0;
+}
+
+@media (min-width: $breakpoint-xs-max) {
+  .logo {
+    height: 30px;
+    vertical-align: -7px;
+  }
+}
+
+@media (min-width: $breakpoint-sm-max) {
+  .logo {
+    height: 40px;
+    vertical-align: -10px;
+  }
 }
 </style>

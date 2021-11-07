@@ -1,7 +1,7 @@
 <template>
   <q-layout class="root">
     <div class="background" />
-    <router-view :style="{ marginBottom: '20vh' }"></router-view>
+    <router-view class="view"></router-view>
     <the-footer></the-footer>
   </q-layout>
 </template>
@@ -28,6 +28,8 @@ export default defineComponent({
 </script>
 
 <style lang="scss">
+@import '/src/styles/quasar.variables.scss';
+
 .root {
   width: 100%;
   min-height: 100vh !important;
@@ -60,15 +62,20 @@ export default defineComponent({
   left: 0px;
 }
 
-@keyframes gradient {
-  0% {
-    background-position: 0% 50%;
+.view {
+  margin-bottom: 25vh;
+}
+
+.q-field__label {
+  font-size: 0.85em !important;
+}
+
+@media (min-width: $breakpoint-md-min) {
+  .view {
+    margin-bottom: 20vh;
   }
-  50% {
-    background-position: 100% 50%;
-  }
-  100% {
-    background-position: 0% 50%;
+  .q-field__label {
+    font-size: 0.9em !important;
   }
 }
 

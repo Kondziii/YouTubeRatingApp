@@ -59,13 +59,13 @@ export default defineComponent({
   border-radius: 15px;
   background: rgba(0, 0, 0, 0.7);
   box-shadow: 0 0 1em rgba(255, 255, 255, 0.4);
-  margin: 3em 1em;
+  margin: 2em 1em;
   overflow: hidden;
   color: $grey-3;
 }
 
 .selection-container {
-  width: 80%;
+  width: 90%;
   margin: 0 auto;
 }
 
@@ -83,5 +83,20 @@ a {
 .router-link-active {
   background: $red;
   color: white;
+}
+
+@media (min-width: $breakpoint-xs-max) {
+  .selection-container {
+    width: 80%;
+  }
+  .container {
+    font-size: 17px;
+  }
+}
+
+@media (min-width: $breakpoint-sm-max) {
+  .container {
+    font-size: 18px;
+  }
 }
 </style>

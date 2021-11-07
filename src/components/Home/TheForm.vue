@@ -1,6 +1,6 @@
 <template>
   <q-form @submit="onSubmit" @reset="onReset">
-    <q-card-section class="q-mx-xl">
+    <q-card-section class="q-mx-sm-md q-mx-md-lg">
       <q-option-group
         class="option-container"
         :options="options"
@@ -12,6 +12,7 @@
       <q-input
         filled
         color="black"
+        type="text"
         dark
         label-color="grey-3"
         class="input"
@@ -34,7 +35,12 @@
           name="arrow_drop_down"
         ></q-icon>
       </div>
-      <transition tag="section" class="advanced-settings" name="settings">
+      <transition
+        tag="section"
+        class="advanced-settings"
+        name="settings"
+        mode="out-in"
+      >
         <div class="q-gutter-md" v-if="isAdvancedSettingsVisible">
           <div>
             <q-slider
@@ -151,11 +157,16 @@
         label="Zresetuj"
         type="reset"
         flat
-        class="q-ml-sm"
+        class="q-ml-sm actions"
         color="red"
         @click="reset"
       />
-      <q-btn label="Przejdź do oceny" type="submit" color="red" />
+      <q-btn
+        class="actions"
+        label="Przejdź do oceny"
+        type="submit"
+        color="red"
+      />
     </q-card-actions>
   </q-form>
 </template>
@@ -288,6 +299,7 @@ export default defineComponent({
   display: flex;
   justify-content: center;
   align-items: center;
+  font-size: 0.8em;
 }
 
 .tab {
@@ -304,17 +316,6 @@ export default defineComponent({
   color: #eee;
 }
 
-.advanced-settings-btn {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-direction: column;
-  margin: auto;
-  margin-top: 1em;
-  color: $red-8;
-  cursor: pointer;
-}
-
 .date-container {
   display: flex;
   justify-content: center;
@@ -325,6 +326,12 @@ export default defineComponent({
 .input {
   margin: 0 auto;
   margin-top: 1em;
+  font-size: 0.85em;
+}
+@media (min-width: $breakpoint-md-min) {
+  .input {
+    font-size: 0.9em;
+  }
 }
 
 .advanced-settings-btn {
@@ -333,11 +340,14 @@ export default defineComponent({
   align-items: center;
   flex-direction: column;
   margin: auto;
-  margin-top: 1em;
+  margin-top: 2em;
   color: $red;
   cursor: pointer;
   width: fit-content;
   text-align: center;
+  font-size: 0.85em;
+  font-weight: 400;
+  transition: 0.3s;
 }
 
 .advanced-settings-btn:hover {
@@ -347,16 +357,22 @@ export default defineComponent({
 .advanced-settings {
   padding: 2em 0;
   margin: 0 auto;
+  font-size: 0.8em;
 }
 
 .date-input {
   width: 90%;
-  margin: 0 auto;
+  margin: 5px auto;
 }
 
 .err-label {
   font-size: 12px;
+  font-weight: 400;
   color: $negative;
+}
+
+.actions {
+  font-size: 0.8em;
 }
 
 .settings-enter-active,

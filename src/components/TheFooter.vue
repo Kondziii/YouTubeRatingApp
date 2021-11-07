@@ -2,7 +2,9 @@
   <q-footer elevated class="footer row items-center justify-around">
     <div class="col-sm-12 col-md-6">
       <div class="flex justify-center items-end q-gutter-md">
-        <img class="logo" src="../assets/logo-pł.png" alt="" />
+        <a href="https://p.lodz.pl/" target="_blank"
+          ><img class="logo" src="../assets/logo-pł.png" alt=""
+        /></a>
         <div>
           <p class="name">Politechnika Łódzka</p>
           <p class="name-detail">
@@ -60,6 +62,10 @@ export default defineComponent({
 
 .rights {
   font-size: 0.8em;
+}
+
+body a {
+  line-height: 1;
 }
 
 @media (min-width: $breakpoint-xs-max) {
