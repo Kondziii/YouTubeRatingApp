@@ -1,7 +1,16 @@
 <template>
   <q-layout class="root">
     <div class="background" />
-    <router-view class="view"></router-view>
+    <router-view class="view" v-slot="slotProps">
+      <transition
+        duration="700"
+        enter-active-class="animate__animated animate__fadeIn"
+        leave-active-class="animate__animated animate__fadeOut"
+        mode="out-in"
+      >
+        <component :is="slotProps.Component"></component>
+      </transition>
+    </router-view>
     <the-footer></the-footer>
   </q-layout>
 </template>

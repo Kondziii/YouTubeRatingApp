@@ -42,7 +42,7 @@ export default defineComponent({
   display: flex;
   justify-content: center;
   align-items: center;
-  backdrop-filter: contrast(120%);
+  // backdrop-filter: contrast(120%);
 }
 
 .card--transparent {
