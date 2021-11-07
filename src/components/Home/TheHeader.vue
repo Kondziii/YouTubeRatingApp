@@ -13,7 +13,7 @@
       <p class="content-header q-pr-xs">
         Jeśli tak to dobrze trafiłeś, wypełnij pole i przejdź do oceny.
       </p>
-      <router-link to="/"> Dowiedz się więcej </router-link>
+      <router-link to="/learn-more"> Dowiedz się więcej </router-link>
     </div>
   </header>
 </template>

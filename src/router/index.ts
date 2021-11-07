@@ -1,6 +1,7 @@
 import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router';
 import Home from '../views/Home.vue';
 import TheForm from '../components/Home/TheForm.vue';
+const TheInfo = () => import('../components/TheInfo.vue');
 
 const routes: Array<RouteRecordRaw> = [
   {
@@ -20,6 +21,11 @@ const routes: Array<RouteRecordRaw> = [
         component: TheForm,
       },
     ],
+  },
+  {
+    path: '/learn-more',
+    name: 'LearnMore',
+    component: TheInfo,
   },
 ];
 
