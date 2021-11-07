@@ -13,7 +13,9 @@
       </div>
     </div>
     <div class="col-sm-12 col-md-6 text-center">
-      <p>Copyright &copy; 2021/2022, Projekt inżynierski - Konrad Chojnacki</p>
+      <p class="rights">
+        Copyright &copy; 2021/2022, Projekt inżynierski - Konrad Chojnacki
+      </p>
     </div>
   </q-footer>
 </template>
@@ -34,25 +36,53 @@ export default defineComponent({
 
 .footer {
   background: rgba(41, 42, 44, 0.7);
-  height: 20vh;
+  height: 25vh;
 }
 
 .logo {
-  height: 80px;
+  height: 60px;
   width: auto;
 }
 
 .name {
-  font-size: 1.5em;
+  font-size: 1.1em;
   line-height: 150%;
   font-weight: 400;
   margin-bottom: 8px;
 }
 
 .name-detail {
-  font-size: 1em;
+  font-size: 0.9em;
   color: $red;
   line-height: 120%;
   margin-bottom: 0;
+}
+
+.rights {
+  font-size: 0.8em;
+}
+
+@media (min-width: $breakpoint-xs-max) {
+  .footer {
+    height: 25vh;
+    font-size: 16px;
+  }
+
+  .logo {
+    height: 70px;
+    width: auto;
+  }
+}
+
+@media (min-width: $breakpoint-md-max) {
+  .footer {
+    height: 20vh;
+    font-size: 18px;
+  }
+
+  .logo {
+    height: 80px;
+    width: auto;
+  }
 }
 </style>

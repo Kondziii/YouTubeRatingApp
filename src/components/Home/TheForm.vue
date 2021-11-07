@@ -1,5 +1,5 @@
 <template>
-  <q-form @submit="onSubmit" @reset="onReset" class="q-gutter-md">
+  <q-form @submit="onSubmit" @reset="onReset">
     <q-card-section class="q-mx-xl">
       <q-option-group
         class="option-container"
