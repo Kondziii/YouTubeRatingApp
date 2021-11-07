@@ -6,6 +6,7 @@ module.exports = {
       framework: {
         cssAddon: true,
       },
+      animations: 'all',
     },
   },
   transpileDependencies: ['quasar'],

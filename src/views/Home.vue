@@ -1,22 +1,18 @@
 <template>
-  <div class="container row">
-    <div class="col-xs-12 col-sm-10 col-md-8 col-xl-6 card-container">
-      <q-card class="my-card">
-        <the-header></the-header>
-        <section class="selection-container">
-          <q-tabs class="tab" align="justify">
-            <router-link :to="'/evaluate/channels'"
-              ><q-tab name="channels" label="Kanały" value="channels"
-            /></router-link>
-            <router-link :to="'/evaluate/videos'"
-              ><q-tab name="videos" label="Filmiki" value="videos"
-            /></router-link>
-          </q-tabs>
-        </section>
-        <router-view :selectedTab="selectedTab" :key="route.path"></router-view>
-      </q-card>
-    </div>
-  </div>
+  <basic-container type="card--transparent">
+    <the-header></the-header>
+    <section class="selection-container">
+      <q-tabs class="tab" align="justify">
+        <router-link :to="'/evaluate/channels'"
+          ><q-tab name="channels" label="Kanały" value="channels"
+        /></router-link>
+        <router-link :to="'/evaluate/videos'"
+          ><q-tab name="videos" label="Filmiki" value="videos"
+        /></router-link>
+      </q-tabs>
+    </section>
+    <router-view :selectedTab="selectedTab" :key="route.path"></router-view>
+  </basic-container>
 </template>
 
 <script lang="ts">
@@ -46,16 +42,18 @@ export default defineComponent({
 <style lang="scss" scoped>
 @import '/src/styles/quasar.variables.scss';
 
-.container {
-  width: 100%;
-  min-height: 100vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  backdrop-filter: contrast(120%);
-}
+// .container {
+//   width: 100%;
+//   min-height: 100vh;
+//   display: flex;
+//   justify-content: center;
+//   align-items: center;
+//   backdrop-filter: contrast(120%);
+// }
 
-.my-card {
+.card {
+  width: 100%;
+  height: 100%;
   border-radius: 15px;
   background: rgba(0, 0, 0, 0.7);
   box-shadow: 0 0 1em rgba(255, 255, 255, 0.4);

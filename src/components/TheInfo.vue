@@ -1,11 +1,13 @@
 <template>
-  <div>
-    <p>elo</p>
-  </div>
+  <basic-container>
+    <p>
+      Lorem ipsum dolor sit amet, consectetur adipisicing elit. Omnis, dolores?
+    </p>
+  </basic-container>
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue';
+import { defineComponent, ref } from 'vue';
 
 export default defineComponent({
   name: 'TheInfo',
