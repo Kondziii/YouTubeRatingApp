@@ -34,9 +34,7 @@ export default defineComponent({
 @import '/src/styles/quasar.variables.scss';
 
 .header {
-  font-size: 1.5em;
-  font-weight: 400;
-  line-height: 160%;
+  @include header();
 }
 
 .logo {
@@ -54,14 +52,7 @@ export default defineComponent({
 }
 
 a {
-  color: $red;
-  font-size: 1em;
-  display: inline-block;
-  transition: 0.3s;
-}
-
-a:hover {
-  color: $red-14;
+  @include link;
 }
 
 p {

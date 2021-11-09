@@ -42,15 +42,22 @@ export default defineComponent({
   display: flex;
   justify-content: center;
   align-items: center;
-  // backdrop-filter: contrast(120%);
+  margin-top: 5vh;
+  margin-bottom: 30vh;
+}
+
+@media (min-width: $breakpoint-md-max) {
+  .container {
+    margin-bottom: 25vh;
+  }
 }
 
 .card--transparent {
-  border-radius: 15px;
-  background: rgba(0, 0, 0, 0.7);
-  box-shadow: 0 0 1em rgba(255, 255, 255, 0.4);
-  margin: 2em 1em;
-  overflow: hidden;
-  color: $grey-3;
+  @include card(rgba(0, 0, 0, 0.7));
+}
+
+.card--normal--dark {
+  @include card(rgb(36, 37, 38));
+  box-shadow: none;
 }
 </style>

@@ -1,7 +1,7 @@
 <template>
   <q-layout class="root">
     <div class="background" />
-    <router-view class="view" v-slot="slotProps">
+    <router-view v-slot="slotProps">
       <transition
         duration="700"
         enter-active-class="animate__animated animate__fadeIn"
@@ -71,20 +71,28 @@ export default defineComponent({
   left: 0px;
 }
 
-.view {
-  margin-bottom: 25vh;
-}
-
 .q-field__label {
   font-size: 0.85em !important;
 }
 
 @media (min-width: $breakpoint-md-min) {
-  .view {
-    margin-bottom: 20vh;
-  }
   .q-field__label {
     font-size: 0.9em !important;
+  }
+}
+
+@media (min-width: $breakpoint-xs-max) {
+  .selection-container {
+    width: 80%;
+  }
+  .root {
+    font-size: 17px;
+  }
+}
+
+@media (min-width: $breakpoint-sm-max) {
+  .root {
+    font-size: 18px;
   }
 }
 

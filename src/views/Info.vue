@@ -1,5 +1,5 @@
 <template>
-  <basic-container>
+  <basic-container type="card--normal--dark">
     <q-card-section>
       <h1>Informacje dotyczące aplikacji</h1>
     </q-card-section>
@@ -36,8 +36,12 @@
         </li>
         <li>
           <p>Instrukcja obsługi aplikacji</p>
-          <basic-tabs :items="items"></basic-tabs>
-          <router-view></router-view>
+          <basic-tabs
+            :items="items"
+            :selectedTab="selectedTab"
+            @select="setSelectedTab"
+          ></basic-tabs>
+          <component :is="selectedInstruction"></component>
         </li>
       </ol>
     </q-card-section>
@@ -45,33 +49,76 @@
 </template>
 
 <script lang="ts">
-import BasicTabs from '@/components/UI/BasicTabs.vue';
-import Tab from '@/types/Tab';
-import { defineComponent, ref } from 'vue';
+import ChannelInstruction from '@/components/LearnMore/ChannelInstruction.vue';
+import VideoInstruction from '@/components/LearnMore/VideoInstruction.vue';
+import useTabs from '@/hooks/useTabs';
+import { computed, defineComponent } from 'vue';
 
 export default defineComponent({
-  components: { BasicTabs },
+  components: { ChannelInstruction, VideoInstruction },
   name: 'Info',
 
   setup() {
-    const items: Array<Tab> = [
+    const { items, selectedTab, setSelectedTab } = useTabs([
       {
         label: 'Kanały',
         value: 'channels',
-        to: '/learn-more/channels',
       },
       {
         label: 'Filmiki',
         value: 'videos',
-        to: '/learn-more/videos',
       },
-    ];
+    ]);
+
+    const selectedInstruction = computed(() => {
+      if (selectedTab.value === 'channels') return 'channel-instruction';
+      else if (selectedTab.value === 'videos') return 'video-instruction';
+      return '';
+    });
 
     return {
       items,
+      selectedTab,
+      setSelectedTab,
+      selectedInstruction,
     };
   },
 });
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+@import '/src/styles/quasar.variables.scss';
+
+h1 {
+  @include header();
+  margin-left: 0.5em;
+  font-size: 1.6em;
+}
+
+ol {
+  padding: 0 1em;
+
+  li {
+    &::marker {
+      font-size: 1.2em;
+    }
+
+    p {
+      font-size: 0.85em;
+      &:first-child {
+        font-size: 1.2em;
+      }
+    }
+  }
+}
+
+a {
+  @include link();
+}
+
+@media (min-width: $breakpoint-xs-max) {
+  ol {
+    padding: 0 2em;
+  }
+}
+</style>
