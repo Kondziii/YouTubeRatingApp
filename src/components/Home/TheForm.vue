@@ -299,7 +299,7 @@ export default defineComponent({
   display: flex;
   justify-content: center;
   align-items: center;
-  font-size: 0.8em;
+  font-size: 0.8rem;
 }
 
 .tab {
@@ -326,11 +326,11 @@ export default defineComponent({
 .input {
   margin: 0 auto;
   margin-top: 1em;
-  font-size: 0.85em;
+  font-size: 0.9rem;
 }
 @media (min-width: $breakpoint-md-min) {
   .input {
-    font-size: 0.9em;
+    font-size: 1rem;
   }
 }
 
@@ -345,7 +345,7 @@ export default defineComponent({
   cursor: pointer;
   width: fit-content;
   text-align: center;
-  font-size: 0.85em;
+  font-size: 0.9rem;
   font-weight: 400;
   transition: 0.3s;
 }
@@ -357,7 +357,7 @@ export default defineComponent({
 .advanced-settings {
   padding: 2em 0;
   margin: 0 auto;
-  font-size: 0.8em;
+  font-size: 0.8rem;
 }
 
 .date-input {
@@ -372,7 +372,7 @@ export default defineComponent({
 }
 
 .actions {
-  font-size: 0.8em;
+  font-size: 0.8rem;
 }
 
 .settings-enter-active,

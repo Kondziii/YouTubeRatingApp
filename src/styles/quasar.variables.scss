@@ -22,20 +22,24 @@ $warning: #f2c037;
 }
 
 @mixin header() {
-  font-size: 1.5em;
+  font-size: 1.7rem;
   font-weight: 400;
   line-height: 160%;
 }
 
 @mixin link() {
   color: $red;
-  font-size: 1em;
+  font-size: 1.1rem;
   display: inline-block;
   transition: 0.3s;
 
   &:hover {
     color: $red-14;
   }
+}
+
+@mixin list {
+  font-size: 0.9rem !important;
 }
 
 @import '~quasar-variables-styl';

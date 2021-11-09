@@ -38,7 +38,7 @@ export default defineComponent({
 }
 
 .logo {
-  height: 25px;
+  height: 30px;
   width: auto;
   margin-left: 5px;
   margin-right: 5px;
@@ -46,7 +46,7 @@ export default defineComponent({
 }
 
 .content-header {
-  font-size: 1em;
+  font-size: 1.1rem;
   margin: 0 5px;
   display: inline-block;
 }

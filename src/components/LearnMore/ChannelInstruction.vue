@@ -6,23 +6,23 @@
         <ol type="a" class="nested">
           <li>
             <p>po tytule</p>
-            <q-img src="../../assets/title-channel.png">
+            <q-img class="title-img" src="../../assets/title-channel-mobile.png">
  
             </q-img>
           </li>
           <li>
             <p>po linku</p>
-            <q-img src="../../assets/url-channel.png">
+            <q-img class="url-img" src="../../assets/url-channel-mobile.png">
 
             </q-img>
             <p class="warn">Uwaga!</p>
             <p>
               Link do kanału może różnie wyglądać. Poniżej przedstwione zostały wszystkie możliwe formaty wyszukiwania po linku:
-              <ul class="nested">
-                <li>https://www.youtube.com/channel/ UCW5YeuERMmlnqo4oq8vwUpg (zalecany)</li>
-                <li> https://www.youtube.com/c/TheNetNinja</li>
+              <ul class="nested wrap-text">
+                <li>https://www.youtube.com/channel/UCW5YeuERMmlnqo4oq8vwUpg (zalecany)</li>
+                <li> https://www.youtube.com/c/ TheNetNinja</li>
                 <li>UCW5YeuERMmlnqo4oq8vwUpg</li>
-                <li>https://www.youtube.com/googlecode</li>
+                <li>https://www.youtube.com/ googlecode</li>
               </ul>
             </p>
           </li>
@@ -37,7 +37,7 @@
       <li>
         Następnie możesz otworzyć i zmodyfikować ustawienia niestandardowe klikając na przycisk "pokaż ustawienia niestandardowe" 
         pod polem w którym skopiowałeś link lub nazwę kanału, chociaż zalecane jest aby pozostały domyślne. Ustawienia niestandardowe zawierają następujące wartości:
-        <ul class="nested">
+        <ul class="nested q-mb-md">
           <li>Minimalna liczby komentarzy - filmiki tego kanału, które mają mniej niż 10 komentarzy (dotyczy to tylko komentarzy najwyższego rzędu, bez uwzględniania podkomentarzy) zostaną wykluczone z analizy.</li>
           <li>Uwzględniaj ramy czasowe - domyslnie kanał oceniany jest od momentu powstania, ale możesz to ograniczyć podając datę początkową i końcową</li>
           <li>Uwzględniaj podkomentarze - domyślnie tak oznacza, że podkomentarze również biorą udział w analizie sentymentu</li>
@@ -105,26 +105,25 @@ export default defineComponent({
   color: $red;
   padding: 0;
   margin: 5px 0;
+  font-size: 1.1rem !important;
 }
 
-ol {
- font-size: 1em;
-
- li {
-   ol {
-     font-size: 0.9em;
-   }
- }
+.wrap-text {
+  overflow-wrap: break-word;
+  word-wrap: break-word;
 }
 
-p {
-  font-size: 0.9em;
-}
-
-.q-btn {
-  font-size: 0.8em;
+ol * {
+  @include list();
 }
 
 
-
+@media (min-width: $breakpoint-sm-min) {
+  .title-img {
+    content: url("../../assets/title-channel.png");
+  }
+  .url-img {
+    content: url("../../assets/url-channel.png");
+  }
+}
 </style>

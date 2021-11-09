@@ -85,13 +85,13 @@ export default defineComponent({
   .selection-container {
     width: 80%;
   }
-  .root {
+  .html {
     font-size: 17px;
   }
 }
 
 @media (min-width: $breakpoint-sm-max) {
-  .root {
+  .html {
     font-size: 18px;
   }
 }

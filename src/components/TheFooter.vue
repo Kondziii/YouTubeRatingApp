@@ -42,26 +42,26 @@ export default defineComponent({
 }
 
 .logo {
-  height: 60px;
+  height: 70px;
   width: auto;
 }
 
 .name {
-  font-size: 1.1em;
+  font-size: 1.1rem;
   line-height: 150%;
   font-weight: 400;
   margin-bottom: 8px;
 }
 
 .name-detail {
-  font-size: 0.9em;
+  font-size: 0.9rem;
   color: $red;
   line-height: 120%;
   margin-bottom: 0;
 }
 
 .rights {
-  font-size: 0.8em;
+  font-size: 0.8rem;
 }
 
 body a {

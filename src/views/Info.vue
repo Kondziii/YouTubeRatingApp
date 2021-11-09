@@ -92,7 +92,6 @@ export default defineComponent({
 h1 {
   @include header();
   margin-left: 0.5em;
-  font-size: 1.6em;
 }
 
 .selection-container {
@@ -104,13 +103,13 @@ ol {
 
   li {
     &::marker {
-      font-size: 1.2em;
+      font-size: 1.2rem;
     }
 
     p {
-      font-size: 0.85em;
+      font-size: 0.9rem;
       &:first-child {
-        font-size: 1.2em;
+        font-size: 1.2rem;
       }
     }
   }
@@ -118,6 +117,7 @@ ol {
 
 a {
   @include link();
+  font-size: 0.9rem;
 }
 
 @media (min-width: $breakpoint-xs-max) {
