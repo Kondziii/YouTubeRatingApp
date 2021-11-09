@@ -95,6 +95,10 @@ h1 {
   font-size: 1.6em;
 }
 
+.selection-container {
+  margin-bottom: 5% !important;
+}
+
 ol {
   padding: 0 1em;
 

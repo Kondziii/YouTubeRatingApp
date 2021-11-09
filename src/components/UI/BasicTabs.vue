@@ -51,7 +51,7 @@ export default defineComponent({
 
 .selection-container {
   width: 90%;
-  margin: 5% auto;
+  margin: 0 auto;
 }
 
 .tab {
