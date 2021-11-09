@@ -55,6 +55,7 @@
         label="Przejdź do aplikacji"
         type="button"
         color="red"
+        icon-right="arrow_forward"
         @click="directToApp"
       />
     </q-card-actions>
@@ -116,6 +117,7 @@ export default defineComponent({
 ol * {
   @include list();
 }
+
 
 
 @media (min-width: $breakpoint-sm-min) {

@@ -41,7 +41,15 @@
             :selectedTab="selectedTab"
             @select="setSelectedTab"
           ></basic-tabs>
-          <component :is="selectedInstruction"></component>
+          <transition
+            enter-active-class="animate__animated animate__rotateInUpLeft"
+            leave-active-class="animate__animated animate__rotateOutUpLeft"
+            appear
+            duration="1000"
+            mode="out-in"
+          >
+            <component :is="selectedInstruction"></component>
+          </transition>
         </li>
       </ol>
     </q-card-section>

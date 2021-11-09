@@ -258,7 +258,6 @@ export default defineComponent({
       } else {
         dateErr.value = false;
       }
-      console.log(dateErr.value);
     });
 
     const reset = () => {
