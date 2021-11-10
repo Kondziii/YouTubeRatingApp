@@ -51,7 +51,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue';
+import { defineComponent, onBeforeMount } from 'vue';
 import { useRouter } from 'vue-router';
 import BasicInstruction from '@/components/LearnMore/BasicInstruction.vue';
 
@@ -64,6 +64,12 @@ export default defineComponent({
 
   setup() {
     const router = useRouter();
+
+    // const moveUp = () => {
+    //   window.scrollTo(0, 0);
+    // };
+
+    // onBeforeMount(() => moveUp());
 
     const directToApp = () => {
       router.push('/');
@@ -103,3 +109,5 @@ export default defineComponent({
   }
 }
 </style>
+
+function beforeMount() { throw new Error('Function not implemented.'); }
