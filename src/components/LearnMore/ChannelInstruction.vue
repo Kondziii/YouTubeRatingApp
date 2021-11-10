@@ -18,13 +18,17 @@
         <li>
           https://www.youtube.com/channel/UCW5YeuERMmlnqo4oq8vwUpg (zalecany)
         </li>
-        <li>https://www.youtube.com/c/ TheNetNinja</li>
+        <li>https://www.youtube.com/c/TheNetNinja</li>
         <li>UCW5YeuERMmlnqo4oq8vwUpg</li>
-        <li>https://www.youtube.com/ googlecode</li>
+        <li>https://www.youtube.com/googlecode</li>
       </ul>
     </template>
     <template #advanced-settings>
       <ul class="nested q-mb-md">
+        <li>
+          Minimalna liczba filmików - kanał musi posiadać co najmniej tyle
+          filmików ile wynosi ten próg, domyślnie 3
+        </li>
         <li>
           Minimalna liczby komentarzy - filmiki tego kanału, które mają mniej
           niż 10 komentarzy (dotyczy to tylko komentarzy najwyższego rzędu, bez
@@ -51,7 +55,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, onBeforeMount } from 'vue';
+import { defineComponent } from 'vue';
 import { useRouter } from 'vue-router';
 import BasicInstruction from '@/components/LearnMore/BasicInstruction.vue';
 
@@ -89,5 +93,3 @@ export default defineComponent({
   }
 }
 </style>
-
-function beforeMount() { throw new Error('Function not implemented.'); }

@@ -18,7 +18,9 @@ const extractVideoIdFromUrl = (url: string) => {
   if (url.indexOf('v=') === -1) {
     return url;
   } else {
-    return url.substring(url.indexOf('v=') + 2, url.indexOf('&'));
+    return url.indexOf('&') === -1
+      ? url.substring(url.indexOf('v=') + 2)
+      : url.substring(url.indexOf('v=') + 2, url.indexOf('&'));
   }
 };
 
@@ -41,7 +43,7 @@ export default {
     return response.data.items;
   },
 
-  getChannelInfoById: async (id: string): Promise<ChannelFullInfo> => {
+  getChannelInfoById: async (id: string): Promise<ChannelFullInfo[]> => {
     const response = await axios.get(`${URL_YOUTUBE_API}/channels`, {
       params: {
         key: KEY,
@@ -60,7 +62,7 @@ export default {
   getChannelsByUrl: async (
     url: string,
     type: Channel_url
-  ): Promise<ChannelBasic | ChannelBasic[]> => {
+  ): Promise<ChannelBasic[]> => {
     let response;
 
     switch (type) {
@@ -158,7 +160,7 @@ export default {
     return response.data.items;
   },
 
-  getVideoByUrl: async (url: string): Promise<Video> => {
+  getVideosByUrl: async (url: string): Promise<Video[]> => {
     const response = await axios.get(`${URL_YOUTUBE_API}/videos`, {
       params: {
         key: KEY,
@@ -174,7 +176,7 @@ export default {
     return response.data.items;
   },
 
-  getVideoInfoById: async (videoId: string): Promise<Video> => {
+  getVideoInfoById: async (videoId: string): Promise<Video[]> => {
     const response = await axios.get(`${URL_YOUTUBE_API}/videos`, {
       params: {
         key: KEY,

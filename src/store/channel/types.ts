@@ -1,5 +1,5 @@
-import { ChannelBasic, ChannelWithStats } from '@/types/Channel';
+import { ChannelBasic } from '@/types/Channel';
 
 export interface ChannelState {
-  channels: ChannelBasic | ChannelWithStats[] | unknown;
+  channels: ChannelBasic[] | unknown;
 }

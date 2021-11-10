@@ -1,5 +1,5 @@
 import { ChannelState } from './types';
-import { ChannelBasic, ChannelWithStats } from '@/types/Channel';
+import { ChannelBasic } from '@/types/Channel';
 import { MutationTree } from 'vuex';
 
 export enum ChannelMutations {
@@ -7,10 +7,7 @@ export enum ChannelMutations {
 }
 
 export default {
-  [ChannelMutations.SET_CHANNELS](
-    state,
-    payload: Array<ChannelWithStats> | ChannelBasic
-  ): void {
+  [ChannelMutations.SET_CHANNELS](state, payload: Array<ChannelBasic>): void {
     state.channels = payload;
   },
 } as MutationTree<ChannelState>;

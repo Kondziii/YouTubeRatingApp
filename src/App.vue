@@ -18,7 +18,6 @@
 <script lang="ts">
 import { defineComponent } from 'vue';
 import TheFooter from '@/components/TheFooter.vue';
-// import TheFooter from '@/components/TheFooter.vue';
 // import { useStore } from './store';
 // import { useChannelActions } from './store/channel/actions';
 

@@ -42,10 +42,21 @@
         mode="out-in"
       >
         <div class="q-gutter-md" v-if="isAdvancedSettingsVisible">
+          <div v-if="selectedTab !== 'videos'" class="q-mb-lg">
+            <q-slider
+              dark
+              :min="1"
+              :max="100"
+              color="red"
+              :label-value="'Minimalna liczba filmików: ' + videosLimit"
+              label-always
+              v-model="videosLimit"
+            />
+          </div>
           <div>
             <q-slider
               dark
-              :min="0"
+              :min="1"
               :max="100"
               color="red"
               :label-value="'Minimalna liczba komentarzy: ' + commentsLimit"
@@ -159,7 +170,6 @@
         flat
         class="q-ml-sm actions"
         color="red"
-        @click="reset"
       />
       <q-btn
         class="actions"
@@ -172,16 +182,18 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent } from 'vue';
+import Evaluate from '@/types/Evaluate';
+import { computed, defineComponent, PropType } from 'vue';
 import { ref, watch } from 'vue';
 const COMMENTS_LIMIT = 10;
+const VIDEOS_LIMIT = 3;
 
 export default defineComponent({
   name: 'TheForm',
 
   props: {
     selectedTab: {
-      type: String,
+      type: String as PropType<Evaluate>,
       required: true,
     },
   },
@@ -230,6 +242,7 @@ export default defineComponent({
     };
 
     const commentsLimit = ref<number>(COMMENTS_LIMIT);
+    const videosLimit = ref<number>(VIDEOS_LIMIT);
     const useTime = ref<boolean>(false);
     const useSubComments = ref<boolean>(true);
     const beginDate = ref<string>('');
@@ -260,7 +273,7 @@ export default defineComponent({
       }
     });
 
-    const reset = () => {
+    const onReset = () => {
       commentsLimit.value = COMMENTS_LIMIT;
       useTime.value = false;
       useSubComments.value = true;
@@ -268,6 +281,16 @@ export default defineComponent({
       endDate.value = '';
       userInput.value = '';
       isAdvancedSettingsVisible.value = false;
+    };
+
+    const onSubmit = () => {
+      if (!dateErr.value) {
+        if (props.selectedTab === 'channels') {
+          console.log('elo');
+        } else {
+          console.log('siema');
+        }
+      }
     };
 
     return {
@@ -278,12 +301,14 @@ export default defineComponent({
       inputHint,
       isAdvancedSettingsVisible,
       setIsAdvancedSettingsVisible,
+      videosLimit,
       commentsLimit,
       useTime,
       useSubComments,
       beginDate,
       endDate,
-      reset,
+      onReset,
+      onSubmit,
       dateRules,
       dateErr,
     };

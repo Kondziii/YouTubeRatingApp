@@ -47,7 +47,6 @@ export default {
       : Channel_url.CUSTOM_URL;
     try {
       const channels = await youtube.getChannelsByUrl(payload, type);
-      console.log(channels);
       commit(ChannelMutations.SET_CHANNELS, channels);
     } catch (error) {
       if (error instanceof Exception) {

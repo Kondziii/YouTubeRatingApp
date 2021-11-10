@@ -69,15 +69,15 @@
 
 <script lang="ts">
 import { computed, defineComponent, PropType } from 'vue';
-import Instruction from '@/types/Instruction';
 import { useRouter } from 'vue-router';
+import Evaluate from '@/types/Evaluate';
 
 export default defineComponent({
   name: 'BasicInstruction',
 
   props: {
     model: {
-      type: String as PropType<Instruction>,
+      type: String as PropType<Evaluate>,
       required: true,
     },
   },
@@ -89,10 +89,10 @@ export default defineComponent({
       router.push('/');
     };
     const type = computed(() =>
-      props.model === 'video' ? 'filmiku' : 'kanału'
+      props.model === 'videos' ? 'filmiku' : 'kanału'
     );
     const type_ = computed(() =>
-      props.model === 'video' ? 'filmik' : 'kanał'
+      props.model === 'videos' ? 'filmik' : 'kanał'
     );
 
     return {
