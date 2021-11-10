@@ -15,6 +15,7 @@
 <script lang="ts">
 import { defineComponent, PropType, ref, watch } from 'vue';
 import Tab from '@/types/Tab';
+import Evaluate from '@/types/Evaluate';
 
 export default defineComponent({
   name: 'BasicTabs',
@@ -27,7 +28,7 @@ export default defineComponent({
       required: true,
     },
     selectedTab: {
-      type: String,
+      type: String as PropType<Evaluate>,
       required: true,
     },
   },
