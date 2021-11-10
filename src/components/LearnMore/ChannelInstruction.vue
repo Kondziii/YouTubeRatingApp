@@ -9,6 +9,10 @@
             <q-img class="title-img" src="../../assets/title-channel-mobile.png">
  
             </q-img>
+            <p class="warn">Uwaga!</p>
+            <p>Nie jest konieczne wpisywanie całej nazwy kanału.
+              Jednakże jest to wysoce rekomendowane, ponieważ zwiększa
+               prawdopodobieństwo wyszukania kanału o który ci chodzi.</p>
           </li>
           <li>
             <p>po linku</p>
@@ -117,7 +121,6 @@ export default defineComponent({
 ol * {
   @include list();
 }
-
 
 
 @media (min-width: $breakpoint-sm-min) {
