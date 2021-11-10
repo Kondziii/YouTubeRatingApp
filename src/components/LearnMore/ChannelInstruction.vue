@@ -65,12 +65,6 @@ export default defineComponent({
   setup() {
     const router = useRouter();
 
-    // const moveUp = () => {
-    //   window.scrollTo(0, 0);
-    // };
-
-    // onBeforeMount(() => moveUp());
-
     const directToApp = () => {
       router.push('/');
     };
@@ -84,21 +78,7 @@ export default defineComponent({
 
 <style lang="scss" scoped>
 @import '/src/styles/quasar.variables.scss';
-
-.q-img {
-  width: 100%;
-  height: auto;
-  margin-bottom: 5%;
-}
-
-.nested {
-  margin-left: 2em;
-}
-
-.wrap-text {
-  overflow-wrap: break-word;
-  word-wrap: break-word;
-}
+@import 'src/styles/instruction';
 
 @media (min-width: $breakpoint-sm-min) {
   .title-img {

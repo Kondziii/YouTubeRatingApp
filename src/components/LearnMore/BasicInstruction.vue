@@ -106,34 +106,7 @@ export default defineComponent({
 
 <style lang="scss" scoped>
 @import '/src/styles/quasar.variables.scss';
-
-.q-img {
-  width: 100%;
-  height: auto;
-  margin-bottom: 5%;
-}
-
-.instruction-container {
-  margin: 0 auto;
-}
-
-.nested {
-  margin-left: 2em;
-}
-
-.warn {
-  font-weight: bold;
-  line-height: 120%;
-  color: $red;
-  padding: 0;
-  margin: 5px 0;
-  font-size: 1.1rem !important;
-}
-
-.wrap-text {
-  overflow-wrap: break-word;
-  word-wrap: break-word;
-}
+@import 'src/styles/instruction';
 
 ol * {
   @include list();
