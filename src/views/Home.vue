@@ -7,6 +7,7 @@
       @select="setSelectedTab"
     ></basic-tabs>
     <the-form :selectedTab="selectedTab" :key="selectedTab"></the-form>
+    <confirm-channel-modal></confirm-channel-modal>
   </basic-container>
 </template>
 
@@ -15,11 +16,12 @@ import { defineComponent } from 'vue';
 import TheHeader from '@/components/Home/TheHeader.vue';
 import TheForm from '@/components/Home/TheForm.vue';
 import useTabs from '@/hooks/useTabs';
+import ConfirmChannelModal from '@/components/Modals/ConfirmChannelModal.vue';
 
 export default defineComponent({
   name: 'Home',
 
-  components: { TheHeader, TheForm },
+  components: { TheHeader, TheForm, ConfirmChannelModal },
 
   setup() {
     const { items, selectedTab, setSelectedTab } = useTabs([

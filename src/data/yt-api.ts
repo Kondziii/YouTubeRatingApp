@@ -36,8 +36,8 @@ export default {
       },
     });
 
-    if (!response || !response.data?.items) {
-      throw new Exception('Channel has not be found!', 400);
+    if (!response || response.data.items.length === 0) {
+      throw new Exception('Channel has not be found!', 404);
     }
 
     return response.data.items;
@@ -52,8 +52,8 @@ export default {
       },
     });
 
-    if (!response || !response.data?.items) {
-      throw new Exception('Channel has not be found!', 400);
+    if (!response || response.data.items.length === 0) {
+      throw new Exception('Channel has not be found!', 404);
     }
 
     return response.data.items;
@@ -89,8 +89,8 @@ export default {
         break;
       }
     }
-    if (!response || !response.data?.items) {
-      throw new Exception('Channel has not be found!', 400);
+    if (!response || response.data.items.length === 0) {
+      throw new Exception('Channel has not be found!', 404);
     }
     return response.data.items;
   },
@@ -111,8 +111,8 @@ export default {
             : '',
         },
       });
-      if (!response || !response.data?.items) {
-        throw new Exception('Wrong id of channel playlist!', 403);
+      if (!response || response.data.items.length === 0) {
+        throw new Exception('Wrong id of channel playlist!', 404);
       }
 
       videos.push(...response.data.items);
@@ -136,8 +136,8 @@ export default {
             : '',
         },
       });
-      if (!response || !response.data?.items) {
-        throw new Exception('Wrong id of video!', 403);
+      if (!response || response.data.items.length === 0) {
+        throw new Exception('Wrong id of video!', 404);
       }
       comments.push(...response.data.items);
     } while (response.data.nextPageToken);
@@ -154,8 +154,8 @@ export default {
         q: title,
       },
     });
-    if (!response || !response.data?.items) {
-      throw new Exception('The video has not be found!', 403);
+    if (!response || response.data.items.length === 0) {
+      throw new Exception('The video has not be found!', 404);
     }
     return response.data.items;
   },
@@ -169,8 +169,8 @@ export default {
         id: extractVideoIdFromUrl(url),
       },
     });
-    if (!response || !response.data?.items) {
-      throw new Exception('The video has not be found!', 403);
+    if (!response || response.data.items.length === 0) {
+      throw new Exception('The video has not be found!', 404);
     }
 
     return response.data.items;
@@ -185,8 +185,8 @@ export default {
       },
     });
 
-    if (!response || !response.data?.items) {
-      throw new Exception('The video has not be found!', 403);
+    if (!response || response.data.items.length === 0) {
+      throw new Exception('The video has not be found!', 404);
     }
     return response.data.items;
   },

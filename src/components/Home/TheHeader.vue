@@ -38,11 +38,11 @@ export default defineComponent({
 }
 
 .logo {
-  height: 30px;
+  height: 35px;
   width: auto;
   margin-left: 5px;
   margin-right: 5px;
-  vertical-align: -7px;
+  vertical-align: -8px;
 }
 
 .content-header {
@@ -61,15 +61,15 @@ p {
 
 @media (min-width: $breakpoint-xs-max) {
   .logo {
-    height: 30px;
-    vertical-align: -7px;
+    height: 40px;
+    vertical-align: -10px;
   }
 }
 
 @media (min-width: $breakpoint-sm-max) {
   .logo {
-    height: 40px;
-    vertical-align: -10px;
+    height: 45px;
+    vertical-align: -12px;
   }
 }
 </style>

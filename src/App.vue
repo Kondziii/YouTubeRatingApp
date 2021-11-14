@@ -3,34 +3,53 @@
     <div class="background" />
     <router-view v-slot="slotProps">
       <transition
-        duration="700"
-        enter-active-class="animate__animated animate__fadeIn"
-        leave-active-class="animate__animated animate__fadeOut"
+        enter-active-class="animate__animated animate__fadeInUp"
         mode="out-in"
       >
         <component :is="slotProps.Component"></component>
       </transition>
     </router-view>
     <the-footer></the-footer>
+    <error-modal
+      v-if="error.is"
+      :title="error.title"
+      :message="error.message"
+      @close="hideErrorModal"
+    ></error-modal>
   </q-layout>
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue';
+import { computed, defineComponent } from 'vue';
 import TheFooter from '@/components/TheFooter.vue';
-// import { useStore } from './store';
-// import { useChannelActions } from './store/channel/actions';
+import { useStore } from '@/store/index';
+import ErrorModal from '@/components/Modals/ErrorModal.vue';
+import { useErrorActions } from './store/error/actions';
 
 export default defineComponent({
   components: {
     TheFooter,
+    ErrorModal,
   },
 
   setup() {
-    // const store = useStore();
-    // const ChannelActions = useChannelActions();
+    const store = useStore();
+    const errorActions = useErrorActions();
+    const error = computed(() => {
+      return store.getters['error/getError'];
+    });
+    const hideErrorModal = () => {
+      store.dispatch(errorActions.setError, {
+        is: false,
+        title: '',
+        message: '',
+      });
+    };
 
-    return {};
+    return {
+      error,
+      hideErrorModal,
+    };
   },
 });
 </script>
@@ -75,7 +94,12 @@ export default defineComponent({
 }
 
 .q-btn .q-icon {
-  font-size: 1.2rem !important;
+  font-size: 1rem !important;
+  margin-right: 6px !important;
+}
+
+#close .q-icon {
+  margin: 0 !important;
 }
 
 @media (min-width: $breakpoint-md-min) {

@@ -24,6 +24,18 @@
         ]"
         v-model="userInput"
       />
+      <div class="flex justify-center q-mt-xs-lg q-mt-md-md q-mb-md">
+        <q-btn
+          class="actions"
+          label="Wyszukaj"
+          type="button"
+          color="red"
+          icon="search"
+          @click="onSearch"
+          :loading="searchLoading"
+          :disable="userInput === ''"
+        />
+      </div>
       <div class="advanced-settings-btn" @click="setIsAdvancedSettingsVisible">
         <q-icon v-if="isAdvancedSettingsVisible" name="arrow_drop_up"></q-icon>
         {{
@@ -184,7 +196,10 @@
 <script lang="ts">
 import Evaluate from '@/types/Evaluate';
 import { computed, defineComponent, PropType } from 'vue';
-import { ref, watch } from 'vue';
+import { ref } from 'vue';
+import { useStore } from '../../store/index';
+import useDateRules from '@/hooks/useDateRules';
+import { useChannelActions } from '@/store/channel/actions';
 const COMMENTS_LIMIT = 10;
 const VIDEOS_LIMIT = 3;
 
@@ -198,7 +213,11 @@ export default defineComponent({
     },
   },
 
+  emits: ['onSearch'],
+
   setup(props) {
+    const store = useStore();
+    const channelActions = useChannelActions();
     const type = ref<string>('title');
     const options = [
       {
@@ -245,33 +264,30 @@ export default defineComponent({
     const videosLimit = ref<number>(VIDEOS_LIMIT);
     const useTime = ref<boolean>(false);
     const useSubComments = ref<boolean>(true);
-    const beginDate = ref<string>('');
-    const endDate = ref<string>('');
+    const { dateErr, beginDate, endDate, dateRules } = useDateRules();
 
-    const dateRules = (value: string) => {
-      if (!value || value.length === 0) {
-        return 'Pole nie może być puste';
-      } else if (!/^(\d{1,2})\/(\d{1,2})\/(\d{4})$/.test(value)) {
-        return 'Nieprawidłowy format, przykład 1/01/2021';
-      }
-    };
+    const searchLoading = ref<boolean>(false);
 
-    const dateErr = ref<boolean>(false);
-
-    watch([beginDate, endDate], (currValues) => {
-      if (currValues[0] !== '' && currValues[1] !== '') {
-        const date1 = new Date(currValues[0].split('/').reverse().join());
-        const date2 = new Date(currValues[1].split('/').reverse().join());
-
-        if (date1.getTime() > date2.getTime()) {
-          dateErr.value = true;
+    const onSearch = async () => {
+      searchLoading.value = true;
+      if (userInput.value !== '') {
+        if (props.selectedTab === 'channels') {
+          if (type.value === 'title')
+            await store.dispatch(
+              channelActions.fetchSimilarChannelsByTitle,
+              userInput.value
+            );
+          else
+            await store.dispatch(
+              channelActions.fetchSimilarChannelsByUrl,
+              userInput.value
+            );
         } else {
-          dateErr.value = false;
+          console.log('video');
         }
-      } else {
-        dateErr.value = false;
       }
-    });
+      searchLoading.value = false;
+    };
 
     const onReset = () => {
       commentsLimit.value = COMMENTS_LIMIT;
@@ -311,6 +327,8 @@ export default defineComponent({
       onSubmit,
       dateRules,
       dateErr,
+      onSearch,
+      searchLoading,
     };
   },
 });
@@ -364,7 +382,6 @@ export default defineComponent({
   align-items: center;
   flex-direction: column;
   margin: auto;
-  margin-top: 2em;
   color: $red;
   cursor: pointer;
   width: fit-content;

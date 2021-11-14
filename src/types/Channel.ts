@@ -1,12 +1,14 @@
 type ChannelBasic = {
   etag: string;
-  id: {
-    channelID: string;
-    kind: string;
-  };
+  id:
+    | {
+        channelId: string;
+        kind: string;
+      }
+    | string;
   kind: string;
   snippet: {
-    channelID?: string;
+    channelId?: string;
     channelTitle?: string;
     description: string;
     liveBroadcastContent?: string;

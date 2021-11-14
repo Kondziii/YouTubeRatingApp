@@ -9,6 +9,7 @@ const channelModule: Module<ChannelState, RootState> = {
   namespaced: true,
   state: () => ({
     channels: [],
+    isModalVisible: false,
   }),
   mutations: mutations,
   actions: actions,

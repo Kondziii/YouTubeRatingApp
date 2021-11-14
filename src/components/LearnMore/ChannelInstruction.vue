@@ -19,7 +19,6 @@
           https://www.youtube.com/channel/UCW5YeuERMmlnqo4oq8vwUpg (zalecany)
         </li>
         <li>https://www.youtube.com/c/TheNetNinja</li>
-        <li>UCW5YeuERMmlnqo4oq8vwUpg</li>
         <li>https://www.youtube.com/googlecode</li>
       </ul>
     </template>
