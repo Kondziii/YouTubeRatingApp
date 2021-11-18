@@ -6,11 +6,13 @@
       :selectedTab="selectedTab"
       @select="setSelectedTab"
     ></basic-tabs>
+
     <the-form
       :selectedTab="selectedTab"
       :key="selectedTab"
       :confirmed="confirmedChannel"
     ></the-form>
+
     <confirm-channel-modal
       v-if="isChannelModalVisible"
       :channels="channels"

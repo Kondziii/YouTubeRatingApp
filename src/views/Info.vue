@@ -42,10 +42,9 @@
             @select="setSelectedTab"
           ></basic-tabs>
           <transition
-            enter-active-class="animate__animated animate__rotateInUpLeft"
-            leave-active-class="animate__animated animate__rotateOutUpLeft"
+            enter-active-class="animate__animated animate__slideInLeft"
+            leave-active-class="animate__animated animate__slideOutRight"
             appear
-            duration="1000"
             mode="out-in"
           >
             <component :is="selectedInstruction"></component>
