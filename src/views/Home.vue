@@ -17,6 +17,7 @@
       @cancel="hideChannelsModal"
       @confirm="confirmChannelsModal"
       v-model:selectedItemId="selectedChannelId"
+      :confirmed="confirmedChannel?.id"
     ></confirm-channel-modal>
     <confirm-channel-info-modal
       v-if="isChannelInfoModalVisible"

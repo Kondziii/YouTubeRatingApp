@@ -8,7 +8,7 @@
         </q-btn>
       </q-card-section>
       <q-separator dark></q-separator>
-      <q-scroll-area dark style="height: 70vh; max-width: 100%">
+      <q-scroll-area dark style="height: 50vh; max-width: 100%">
         <q-card-section>
           <slot name="items"></slot>
           <p class="text-center not-found">Nie znaleziono więcej rezultatów</p>

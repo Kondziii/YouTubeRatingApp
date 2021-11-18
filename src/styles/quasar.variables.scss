@@ -9,6 +9,7 @@ $dark: #1d1d1d;
 $dark-1: rgb(24, 25, 26);
 $dark-2: rgb(36, 37, 38);
 $dark-3: rgb(32, 33, 34);
+$dark-4: rgb(50, 51, 52);
 
 $positive: #21ba45;
 $negative: #c10015;
@@ -25,7 +26,7 @@ $warning: #f2c037;
 }
 
 @mixin header() {
-  font-size: 1.7rem;
+  font-size: 1.5rem;
   font-weight: 400;
   line-height: 160%;
 }

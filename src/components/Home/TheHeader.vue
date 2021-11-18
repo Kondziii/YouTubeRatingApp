@@ -68,7 +68,7 @@ p {
 
 @media (min-width: $breakpoint-sm-max) {
   .logo {
-    height: 45px;
+    height: 40px;
     vertical-align: -12px;
   }
 }

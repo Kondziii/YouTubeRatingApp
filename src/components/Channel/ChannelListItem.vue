@@ -1,13 +1,14 @@
 <template>
   <div :class="itemClasses" @click="select">
-    <div class="col-9 flex items-center justify-start no-wrap">
-      <q-avatar>
+    <div class="col-8 flex items-center justify-start no-wrap">
+      <q-avatar class="avatar">
         <q-img :src="img" />
       </q-avatar>
       <p>{{ title }}</p>
     </div>
-    <div class="col-3">
+    <div class="col-4">
       <a
+        v-if="model === ''"
         :href="urlLink"
         target="_blank"
         class="flex items-center justify-center"
@@ -15,6 +16,27 @@
       >
         <q-icon name="fab fa-youtube"></q-icon>
       </a>
+      <div v-else class="q-mr-sm flex justify-center items-center">
+        <q-btn
+          @click.stop
+          id="details"
+          color="red"
+          flat
+          icon="details"
+          @click="openDetails"
+        >
+          <q-tooltip>Szczegóły</q-tooltip>
+        </q-btn>
+        <q-btn
+          @click.stop
+          id="clear"
+          color="red"
+          icon="clear"
+          @click="resetConfirmed"
+        >
+          <q-tooltip>Anuluj</q-tooltip>
+        </q-btn>
+      </div>
     </div>
   </div>
 </template>
@@ -23,7 +45,7 @@
 import { computed, defineComponent } from 'vue';
 
 export default defineComponent({
-  name: 'ConfirmChannelModalItem',
+  name: 'ChannelListItem',
 
   props: {
     img: {
@@ -46,9 +68,16 @@ export default defineComponent({
       required: false,
       default: false,
     },
+
+    model: {
+      //formItem or default
+      type: String,
+      required: false,
+      default: '',
+    },
   },
 
-  emits: ['onClick'],
+  emits: ['onClick', 'openDetails', 'reset', 'showChannelList'],
 
   setup(props, context) {
     const urlLink = computed(
@@ -56,7 +85,12 @@ export default defineComponent({
     );
 
     const select = () => {
-      context.emit('onClick', props.id);
+      console.log('siema');
+      if (props.model === 'formItem') {
+        context.emit('showChannelList');
+      } else {
+        context.emit('onClick', props.id);
+      }
     };
 
     const itemClasses = computed(() => {
@@ -65,13 +99,24 @@ export default defineComponent({
         'justify-between',
         'items-center',
         { selected: props.selected },
+        { formItem: props.model === 'formItem' },
       ];
     });
+
+    const openDetails = () => {
+      context.emit('openDetails');
+    };
+
+    const resetConfirmed = () => {
+      context.emit('reset');
+    };
 
     return {
       urlLink,
       select,
       itemClasses,
+      openDetails,
+      resetConfirmed,
     };
   },
 });
@@ -84,9 +129,10 @@ export default defineComponent({
   width: 100%;
   margin: 2% auto;
   background: $dark-2;
-  border-radius: 30px;
+  border-radius: 35px;
   box-shadow: 1px 8px 9px -5px rgba(75, 75, 75, 0.46);
   cursor: pointer;
+  transition: 0.2s;
 
   &:hover {
     box-shadow: 1px 8px 9px -5px rgba(100, 100, 100, 0.7);
@@ -120,12 +166,26 @@ p {
   background: $grey-8;
 }
 
+.avatar {
+  width: 60px;
+  height: auto;
+}
+
+//////////////////props class
+.formItem {
+  background: $dark-4;
+}
+
 @media (min-width: $breakpoint-xs-max) {
   a {
     &::before {
       content: 'Zobacz w' !important;
       margin-right: 5px;
     }
+  }
+
+  .avatar {
+    width: 50px;
   }
 }
 </style>

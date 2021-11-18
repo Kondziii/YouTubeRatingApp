@@ -19,6 +19,7 @@
         :label="inputLabel"
         :hint="inputHint"
         lazy-rules
+        v-if="!confirmed"
         :rules="[
           (val) => (val && val.length > 0) || 'Pole nie może być puste!',
         ]"
@@ -36,14 +37,27 @@
           :loading="searchLoading"
           :disable="userInput === ''"
         />
-        <confirm-channel-modal-item
-          v-else
-          :img="confirmed.snippet.thumbnails.default.url"
-          :title="confirmed.snippet.title"
-          :id="confirmed.id"
-        ></confirm-channel-modal-item>
+        <transition
+          enter-active-class="animate__animated animate__backInLeft"
+          leave-active-class="animate__animated animate__backOutRight"
+        >
+          <channel-list-item
+            v-if="confirmed"
+            :img="confirmed.snippet.thumbnails.default.url"
+            :title="confirmed.snippet.title"
+            :id="confirmed.id"
+            model="formItem"
+            @openDetails="openDetails"
+            @reset="resetConfirmedChannel"
+            @showChannelList="showChannelModal"
+          ></channel-list-item>
+        </transition>
       </div>
-      <div class="advanced-settings-btn" @click="setIsAdvancedSettingsVisible">
+      <div
+        v-if="confirmed"
+        class="advanced-settings-btn"
+        @click="setIsAdvancedSettingsVisible"
+      >
         <q-icon v-if="isAdvancedSettingsVisible" name="arrow_drop_up"></q-icon>
         {{
           !isAdvancedSettingsVisible
@@ -208,14 +222,14 @@ import { useStore } from '../../store/index';
 import useDateRules from '@/hooks/useDateRules';
 import { useChannelActions } from '@/store/channel/actions';
 import { ChannelFullInfo } from '@/types/Channel';
-import ConfirmChannelModalItem from '@/components/Modals/ConfirmChannelModalItem.vue';
+import ChannelListItem from '@/components/Channel/ChannelListItem.vue';
 const COMMENTS_LIMIT = 10;
 const VIDEOS_LIMIT = 3;
 
 export default defineComponent({
   name: 'TheForm',
 
-  components: { ConfirmChannelModalItem },
+  components: { ChannelListItem },
 
   props: {
     selectedTab: {
@@ -305,6 +319,18 @@ export default defineComponent({
       searchLoading.value = false;
     };
 
+    const openDetails = () => {
+      store.dispatch(channelActions.toggleInfoModal, true);
+    };
+
+    const resetConfirmedChannel = () => {
+      onReset();
+    };
+
+    const showChannelModal = () => {
+      store.dispatch(channelActions.toggleModal, true);
+    };
+
     const onReset = () => {
       commentsLimit.value = COMMENTS_LIMIT;
       useTime.value = false;
@@ -313,6 +339,7 @@ export default defineComponent({
       endDate.value = '';
       userInput.value = '';
       isAdvancedSettingsVisible.value = false;
+      store.dispatch(channelActions.resetConfirmedChannel);
     };
 
     const onSubmit = () => {
@@ -345,6 +372,9 @@ export default defineComponent({
       dateErr,
       onSearch,
       searchLoading,
+      openDetails,
+      resetConfirmedChannel,
+      showChannelModal,
     };
   },
 });

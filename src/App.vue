@@ -102,6 +102,12 @@ export default defineComponent({
   margin: 0 !important;
 }
 
+#details .q-icon,
+#clear .q-icon {
+  margin: 0 !important;
+  font-size: 1.2rem !important;
+}
+
 #yt .q-icon {
   margin-left: 6px !important;
 }
