@@ -31,6 +31,7 @@
             (val) => (val && val.length > 0) || 'Pole nie może być puste!',
           ]"
           v-model="userInput"
+          :loading="evaluateLoading || searchLoading"
         />
         <div class="flex justify-center q-mt-xs-lg q-mt-md-md q-mb-md">
           <q-btn
@@ -224,6 +225,7 @@
         label="Przejdź do oceny"
         type="submit"
         color="red"
+        :loading="evaluateLoading"
       />
     </q-card-actions>
   </q-form>
@@ -357,14 +359,33 @@ export default defineComponent({
       store.dispatch(channelActions.resetConfirmedChannel);
     };
 
-    const onSubmit = () => {
+    const confirmedChannel = computed(() => {
+      return store.getters['channel/getConfirmedChannel'];
+    });
+    const evaluateLoading = ref<boolean>(false);
+
+    const onSubmit = async () => {
+      evaluateLoading.value = true;
       if (!dateErr.value) {
         if (props.selectedTab === 'channels') {
-          console.log('elo');
+          if (confirmedChannel.value === null && userInput.value !== '') {
+            if (type.value === 'title') {
+              await store.dispatch(
+                channelActions.fetchSimilarChannelsByTitle,
+                userInput.value
+              );
+            } else if (type.value === 'url') {
+              await store.dispatch(
+                channelActions.fetchSimilarChannelsByUrl,
+                userInput.value
+              );
+            }
+          }
         } else {
           console.log('siema');
         }
       }
+      evaluateLoading.value = false;
     };
 
     return {
@@ -390,6 +411,7 @@ export default defineComponent({
       openDetails,
       resetConfirmedChannel,
       showChannelModal,
+      evaluateLoading,
     };
   },
 });
