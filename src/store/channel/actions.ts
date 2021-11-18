@@ -14,6 +14,7 @@ const ChannelActions = {
   fetchSimilarChannelsByUrl: 'fetchSimilarChannelsByUrl',
   toggleModal: 'toggleModal',
   fetchFullInfoAboutChannel: 'fetchFullInfoAboutChannel',
+  toggleInfoModal: 'toggleInfoModal',
 };
 
 export const useChannelActions = (): typeof ChannelActions => {
@@ -128,6 +129,8 @@ export default {
     try {
       const channel = await youtube.getChannelInfoById(payload);
       commit(ChannelMutations.SET_CONFIRMED_CHANNEL, channel);
+      console.log(channel);
+      dispatch(ChannelActions.toggleInfoModal, true);
     } catch (error) {
       if (error instanceof Exception) {
         commit(ChannelMutations.SET_CONFIRMED_CHANNEL, null);
@@ -142,5 +145,9 @@ export default {
         );
       }
     }
+  },
+
+  [ChannelActions.toggleInfoModal]({ commit }, payload: boolean) {
+    commit(ChannelMutations.SET_INFO_MODAL_STATE, payload);
   },
 } as ActionTree<ChannelState, RootState>;

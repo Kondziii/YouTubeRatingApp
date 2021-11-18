@@ -12,8 +12,8 @@ type ChannelBasic = {
     channelTitle?: string;
     description: string;
     liveBroadcastContent?: string;
-    publishTime?: Date;
-    publishedAt: Date;
+    publishTime?: string;
+    publishedAt: string;
     thumbnails: {
       default: {
         url: string;
@@ -48,8 +48,6 @@ type ChannelContentDetails = {
   };
 };
 
-type ChannelWithStats = ChannelBasic & ChannelStatistics;
+type ChannelFullInfo = ChannelBasic & ChannelContentDetails & ChannelStatistics;
 
-type ChannelFullInfo = ChannelWithStats & ChannelContentDetails;
-
-export { ChannelBasic, ChannelWithStats, ChannelFullInfo };
+export { ChannelBasic, ChannelFullInfo };

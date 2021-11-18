@@ -12,12 +12,17 @@
       :channels="channels"
       @cancel="hideChannelsModal"
       @confirm="confirmChannelsModal"
+      v-model:selectedItemId="selectedChannelId"
     ></confirm-channel-modal>
+    <confirm-channel-info-modal
+      v-if="isChannelInfoModalVisible"
+      @close="hideChannelInfoModal"
+    ></confirm-channel-info-modal>
   </basic-container>
 </template>
 
 <script lang="ts">
-import { computed, defineComponent } from 'vue';
+import { computed, defineComponent, ref } from 'vue';
 import TheHeader from '@/components/Home/TheHeader.vue';
 import TheForm from '@/components/Home/TheForm.vue';
 import useTabs from '@/hooks/useTabs';
@@ -25,11 +30,17 @@ import ConfirmChannelModal from '@/components/Modals/ConfirmChannelModal.vue';
 import { useStore } from '@/store/index';
 import { ChannelBasic } from '@/types/Channel';
 import { useChannelActions } from '@/store/channel/actions';
+import ConfirmChannelInfoModal from '@/components/Modals/ConfirmChannelInfoModal.vue';
 
 export default defineComponent({
   name: 'Home',
 
-  components: { TheHeader, TheForm, ConfirmChannelModal },
+  components: {
+    TheHeader,
+    TheForm,
+    ConfirmChannelModal,
+    ConfirmChannelInfoModal,
+  },
 
   setup() {
     const { items, selectedTab, setSelectedTab } = useTabs([
@@ -45,20 +56,32 @@ export default defineComponent({
 
     const store = useStore();
     const channelActions = useChannelActions();
+
+    // Channel confirm
     const isChannelModalVisible = computed<boolean>(
       () => store.getters['channel/getModalState']
     );
     const channels = computed<ChannelBasic[]>(
       () => store.getters['channel/getChannels']
     );
-
+    const selectedChannelId = ref<string>('');
     const hideChannelsModal = () => {
       store.dispatch(channelActions.toggleModal, false);
     };
-
     const confirmChannelsModal = () => {
       store.dispatch(channelActions.toggleModal, false);
-      // store.dispatch(channelActions.fetchFullInfoAboutChannel, )
+      store.dispatch(
+        channelActions.fetchFullInfoAboutChannel,
+        selectedChannelId.value
+      );
+    };
+
+    //Info modals
+    const isChannelInfoModalVisible = computed<boolean>(() => {
+      return store.getters['channel/getInfoModalState'];
+    });
+    const hideChannelInfoModal = () => {
+      store.dispatch(channelActions.toggleInfoModal, false);
     };
 
     return {
@@ -69,6 +92,9 @@ export default defineComponent({
       channels,
       hideChannelsModal,
       confirmChannelsModal,
+      selectedChannelId,
+      isChannelInfoModalVisible,
+      hideChannelInfoModal,
     };
   },
 });

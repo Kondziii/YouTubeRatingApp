@@ -6,6 +6,7 @@ export enum ChannelMutations {
   SET_CHANNELS = 'SET_CHANNELS',
   SET_MODAL_STATE = 'SET_MODAL_STATE',
   SET_CONFIRMED_CHANNEL = 'SET_CONFIRMED_CHANNEL',
+  SET_INFO_MODAL_STATE = 'SET_INFO_MODAL_STATE',
 }
 
 export default {
@@ -22,5 +23,9 @@ export default {
     payload: ChannelFullInfo
   ): void {
     state.confirmedChannel = payload;
+  },
+
+  [ChannelMutations.SET_INFO_MODAL_STATE](state, payload: boolean) {
+    state.isInfoModalVisible = payload;
   },
 } as MutationTree<ChannelState>;

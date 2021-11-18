@@ -4,4 +4,5 @@ export interface ChannelState {
   channels: ChannelBasic[];
   isModalVisible: boolean;
   confirmedChannel: ChannelFullInfo | null;
+  isInfoModalVisible: boolean;
 }

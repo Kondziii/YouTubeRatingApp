@@ -15,4 +15,8 @@ export default {
   getConfirmedChannel(state): ChannelFullInfo | null {
     return state.confirmedChannel;
   },
+
+  getInfoModalState(state): boolean {
+    return state.isInfoModalVisible;
+  },
 } as GetterTree<ChannelState, RootState>;
