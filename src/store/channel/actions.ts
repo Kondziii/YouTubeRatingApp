@@ -13,6 +13,7 @@ const ChannelActions = {
   fetchSimilarChannelsByTitle: 'fetchSimilarChannelsByTitle',
   fetchSimilarChannelsByUrl: 'fetchSimilarChannelsByUrl',
   toggleModal: 'toggleModal',
+  fetchFullInfoAboutChannel: 'fetchFullInfoAboutChannel',
 };
 
 export const useChannelActions = (): typeof ChannelActions => {
@@ -117,5 +118,29 @@ export default {
 
   [ChannelActions.toggleModal]({ commit }, payload: boolean) {
     commit(ChannelMutations.SET_MODAL_STATE, payload);
+  },
+
+  async [ChannelActions.fetchFullInfoAboutChannel](
+    { dispatch, commit },
+    payload: string
+  ) {
+    const errorActions = useErrorActions();
+    try {
+      const channel = await youtube.getChannelInfoById(payload);
+      commit(ChannelMutations.SET_CONFIRMED_CHANNEL, channel);
+    } catch (error) {
+      if (error instanceof Exception) {
+        commit(ChannelMutations.SET_CONFIRMED_CHANNEL, null);
+        dispatch(
+          errorActions.setError,
+          {
+            is: true,
+            title: 'Wystąpił błąd',
+            message: `Ups. wystąpił błąd z odnalezieniem zatwierdzonego kanału: ${payload}`,
+          },
+          { root: true }
+        );
+      }
+    }
   },
 } as ActionTree<ChannelState, RootState>;

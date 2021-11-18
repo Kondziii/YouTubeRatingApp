@@ -43,7 +43,7 @@ export default {
     return response.data.items;
   },
 
-  getChannelInfoById: async (id: string): Promise<ChannelFullInfo[]> => {
+  getChannelInfoById: async (id: string): Promise<ChannelFullInfo> => {
     const response = await axios.get(`${URL_YOUTUBE_API}/channels`, {
       params: {
         key: KEY,
@@ -56,7 +56,7 @@ export default {
       throw new Exception('Channel has not be found!', 404);
     }
 
-    return response.data.items;
+    return response.data.items[0];
   },
 
   getChannelsByUrl: async (

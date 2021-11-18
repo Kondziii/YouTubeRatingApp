@@ -58,6 +58,7 @@ export default defineComponent({
 
     const confirmChannelsModal = () => {
       store.dispatch(channelActions.toggleModal, false);
+      // store.dispatch(channelActions.fetchFullInfoAboutChannel, )
     };
 
     return {
