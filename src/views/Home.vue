@@ -6,7 +6,11 @@
       :selectedTab="selectedTab"
       @select="setSelectedTab"
     ></basic-tabs>
-    <the-form :selectedTab="selectedTab" :key="selectedTab"></the-form>
+    <the-form
+      :selectedTab="selectedTab"
+      :key="selectedTab"
+      :confirmed="confirmedChannel"
+    ></the-form>
     <confirm-channel-modal
       v-if="isChannelModalVisible"
       :channels="channels"
@@ -84,6 +88,10 @@ export default defineComponent({
       store.dispatch(channelActions.toggleInfoModal, false);
     };
 
+    const confirmedChannel = computed(
+      () => store.getters['channel/getConfirmedChannel']
+    );
+
     return {
       selectedTab,
       items,
@@ -95,6 +103,7 @@ export default defineComponent({
       selectedChannelId,
       isChannelInfoModalVisible,
       hideChannelInfoModal,
+      confirmedChannel,
     };
   },
 });

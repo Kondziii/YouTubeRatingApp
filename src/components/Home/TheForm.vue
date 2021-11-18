@@ -26,6 +26,7 @@
       />
       <div class="flex justify-center q-mt-xs-lg q-mt-md-md q-mb-md">
         <q-btn
+          v-if="!confirmed"
           class="actions"
           label="Wyszukaj"
           type="button"
@@ -35,6 +36,12 @@
           :loading="searchLoading"
           :disable="userInput === ''"
         />
+        <confirm-channel-modal-item
+          v-else
+          :img="confirmed.snippet.thumbnails.default.url"
+          :title="confirmed.snippet.title"
+          :id="confirmed.id"
+        ></confirm-channel-modal-item>
       </div>
       <div class="advanced-settings-btn" @click="setIsAdvancedSettingsVisible">
         <q-icon v-if="isAdvancedSettingsVisible" name="arrow_drop_up"></q-icon>
@@ -200,16 +207,25 @@ import { ref } from 'vue';
 import { useStore } from '../../store/index';
 import useDateRules from '@/hooks/useDateRules';
 import { useChannelActions } from '@/store/channel/actions';
+import { ChannelFullInfo } from '@/types/Channel';
+import ConfirmChannelModalItem from '@/components/Modals/ConfirmChannelModalItem.vue';
 const COMMENTS_LIMIT = 10;
 const VIDEOS_LIMIT = 3;
 
 export default defineComponent({
   name: 'TheForm',
 
+  components: { ConfirmChannelModalItem },
+
   props: {
     selectedTab: {
       type: String as PropType<Evaluate>,
       required: true,
+    },
+
+    confirmed: {
+      type: Object as PropType<ChannelFullInfo>,
+      required: false,
     },
   },
 
