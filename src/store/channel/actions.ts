@@ -31,7 +31,7 @@ export default {
         {
           is: true,
           title: 'Wystąpił błąd',
-          message: `Ups. Podana nazwa przypomina bardziej adres url, a nie nazwę kanału. Upewnij się, że wybrałeś odpowiednią opcję.`,
+          message: `Ups. Podana nazwa przypomina bardziej adres url filmiku, a nie nazwę kanału. Upewnij się, że wybrałeś odpowiednią opcję.`,
         },
         { root: true }
       );

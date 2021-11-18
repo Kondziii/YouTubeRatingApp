@@ -6,7 +6,7 @@ import Channel_url from '@/enums/Channel_url';
 import Video from '@/types/Video';
 import CommentThread from '@/types/CommentThread';
 
-const extractChannelIdFromUrl = (url: string) => {
+const extractChannelIdFromUrl = (url: string): string => {
   if (url.lastIndexOf('/') === -1) {
     return url;
   } else {
@@ -14,7 +14,7 @@ const extractChannelIdFromUrl = (url: string) => {
   }
 };
 
-const extractVideoIdFromUrl = (url: string) => {
+const extractVideoIdFromUrl = (url: string): string => {
   if (url.indexOf('v=') === -1) {
     return url;
   } else {
