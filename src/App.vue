@@ -10,12 +10,12 @@
       </transition>
     </router-view>
     <the-footer></the-footer>
-    <error-modal
+    <basic-modal
       v-if="error.is"
       :title="error.title"
       :message="error.message"
       @close="hideErrorModal"
-    ></error-modal>
+    ></basic-modal>
   </q-layout>
 </template>
 
@@ -23,13 +23,13 @@
 import { computed, defineComponent } from 'vue';
 import TheFooter from '@/components/TheFooter.vue';
 import { useStore } from '@/store/index';
-import ErrorModal from '@/components/Modals/ErrorModal.vue';
+import BasicModal from '@/components/Modals/BasicModal.vue';
 import { useErrorActions } from './store/error/actions';
 
 export default defineComponent({
   components: {
     TheFooter,
-    ErrorModal,
+    BasicModal,
   },
 
   setup() {

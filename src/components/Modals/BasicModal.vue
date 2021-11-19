@@ -1,8 +1,13 @@
 <template>
-  <q-dialog v-model="isVisible">
+  <q-dialog
+    v-model="isVisible"
+    transition-show="scale"
+    transition-hide="scale"
+    transition-duration="500"
+  >
     <q-card class="card">
       <q-card-section>
-        <div class="text-h6">{{ title }}</div>
+        <div class="text-h5">{{ title }}</div>
       </q-card-section>
 
       <q-card-section class="q-pt-none">
@@ -10,7 +15,11 @@
       </q-card-section>
 
       <q-card-actions align="right" class="q-mx-xs-sm q-mx-sm-md q-mb-sm">
-        <q-btn label="Rozumiem" color="red" v-close-popup />
+        <q-btn v-if="!confirm" label="Rozumiem" color="red" v-close-popup />
+        <div v-else>
+          <q-btn label="Nie" color="red" v-close-popup />
+          <q-btn label="Tak" color="red" v-close-popup @click="confirmEmit" />
+        </div>
       </q-card-actions>
     </q-card>
   </q-dialog>
@@ -33,9 +42,14 @@ export default defineComponent({
       type: String,
       required: true,
     },
+    confirm: {
+      type: Boolean,
+      default: false,
+      required: false,
+    },
   },
 
-  emits: ['close'],
+  emits: ['close', 'confirm'],
 
   setup(props, context) {
     const isVisible = ref<boolean>(true);
@@ -44,8 +58,13 @@ export default defineComponent({
       context.emit('close', !props.is);
     });
 
+    const confirmEmit = () => {
+      context.emit('confirm');
+    };
+
     return {
       isVisible,
+      confirmEmit,
     };
   },
 });

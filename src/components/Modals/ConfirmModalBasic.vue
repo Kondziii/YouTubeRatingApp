@@ -1,5 +1,11 @@
 <template>
-  <q-dialog v-model="is" persistent>
+  <q-dialog
+    v-model="is"
+    persistent
+    transition-show="scale"
+    transition-hide="scale"
+    transition-duration="500"
+  >
     <q-card class="card" style="width: 700px; max-width: 90vw">
       <q-card-section class="flex justify-between">
         <div class="text-h5">Potwierdź swój wybór</div>
