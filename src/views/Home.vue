@@ -4,7 +4,9 @@
     <basic-tabs
       :items="items"
       :selectedTab="selectedTab"
+      :channelCondition="true"
       @select="setSelectedTab"
+      @warn="showAgreeModalSelectTab"
     ></basic-tabs>
     <the-form
       :selectedTab="selectedTab"
@@ -23,11 +25,20 @@
       v-if="isChannelInfoModalVisible"
       @close="hideChannelInfoModal"
     ></confirm-channel-info-modal>
+    <basic-modal
+      v-if="agreeModalSelectTab.is"
+      :title="agreeModalSelectTab.title"
+      :message="agreeModalSelectTab.message"
+      :confirm="agreeModalSelectTab.confirm"
+      :htmlMessage="agreeModalSelectTab.htmlMessage"
+      @close="agreeModalSelectTab.cancelHandler"
+      @confirm="agreeModalSelectTab.confirmHandler"
+    ></basic-modal>
   </basic-container>
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, ref } from 'vue';
+import { computed, defineComponent, reactive, ref } from 'vue';
 import TheHeader from '@/components/Home/TheHeader.vue';
 import TheForm from '@/components/Home/TheForm.vue';
 import useTabs from '@/hooks/useTabs';
@@ -36,6 +47,7 @@ import { useStore } from '@/store/index';
 import { ChannelBasic } from '@/types/Channel';
 import { useChannelActions } from '@/store/channel/actions';
 import ConfirmChannelInfoModal from '@/components/Modals/ConfirmChannelInfoModal.vue';
+import BasicModal from '@/components/Modals/BasicModal.vue';
 
 export default defineComponent({
   name: 'Home',
@@ -45,6 +57,7 @@ export default defineComponent({
     TheForm,
     ConfirmChannelModal,
     ConfirmChannelInfoModal,
+    BasicModal,
   },
 
   setup() {
@@ -93,6 +106,29 @@ export default defineComponent({
       () => store.getters['channel/getConfirmedChannel']
     );
 
+    const agreeModalSelectTab = reactive({
+      is: false,
+      title: 'Uwaga!',
+      message: `<p class="q-mb-xs">Czy na pewno chcesz zmienić kategorię wyszukiwania?</p>
+        <p>Utracisz wszystkie bieżące ustawienia.</p>`,
+      confirm: true,
+      htmlMessage: true,
+      confirmHandler: () => {
+        selectedTab.value = nextTab.value;
+        store.dispatch(channelActions.resetConfirmedChannel);
+        agreeModalSelectTab.is = false;
+      },
+      cancelHandler: () => {
+        agreeModalSelectTab.is = false;
+      },
+    });
+
+    const nextTab = ref<string>('');
+    const showAgreeModalSelectTab = (val: string) => {
+      agreeModalSelectTab.is = true;
+      nextTab.value = val;
+    };
+
     return {
       selectedTab,
       items,
@@ -105,6 +141,8 @@ export default defineComponent({
       isChannelInfoModalVisible,
       hideChannelInfoModal,
       confirmedChannel,
+      agreeModalSelectTab,
+      showAgreeModalSelectTab,
     };
   },
 });

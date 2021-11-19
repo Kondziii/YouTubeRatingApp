@@ -10,15 +10,23 @@
         <div class="text-h5">{{ title }}</div>
       </q-card-section>
 
-      <q-card-section class="q-pt-none">
+      <q-card-section v-if="!htmlMessage" class="q-pt-none">
         {{ message }}
+      </q-card-section>
+      <q-card-section v-else class="q-pt-none" v-html="message">
       </q-card-section>
 
       <q-card-actions align="right" class="q-mx-xs-sm q-mx-sm-md q-mb-sm">
         <q-btn v-if="!confirm" label="Rozumiem" color="red" v-close-popup />
         <div v-else>
-          <q-btn label="Nie" color="red" v-close-popup />
-          <q-btn label="Tak" color="red" v-close-popup @click="confirmEmit" />
+          <q-btn flat label="Nie" color="red" v-close-popup />
+          <q-btn
+            class="q-ml-sm"
+            label="Tak"
+            color="red"
+            v-close-popup
+            @click="confirmEmit"
+          />
         </div>
       </q-card-actions>
     </q-card>
@@ -30,10 +38,6 @@ import { defineComponent, ref, watch } from 'vue';
 
 export default defineComponent({
   props: {
-    is: {
-      type: Boolean,
-      default: false,
-    },
     title: {
       type: String,
       required: true,
@@ -47,15 +51,20 @@ export default defineComponent({
       default: false,
       required: false,
     },
+    htmlMessage: {
+      type: Boolean,
+      default: false,
+      required: false,
+    },
   },
 
   emits: ['close', 'confirm'],
 
-  setup(props, context) {
+  setup(_, context) {
     const isVisible = ref<boolean>(true);
 
     watch(isVisible, () => {
-      context.emit('close', !props.is);
+      context.emit('close');
     });
 
     const confirmEmit = () => {
@@ -75,5 +84,6 @@ export default defineComponent({
 
 .card {
   @include card($dark-2);
+  min-width: 300px;
 }
 </style>

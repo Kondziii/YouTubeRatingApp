@@ -18,11 +18,23 @@
           </div>
           <div class="row q-gutter-lg">
             <div class="flex column items-center">
-              <p class="highlight">{{ channel.statistics.subscriberCount }}</p>
+              <p class="highlight">
+                {{
+                  channel.statistics.subscriberCount
+                    ? channel.statistics.subscriberCount
+                    : 'brak'
+                }}
+              </p>
               <label>Subskrybenci</label>
             </div>
             <div class="flex column items-center">
-              <p class="highlight">{{ channel.statistics.videoCount }}</p>
+              <p class="highlight">
+                {{
+                  channel.statistics.videoCount
+                    ? channel.statistics.videoCount
+                    : 'brak'
+                }}
+              </p>
               <label>Filmiki</label>
             </div>
           </div>

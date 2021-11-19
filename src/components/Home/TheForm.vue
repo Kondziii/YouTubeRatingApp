@@ -1,13 +1,5 @@
 <template>
-  <basic-modal
-    :is="confirmModal.is"
-    :title="confirmModal.title"
-    :message="confirmModal.message"
-    :confirm="confirmModal.confirm"
-    @close="hideConfirmModal"
-    @confirm="moveToNextAction"
-  ></basic-modal>
-  <q-form @submit.prevent="onSubmit" @reset.prevent="onReset">
+  <q-form @submit="onSubmit" @reset="onReset">
     <q-card-section class="q-mx-sm-md q-mx-md-lg">
       <transition
         enter-active-class="animate__animated animate__slideInLeft"
@@ -34,6 +26,7 @@
             :label="inputLabel"
             :hint="inputHint"
             lazy-rules
+            :error="false"
             :rules="[
               (val) => (val && val.length > 0) || 'Pole nie może być puste!',
             ]"
@@ -231,11 +224,28 @@
       />
     </q-card-actions>
   </q-form>
+  <basic-modal
+    v-if="agreeModalEvaluate.is"
+    :title="agreeModalEvaluate.title"
+    :message="agreeModalEvaluate.message"
+    :confirm="agreeModalEvaluate.confirm"
+    @close="agreeModalEvaluate.cancelHandler"
+    @confirm="agreeModalEvaluate.confirmHandler"
+  ></basic-modal>
+  <basic-modal
+    v-if="agreeModalReset.is"
+    :title="agreeModalReset.title"
+    :message="agreeModalReset.message"
+    :confirm="agreeModalReset.confirm"
+    :htmlMessage="agreeModalReset.htmlMessage"
+    @close="agreeModalReset.cancelHandler"
+    @confirm="agreeModalReset.confirmHandler"
+  ></basic-modal>
 </template>
 
 <script lang="ts">
 import Evaluate from '@/types/Evaluate';
-import { computed, defineComponent, PropType } from 'vue';
+import { computed, defineComponent, PropType, reactive } from 'vue';
 import { ref } from 'vue';
 import { useStore } from '../../store/index';
 import useDateRules from '@/hooks/useDateRules';
@@ -243,6 +253,7 @@ import { useChannelActions } from '@/store/channel/actions';
 import { ChannelFullInfo } from '@/types/Channel';
 import ChannelListItem from '@/components/Channel/ChannelListItem.vue';
 import BasicModal from '../Modals/BasicModal.vue';
+import { useRouter } from 'vue-router';
 const COMMENTS_LIMIT = 10;
 const VIDEOS_LIMIT = 3;
 
@@ -266,8 +277,10 @@ export default defineComponent({
   emits: ['onSearch'],
 
   setup(props) {
+    const router = useRouter();
     const store = useStore();
     const channelActions = useChannelActions();
+
     const type = ref<string>('title');
     const options = [
       {
@@ -279,7 +292,6 @@ export default defineComponent({
         value: 'url',
       },
     ];
-
     const userInput = ref<string>('');
     const inputLabel = computed(() => {
       if (props.selectedTab === 'channels') {
@@ -309,7 +321,6 @@ export default defineComponent({
     const setIsAdvancedSettingsVisible = () => {
       isAdvancedSettingsVisible.value = !isAdvancedSettingsVisible.value;
     };
-
     const commentsLimit = ref<number>(COMMENTS_LIMIT);
     const videosLimit = ref<number>(VIDEOS_LIMIT);
     const useTime = ref<boolean>(false);
@@ -317,7 +328,6 @@ export default defineComponent({
     const { dateErr, beginDate, endDate, dateRules } = useDateRules();
 
     const searchLoading = ref<boolean>(false);
-
     const onSearch = async () => {
       searchLoading.value = true;
       if (userInput.value !== '') {
@@ -339,19 +349,23 @@ export default defineComponent({
       searchLoading.value = false;
     };
 
-    const openDetails = () => {
-      store.dispatch(channelActions.toggleInfoModal, true);
-    };
+    const agreeModalReset = reactive({
+      is: false,
+      title: 'Uwaga!',
+      message: `<p class="q-mb-xs">Czy na pewno chcesz zresetować formularz?</p>
+        <p>Utracisz wszystkie bieżace ustawienia.</p> `,
+      confirm: true,
+      htmlMessage: true,
+      confirmHandler: () => {
+        resetForm();
+        agreeModalReset.is = false;
+      },
+      cancelHandler: () => {
+        agreeModalReset.is = false;
+      },
+    });
 
-    const resetConfirmedChannel = () => {
-      onReset();
-    };
-
-    const showChannelModal = () => {
-      store.dispatch(channelActions.toggleModal, true);
-    };
-
-    const onReset = () => {
+    const resetForm = () => {
       commentsLimit.value = COMMENTS_LIMIT;
       useTime.value = false;
       useSubComments.value = true;
@@ -362,10 +376,36 @@ export default defineComponent({
       store.dispatch(channelActions.resetConfirmedChannel);
     };
 
+    const onReset = () => {
+      agreeModalReset.is = true;
+    };
+
     const confirmedChannel = computed(() => {
       return store.getters['channel/getConfirmedChannel'];
     });
+    const openDetails = () => {
+      store.dispatch(channelActions.toggleInfoModal, true);
+    };
+    const resetConfirmedChannel = () => {
+      onReset();
+    };
+    const showChannelModal = () => {
+      store.dispatch(channelActions.toggleModal, true);
+    };
     const evaluateLoading = ref<boolean>(false);
+    const agreeModalEvaluate = reactive({
+      is: false,
+      title: 'Uwaga!',
+      message: 'Czy na pewno chcesz przejść do procesu oceniania?',
+      confirm: true,
+      confirmHandler: () => {
+        router.push(`/evaluate/${confirmedChannel.value.id}`);
+        agreeModalEvaluate.is = false;
+      },
+      cancelHandler: () => {
+        agreeModalEvaluate.is = false;
+      },
+    });
 
     const onSubmit = async () => {
       evaluateLoading.value = true;
@@ -383,6 +423,8 @@ export default defineComponent({
                 userInput.value
               );
             }
+          } else {
+            agreeModalEvaluate.is = true;
           }
         } else {
           console.log('siema');
@@ -415,6 +457,8 @@ export default defineComponent({
       resetConfirmedChannel,
       showChannelModal,
       evaluateLoading,
+      agreeModalEvaluate,
+      agreeModalReset,
     };
   },
 });

@@ -85,7 +85,6 @@ export default defineComponent({
     );
 
     const select = () => {
-      console.log('siema');
       if (props.model === 'formItem') {
         context.emit('showChannelList');
       } else {

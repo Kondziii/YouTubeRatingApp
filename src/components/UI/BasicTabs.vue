@@ -13,14 +13,15 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, PropType, ref, watch } from 'vue';
+import { computed, defineComponent, PropType } from 'vue';
 import Tab from '@/types/Tab';
 import Evaluate from '@/types/Evaluate';
+import { useStore } from '@/store/index';
 
 export default defineComponent({
   name: 'BasicTabs',
 
-  emits: ['select'],
+  emits: ['select', 'warn'],
 
   props: {
     items: {
@@ -31,13 +32,34 @@ export default defineComponent({
       type: String as PropType<Evaluate>,
       required: true,
     },
+    channelCondition: {
+      type: Boolean,
+      required: false,
+      deafult: false,
+    },
   },
 
   setup(props, context) {
-    const currTab = ref<string>(props.selectedTab);
+    const store = useStore();
 
-    watch(currTab, (currVal) => {
-      context.emit('select', currVal);
+    const currTab = computed({
+      get() {
+        return props.selectedTab;
+      },
+      set(val: string) {
+        if (props.channelCondition) {
+          const confirmed = computed<boolean>(
+            () => store.getters['channel/getIfConfirmed']
+          );
+          if (confirmed.value) {
+            context.emit('warn', val);
+          } else {
+            context.emit('select', val);
+          }
+        } else {
+          context.emit('select', val);
+        }
+      },
     });
 
     return {

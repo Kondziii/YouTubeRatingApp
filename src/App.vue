@@ -24,7 +24,7 @@ import { computed, defineComponent } from 'vue';
 import TheFooter from '@/components/TheFooter.vue';
 import { useStore } from '@/store/index';
 import BasicModal from '@/components/Modals/BasicModal.vue';
-import { useErrorActions } from './store/error/actions';
+import { useErrorActions } from '@/store/error/actions';
 
 export default defineComponent({
   components: {
