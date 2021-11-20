@@ -11,7 +11,7 @@
     <the-form
       :selectedTab="selectedTab"
       :key="selectedTab"
-      :confirmed="confirmedChannel"
+      :confirmed="confirmedChannel || confirmedVideo"
     ></the-form>
     <confirm-channel-modal
       v-if="isChannelModalVisible"
@@ -31,6 +31,7 @@
       v-model:selectedItemId="selectedVideoId"
       @cancel="hideVideosModal"
       @confirm="confirmVideosModal"
+      :confirmed="confirmedVideo?.id"
     ></confirm-video-modal>
     <basic-modal
       v-if="agreeModalSelectTab.is"
@@ -56,7 +57,7 @@ import { useChannelActions } from '@/store/channel/actions';
 import ConfirmChannelInfoModal from '@/components/Modals/ConfirmChannelInfoModal.vue';
 import BasicModal from '@/components/Modals/BasicModal.vue';
 import ConfirmVideoModal from '@/components/Modals/ConfirmVideoModal.vue';
-import Video from '@/types/Video';
+import Video, { VideoFullInfo } from '@/types/Video';
 import { useVideoActions } from '@/store/video/actions';
 
 export default defineComponent({
@@ -117,11 +118,14 @@ export default defineComponent({
     };
     const confirmVideosModal = () => {
       store.dispatch(videoActions.toggleModal, false);
-      // store.dispatch(
-      //   channelActions.fetchFullInfoAboutChannel,
-      //   selectedChannelId.value
-      // );
+      store.dispatch(
+        videoActions.fetchFullInfoAboutVideo,
+        selectedVideoId.value
+      );
     };
+    const confirmedVideo = computed<VideoFullInfo>(
+      () => store.getters['video/getConfirmedVideo']
+    );
 
     //Info modals
     const isChannelInfoModalVisible = computed<boolean>(() => {
@@ -177,6 +181,7 @@ export default defineComponent({
       selectedVideoId,
       hideVideosModal,
       confirmVideosModal,
+      confirmedVideo,
     };
   },
 });

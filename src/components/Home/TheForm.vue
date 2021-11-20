@@ -47,15 +47,16 @@
           </div>
         </div>
         <div v-else>
-          <channel-list-item
+          <the-list-item
             :img="confirmed.snippet.thumbnails.default.url"
             :title="confirmed.snippet.title"
             :id="confirmed.id"
             model="formItem"
+            :type="selectedTab"
             @openDetails="openDetails"
-            @reset="resetConfirmedChannel"
-            @showChannelList="showChannelModal"
-          ></channel-list-item>
+            @reset="resetConfirmed"
+            @showList="showChannelModal"
+          ></the-list-item>
           <div
             class="advanced-settings-btn"
             @click="setIsAdvancedSettingsVisible"
@@ -251,17 +252,18 @@ import { useStore } from '../../store/index';
 import useDateRules from '@/hooks/useDateRules';
 import { useChannelActions } from '@/store/channel/actions';
 import { ChannelFullInfo } from '@/types/Channel';
-import ChannelListItem from '@/components/Channel/ChannelListItem.vue';
+import TheListItem from '@/components/TheListItem.vue';
 import BasicModal from '../Modals/BasicModal.vue';
 import { useRouter } from 'vue-router';
 import { useVideoActions } from '@/store/video/actions';
+import { VideoFullInfo } from '@/types/Video';
 const COMMENTS_LIMIT = 10;
 const VIDEOS_LIMIT = 3;
 
 export default defineComponent({
   name: 'TheForm',
 
-  components: { ChannelListItem, BasicModal },
+  components: { TheListItem, BasicModal },
 
   props: {
     selectedTab: {
@@ -270,7 +272,7 @@ export default defineComponent({
     },
 
     confirmed: {
-      type: Object as PropType<ChannelFullInfo>,
+      type: Object as PropType<ChannelFullInfo | VideoFullInfo>,
       required: false,
     },
   },
@@ -385,7 +387,9 @@ export default defineComponent({
       endDate.value = '';
       userInput.value = '';
       isAdvancedSettingsVisible.value = false;
-      store.dispatch(channelActions.resetConfirmedChannel);
+      confirmedChannel.value
+        ? store.dispatch(channelActions.resetConfirmedChannel)
+        : store.dispatch(videoActions.resetConfirmedVideo);
     };
 
     const onReset = () => {
@@ -398,7 +402,7 @@ export default defineComponent({
     const openDetails = () => {
       store.dispatch(channelActions.toggleInfoModal, true);
     };
-    const resetConfirmedChannel = () => {
+    const resetConfirmed = () => {
       onReset();
     };
     const showChannelModal = () => {
@@ -466,7 +470,7 @@ export default defineComponent({
       onSearch,
       searchLoading,
       openDetails,
-      resetConfirmedChannel,
+      resetConfirmed,
       showChannelModal,
       evaluateLoading,
       agreeModalEvaluate,

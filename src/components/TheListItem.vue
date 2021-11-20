@@ -1,12 +1,12 @@
 <template>
-  <div :class="itemClasses" @click="select">
+  <div :class="itemClasses" @click="select" class="q-my-xs">
     <div class="col-8 flex items-center justify-start no-wrap">
       <q-avatar class="avatar">
         <q-img :src="img" />
       </q-avatar>
       <p>{{ title }}</p>
     </div>
-    <div class="col-4">
+    <div class="col-4 flex justify-center items-center">
       <a
         v-if="model === ''"
         :href="urlLink"
@@ -75,18 +75,27 @@ export default defineComponent({
       required: false,
       default: '',
     },
+
+    type: {
+      //channel or video
+      type: String,
+      required: true,
+    },
   },
 
-  emits: ['onClick', 'openDetails', 'reset', 'showChannelList'],
+  emits: ['onClick', 'openDetails', 'reset', 'showList'],
 
   setup(props, context) {
-    const urlLink = computed(
-      () => `https://www.youtube.com/channel/${props.id}`
-    );
+    const urlLink = computed(() => {
+      if (props.type === 'channels') {
+        return `https://www.youtube.com/channel/${props.id}`;
+      }
+      return '';
+    });
 
     const select = () => {
       if (props.model === 'formItem') {
-        context.emit('showChannelList');
+        context.emit('showList');
       } else {
         context.emit('onClick', props.id);
       }
@@ -181,10 +190,6 @@ p {
       content: 'Zobacz w' !important;
       margin-right: 5px;
     }
-  }
-
-  .avatar {
-    width: 50px;
   }
 }
 </style>

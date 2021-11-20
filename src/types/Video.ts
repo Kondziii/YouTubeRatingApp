@@ -53,4 +53,16 @@ type Video = {
   };
 };
 
+type VideoStatistics = {
+  viewCount: number;
+  likeCount: number;
+  dislikeCount: number;
+  favoriteCount: number;
+  commentCount: number;
+};
+
+type VideoFullInfo = Video & VideoStatistics;
+
 export default Video;
+
+export { VideoFullInfo };

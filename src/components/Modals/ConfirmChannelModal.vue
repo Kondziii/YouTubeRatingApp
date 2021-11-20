@@ -1,15 +1,16 @@
 <template>
   <confirm-modal-basic>
     <template #items>
-      <channel-list-item
+      <the-list-item
         v-for="channel in channels"
+        type="channels"
         :key="channel.id.channelId"
         :img="channel.snippet.thumbnails.default.url"
         :title="channel.snippet.title"
         :id="channel.id?.channelId || channel.id"
         :selected="isChannelSelected(channel.id?.channelId || channel.id)"
         @onClick="selectChannel"
-      ></channel-list-item>
+      ></the-list-item>
     </template>
   </confirm-modal-basic>
 </template>
@@ -17,14 +18,14 @@
 <script lang="ts">
 import { ChannelBasic } from '@/types/Channel';
 import { defineComponent, onBeforeMount, PropType } from 'vue';
-import ChannelListItem from '@/components/Channel/ChannelListItem.vue';
+import TheListItem from '@/components/TheListItem.vue';
 import ConfirmModalBasic from '@/components/Modals/ConfirmModalBasic.vue';
 
 export default defineComponent({
   name: 'ConfirmChannelModal',
 
   components: {
-    ChannelListItem,
+    TheListItem,
     ConfirmModalBasic,
   },
 

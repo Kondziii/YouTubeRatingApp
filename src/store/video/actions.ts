@@ -10,6 +10,8 @@ const videoActions = {
   fetchSimilarVideosByTitle: 'fetchSimilarVideosByTitle',
   fetchSimilarVideosByUrl: 'fetchSimilarVideosByUrl',
   toggleModal: 'toggleModal',
+  fetchFullInfoAboutVideo: 'fetchFullInfoAboutVideo',
+  resetConfirmedVideo: 'resetConfirmedVideo',
 };
 
 export const useVideoActions = (): typeof videoActions => {
@@ -47,5 +49,19 @@ export default {
 
   [videoActions.toggleModal]({ commit }, payload: boolean) {
     commit(VideoMutations.SET_MODAL_STATE, payload);
+  },
+
+  async [videoActions.fetchFullInfoAboutVideo]({ commit }, payload: string) {
+    try {
+      const video = await youtube.getVideoInfoById(payload);
+      commit(VideoMutations.SET_CONFIRMED_VIDEO, video);
+      console.log(video);
+    } catch (error) {
+      console.log(error);
+    }
+  },
+
+  [videoActions.resetConfirmedVideo]({ commit }) {
+    commit(VideoMutations.SET_CONFIRMED_VIDEO, null);
   },
 } as ActionTree<VideoState, RootState>;

@@ -3,7 +3,7 @@ import { ChannelBasic, ChannelFullInfo } from '@/types/Channel';
 import axios from 'axios';
 import Exception from '@/others/exception';
 import Channel_url from '@/enums/Channel_url';
-import Video from '@/types/Video';
+import Video, { VideoFullInfo } from '@/types/Video';
 import CommentThread from '@/types/CommentThread';
 
 const extractChannelIdFromUrl = (url: string): string => {
@@ -176,7 +176,7 @@ export default {
     return response.data.items;
   },
 
-  getVideoInfoById: async (videoId: string): Promise<Video[]> => {
+  getVideoInfoById: async (videoId: string): Promise<VideoFullInfo> => {
     const response = await axios.get(`${URL_YOUTUBE_API}/videos`, {
       params: {
         key: KEY,
@@ -188,6 +188,6 @@ export default {
     if (!response || response.data.items.length === 0) {
       throw new Exception('The video has not be found!', 404);
     }
-    return response.data.items;
+    return response.data.items[0];
   },
 };
