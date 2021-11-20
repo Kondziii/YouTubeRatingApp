@@ -9,6 +9,7 @@ const videoModule: Module<VideoState, RootState> = {
   namespaced: true,
   state: () => ({
     videos: [],
+    isModalVisible: false,
   }),
   mutations: mutations,
   actions: actions,

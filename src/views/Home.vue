@@ -25,6 +25,13 @@
       v-if="isChannelInfoModalVisible"
       @close="hideChannelInfoModal"
     ></confirm-channel-info-modal>
+    <confirm-video-modal
+      v-if="isVideoModalVisible"
+      :videos="videos"
+      v-model:selectedItemId="selectedVideoId"
+      @cancel="hideVideosModal"
+      @confirm="confirmVideosModal"
+    ></confirm-video-modal>
     <basic-modal
       v-if="agreeModalSelectTab.is"
       :title="agreeModalSelectTab.title"
@@ -48,6 +55,9 @@ import { ChannelBasic } from '@/types/Channel';
 import { useChannelActions } from '@/store/channel/actions';
 import ConfirmChannelInfoModal from '@/components/Modals/ConfirmChannelInfoModal.vue';
 import BasicModal from '@/components/Modals/BasicModal.vue';
+import ConfirmVideoModal from '@/components/Modals/ConfirmVideoModal.vue';
+import Video from '@/types/Video';
+import { useVideoActions } from '@/store/video/actions';
 
 export default defineComponent({
   name: 'Home',
@@ -58,6 +68,7 @@ export default defineComponent({
     ConfirmChannelModal,
     ConfirmChannelInfoModal,
     BasicModal,
+    ConfirmVideoModal,
   },
 
   setup() {
@@ -74,6 +85,7 @@ export default defineComponent({
 
     const store = useStore();
     const channelActions = useChannelActions();
+    const videoActions = useVideoActions();
 
     // Channel confirm
     const isChannelModalVisible = computed<boolean>(
@@ -92,6 +104,23 @@ export default defineComponent({
         channelActions.fetchFullInfoAboutChannel,
         selectedChannelId.value
       );
+    };
+
+    // Video confirm
+    const isVideoModalVisible = computed<boolean>(
+      () => store.getters['video/getModalState']
+    );
+    const videos = computed<Video[]>(() => store.getters['video/getVideos']);
+    const selectedVideoId = ref<string>('');
+    const hideVideosModal = () => {
+      store.dispatch(videoActions.toggleModal, false);
+    };
+    const confirmVideosModal = () => {
+      store.dispatch(videoActions.toggleModal, false);
+      // store.dispatch(
+      //   channelActions.fetchFullInfoAboutChannel,
+      //   selectedChannelId.value
+      // );
     };
 
     //Info modals
@@ -143,6 +172,11 @@ export default defineComponent({
       confirmedChannel,
       agreeModalSelectTab,
       showAgreeModalSelectTab,
+      isVideoModalVisible,
+      videos,
+      selectedVideoId,
+      hideVideosModal,
+      confirmVideosModal,
     };
   },
 });

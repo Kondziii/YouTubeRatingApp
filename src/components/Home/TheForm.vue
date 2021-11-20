@@ -254,6 +254,7 @@ import { ChannelFullInfo } from '@/types/Channel';
 import ChannelListItem from '@/components/Channel/ChannelListItem.vue';
 import BasicModal from '../Modals/BasicModal.vue';
 import { useRouter } from 'vue-router';
+import { useVideoActions } from '@/store/video/actions';
 const COMMENTS_LIMIT = 10;
 const VIDEOS_LIMIT = 3;
 
@@ -280,6 +281,7 @@ export default defineComponent({
     const router = useRouter();
     const store = useStore();
     const channelActions = useChannelActions();
+    const videoActions = useVideoActions();
 
     const type = ref<string>('title');
     const options = [
@@ -343,7 +345,17 @@ export default defineComponent({
               userInput.value
             );
         } else {
-          console.log('video');
+          if (type.value === 'title') {
+            await store.dispatch(
+              videoActions.fetchSimilarVideosByTitle,
+              userInput.value
+            );
+          } else {
+            await store.dispatch(
+              videoActions.fetchSimilarVideosByUrl,
+              userInput.value
+            );
+          }
         }
       }
       searchLoading.value = false;
@@ -427,7 +439,7 @@ export default defineComponent({
             agreeModalEvaluate.is = true;
           }
         } else {
-          console.log('siema');
+          console.log('viedo');
         }
       }
       evaluateLoading.value = false;
