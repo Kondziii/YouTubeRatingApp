@@ -89,6 +89,8 @@ export default defineComponent({
     const urlLink = computed(() => {
       if (props.type === 'channels') {
         return `https://www.youtube.com/channel/${props.id}`;
+      } else if (props.type === 'videos') {
+        return `https://www.youtube.com/watch?v=${props.id}`;
       }
       return '';
     });
@@ -175,8 +177,9 @@ p {
 }
 
 .avatar {
-  width: 60px;
+  width: 70px;
   height: auto;
+  object-fit: cover;
 }
 
 //////////////////props class

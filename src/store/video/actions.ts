@@ -11,6 +11,7 @@ const videoActions = {
   fetchSimilarVideosByUrl: 'fetchSimilarVideosByUrl',
   toggleModal: 'toggleModal',
   fetchFullInfoAboutVideo: 'fetchFullInfoAboutVideo',
+  toggleInfoModal: 'toggleInfoModal',
   resetConfirmedVideo: 'resetConfirmedVideo',
 };
 
@@ -27,7 +28,6 @@ export default {
       const videos = await youtube.getVideosByTitle(payload);
       commit(VideoMutations.SET_VIDEOS, videos);
       dispatch(videoActions.toggleModal, true);
-      console.log(videos);
     } catch (error) {
       console.log(error);
     }
@@ -41,7 +41,6 @@ export default {
       const videos = await youtube.getVideosByUrl(payload);
       commit(VideoMutations.SET_VIDEOS, videos);
       dispatch(videoActions.toggleModal, true);
-      console.log(videos);
     } catch (error) {
       console.log(error);
     }
@@ -51,11 +50,17 @@ export default {
     commit(VideoMutations.SET_MODAL_STATE, payload);
   },
 
-  async [videoActions.fetchFullInfoAboutVideo]({ commit }, payload: string) {
+  async [videoActions.fetchFullInfoAboutVideo](
+    { commit, dispatch },
+    payload: string
+  ) {
     try {
       const video = await youtube.getVideoInfoById(payload);
       commit(VideoMutations.SET_CONFIRMED_VIDEO, video);
       console.log(video);
+      setTimeout(() => {
+        dispatch(videoActions.toggleInfoModal, true);
+      }, 300);
     } catch (error) {
       console.log(error);
     }
@@ -63,5 +68,9 @@ export default {
 
   [videoActions.resetConfirmedVideo]({ commit }) {
     commit(VideoMutations.SET_CONFIRMED_VIDEO, null);
+  },
+
+  [videoActions.toggleInfoModal]({ commit }, payload: boolean) {
+    commit(VideoMutations.SET_INFO_MODAL_STATE, payload);
   },
 } as ActionTree<VideoState, RootState>;

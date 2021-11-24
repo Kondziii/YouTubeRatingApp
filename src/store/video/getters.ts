@@ -15,4 +15,8 @@ export default {
   getConfirmedVideo(state): VideoFullInfo | null {
     return state.confirmedVideo;
   },
+
+  getInfoModalState(state): boolean {
+    return state.isInfoModalVisible;
+  },
 } as GetterTree<VideoState, RootState>;

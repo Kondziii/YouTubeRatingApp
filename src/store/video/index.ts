@@ -11,6 +11,7 @@ const videoModule: Module<VideoState, RootState> = {
     videos: [],
     isModalVisible: false,
     confirmedVideo: null,
+    isInfoModalVisible: false,
   }),
   mutations: mutations,
   actions: actions,

@@ -16,6 +16,8 @@ $negative: #c10015;
 $info: #31ccec;
 $warning: #f2c037;
 
+@import '~quasar-variables-styl';
+
 @mixin card($backgroundColor) {
   background: $backgroundColor;
   border-radius: 15px;
@@ -45,5 +47,3 @@ $warning: #f2c037;
 @mixin list {
   font-size: 0.9rem !important;
 }
-
-@import '~quasar-variables-styl';

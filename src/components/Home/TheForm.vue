@@ -55,7 +55,7 @@
             :type="selectedTab"
             @openDetails="openDetails"
             @reset="resetConfirmed"
-            @showList="showChannelModal"
+            @showList="showConfirmModal"
           ></the-list-item>
           <div
             class="advanced-settings-btn"
@@ -400,13 +400,19 @@ export default defineComponent({
       return store.getters['channel/getConfirmedChannel'];
     });
     const openDetails = () => {
-      store.dispatch(channelActions.toggleInfoModal, true);
+      props.selectedTab === 'channels'
+        ? store.dispatch(channelActions.toggleInfoModal, true)
+        : store.dispatch(videoActions.toggleInfoModal, true);
     };
     const resetConfirmed = () => {
       onReset();
     };
-    const showChannelModal = () => {
-      store.dispatch(channelActions.toggleModal, true);
+    const showConfirmModal = () => {
+      if (props.selectedTab === 'channels') {
+        store.dispatch(channelActions.toggleModal, true);
+      } else {
+        store.dispatch(videoActions.toggleModal, true);
+      }
     };
     const evaluateLoading = ref<boolean>(false);
     const agreeModalEvaluate = reactive({
@@ -471,7 +477,7 @@ export default defineComponent({
       searchLoading,
       openDetails,
       resetConfirmed,
-      showChannelModal,
+      showConfirmModal,
       evaluateLoading,
       agreeModalEvaluate,
       agreeModalReset,
@@ -527,7 +533,7 @@ export default defineComponent({
   justify-content: center;
   align-items: center;
   flex-direction: column;
-  margin: auto;
+  margin: 3% auto 1%;
   color: $red;
   cursor: pointer;
   width: fit-content;

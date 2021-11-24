@@ -33,6 +33,11 @@
       @confirm="confirmVideosModal"
       :confirmed="confirmedVideo?.id"
     ></confirm-video-modal>
+    <confirm-video-info-modal
+      v-if="isVideoInfoModalVisible"
+      @close="hideVideoInfoModal"
+    >
+    </confirm-video-info-modal>
     <basic-modal
       v-if="agreeModalSelectTab.is"
       :title="agreeModalSelectTab.title"
@@ -59,6 +64,7 @@ import BasicModal from '@/components/Modals/BasicModal.vue';
 import ConfirmVideoModal from '@/components/Modals/ConfirmVideoModal.vue';
 import Video, { VideoFullInfo } from '@/types/Video';
 import { useVideoActions } from '@/store/video/actions';
+import ConfirmVideoInfoModal from '@/components/Modals/ConfirmVideoInfoModal.vue';
 
 export default defineComponent({
   name: 'Home',
@@ -70,6 +76,7 @@ export default defineComponent({
     ConfirmChannelInfoModal,
     BasicModal,
     ConfirmVideoModal,
+    ConfirmVideoInfoModal,
   },
 
   setup() {
@@ -139,6 +146,14 @@ export default defineComponent({
       () => store.getters['channel/getConfirmedChannel']
     );
 
+    //video info modals
+    const isVideoInfoModalVisible = computed<boolean>(
+      () => store.getters['video/getInfoModalState']
+    );
+    const hideVideoInfoModal = () => {
+      store.dispatch(videoActions.toggleInfoModal, false);
+    };
+
     const agreeModalSelectTab = reactive({
       is: false,
       title: 'Uwaga!',
@@ -182,6 +197,8 @@ export default defineComponent({
       hideVideosModal,
       confirmVideosModal,
       confirmedVideo,
+      isVideoInfoModalVisible,
+      hideVideoInfoModal,
     };
   },
 });
