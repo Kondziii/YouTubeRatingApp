@@ -4,7 +4,7 @@
     <basic-tabs
       :items="items"
       :selectedTab="selectedTab"
-      :channelCondition="true"
+      :condition="confirmedChannel || confirmedVideo"
       @select="setSelectedTab"
       @warn="showAgreeModalSelectTab"
     ></basic-tabs>
@@ -134,7 +134,7 @@ export default defineComponent({
       () => store.getters['video/getConfirmedVideo']
     );
 
-    //Info modals
+    //channel info modal
     const isChannelInfoModalVisible = computed<boolean>(() => {
       return store.getters['channel/getInfoModalState'];
     });
@@ -146,7 +146,7 @@ export default defineComponent({
       () => store.getters['channel/getConfirmedChannel']
     );
 
-    //video info modals
+    //video info modal
     const isVideoInfoModalVisible = computed<boolean>(
       () => store.getters['video/getInfoModalState']
     );
@@ -154,6 +154,7 @@ export default defineComponent({
       store.dispatch(videoActions.toggleInfoModal, false);
     };
 
+    //changing tab when confirmed video or channel modal
     const agreeModalSelectTab = reactive({
       is: false,
       title: 'Uwaga!',
@@ -162,8 +163,10 @@ export default defineComponent({
       confirm: true,
       htmlMessage: true,
       confirmHandler: () => {
+        selectedTab.value === 'channels'
+          ? store.dispatch(channelActions.resetConfirmedChannel)
+          : store.dispatch(videoActions.resetConfirmedVideo);
         selectedTab.value = nextTab.value;
-        store.dispatch(channelActions.resetConfirmedChannel);
         agreeModalSelectTab.is = false;
       },
       cancelHandler: () => {

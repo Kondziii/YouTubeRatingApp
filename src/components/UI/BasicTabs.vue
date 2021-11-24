@@ -16,7 +16,6 @@
 import { computed, defineComponent, PropType } from 'vue';
 import Tab from '@/types/Tab';
 import Evaluate from '@/types/Evaluate';
-import { useStore } from '@/store/index';
 
 export default defineComponent({
   name: 'BasicTabs',
@@ -32,7 +31,7 @@ export default defineComponent({
       type: String as PropType<Evaluate>,
       required: true,
     },
-    channelCondition: {
+    condition: {
       type: Boolean,
       required: false,
       deafult: false,
@@ -40,22 +39,13 @@ export default defineComponent({
   },
 
   setup(props, context) {
-    const store = useStore();
-
     const currTab = computed({
       get() {
         return props.selectedTab;
       },
       set(val: string) {
-        if (props.channelCondition) {
-          const confirmed = computed<boolean>(
-            () => store.getters['channel/getIfConfirmed']
-          );
-          if (confirmed.value) {
-            context.emit('warn', val);
-          } else {
-            context.emit('select', val);
-          }
+        if (props.condition) {
+          context.emit('warn', val);
         } else {
           context.emit('select', val);
         }

@@ -177,7 +177,7 @@ p {
 }
 
 .avatar {
-  width: 70px;
+  width: 60px;
   height: auto;
   object-fit: cover;
 }
