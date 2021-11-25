@@ -47,16 +47,24 @@
           </div>
         </div>
         <div v-else>
-          <the-list-item
-            :img="confirmed.snippet.thumbnails.default.url"
-            :title="confirmed.snippet.title"
-            :id="confirmed.id"
-            model="formItem"
-            :type="selectedTab"
-            @openDetails="openDetails"
-            @reset="resetConfirmed"
-            @showList="showConfirmModal"
-          ></the-list-item>
+          <transition
+            enter-active-class="animate__animated animate__slideInLeft"
+            leave-active-class="animate__animated animate__slideOutRight"
+            appear
+            mode="out-in"
+          >
+            <the-list-item
+              :img="confirmed.snippet.thumbnails.default.url"
+              :title="confirmed.snippet.title"
+              :id="confirmed.id"
+              :key="confirmed.id"
+              model="formItem"
+              :type="selectedTab"
+              @openDetails="openDetails"
+              @reset="resetConfirmed"
+              @showList="showConfirmModal"
+            ></the-list-item>
+          </transition>
           <div
             class="advanced-settings-btn"
             @click="setIsAdvancedSettingsVisible"
@@ -272,10 +280,10 @@ export default defineComponent({
       required: true,
     },
 
-    // confirmed: {
-    //   type: Object as PropType<ChannelFullInfo | VideoFullInfo>,
-    //   required: false,
-    // },
+    confirmed: {
+      type: Object as PropType<ChannelFullInfo | VideoFullInfo>,
+      required: false,
+    },
   },
 
   setup(props) {
