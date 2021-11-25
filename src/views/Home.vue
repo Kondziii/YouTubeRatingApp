@@ -4,7 +4,7 @@
     <basic-tabs
       :items="items"
       :selectedTab="selectedTab"
-      :condition="confirmedChannel || confirmedVideo"
+      :condition="!!confirmedChannel || !!confirmedVideo"
       @select="setSelectedTab"
       @warn="showAgreeModalSelectTab"
     ></basic-tabs>
@@ -14,28 +14,28 @@
       :confirmed="confirmedChannel || confirmedVideo"
     ></the-form>
     <confirm-channel-modal
-      v-if="isChannelModalVisible"
-      :channels="channels"
-      @cancel="hideChannelsModal"
-      @confirm="confirmChannelsModal"
-      v-model:selectedItemId="selectedChannelId"
+      v-if="channelConfirmModal.isVisible.value"
+      :channels="channelConfirmModal.items.value"
+      @cancel="channelConfirmModal.hideModal"
+      @confirm="channelConfirmModal.confirmModal"
+      v-model:selectedItemId="channelConfirmModal.selectedItemId.value"
       :confirmed="confirmedChannel?.id"
     ></confirm-channel-modal>
     <confirm-channel-info-modal
-      v-if="isChannelInfoModalVisible"
-      @close="hideChannelInfoModal"
+      v-if="channelInfoModal.isVisible.value"
+      @close="channelInfoModal.hideModal"
     ></confirm-channel-info-modal>
     <confirm-video-modal
-      v-if="isVideoModalVisible"
-      :videos="videos"
-      v-model:selectedItemId="selectedVideoId"
-      @cancel="hideVideosModal"
-      @confirm="confirmVideosModal"
+      v-if="videoConfirmModal.isVisible.value"
+      :videos="videoConfirmModal.items.value"
+      v-model:selectedItemId="videoConfirmModal.selectedItemId.value"
+      @cancel="videoConfirmModal.hideModal"
+      @confirm="videoConfirmModal.confirmModal"
       :confirmed="confirmedVideo?.id"
     ></confirm-video-modal>
     <confirm-video-info-modal
-      v-if="isVideoInfoModalVisible"
-      @close="hideVideoInfoModal"
+      v-if="videoInfoModal.isVisible.value"
+      @close="videoInfoModal.hideModal"
     >
     </confirm-video-info-modal>
     <basic-modal
@@ -65,6 +65,8 @@ import ConfirmVideoModal from '@/components/Modals/ConfirmVideoModal.vue';
 import Video, { VideoFullInfo } from '@/types/Video';
 import { useVideoActions } from '@/store/video/actions';
 import ConfirmVideoInfoModal from '@/components/Modals/ConfirmVideoInfoModal.vue';
+import useConfirmModal from '@/hooks/useConfirmModal';
+import useInfoModal from '@/hooks/useInfoModal';
 
 export default defineComponent({
   name: 'Home',
@@ -95,58 +97,50 @@ export default defineComponent({
     const channelActions = useChannelActions();
     const videoActions = useVideoActions();
 
-    // Channel confirm
-    const isChannelModalVisible = computed<boolean>(
-      () => store.getters['channel/getModalState']
-    );
-    const channels = computed<ChannelBasic[]>(
-      () => store.getters['channel/getChannels']
-    );
-    const selectedChannelId = ref<string>('');
-    const hideChannelsModal = () => {
-      store.dispatch(channelActions.toggleModal, false);
-    };
-    const confirmChannelsModal = () => {
-      store.dispatch(channelActions.toggleModal, false);
-      store.dispatch(channelActions.fetchFullInfo, selectedChannelId.value);
+    const getters = {
+      channels: {
+        isVisible: 'channel/getModalState',
+        items: 'channel/getChannels',
+      },
+      videos: {
+        isVisible: 'video/getModalState',
+        items: 'video/getVideos',
+      },
     };
 
-    // Video confirm
-    const isVideoModalVisible = computed<boolean>(
-      () => store.getters['video/getModalState']
+    //confirm modals
+    const channelConfirmModal = useConfirmModal<ChannelBasic>(
+      channelActions,
+      getters.channels
     );
-    const videos = computed<Video[]>(() => store.getters['video/getVideos']);
-    const selectedVideoId = ref<string>('');
-    const hideVideosModal = () => {
-      store.dispatch(videoActions.toggleModal, false);
-    };
-    const confirmVideosModal = () => {
-      store.dispatch(videoActions.toggleModal, false);
-      store.dispatch(videoActions.fetchFullInfo, selectedVideoId.value);
-    };
+
+    const videoConfirmModal = useConfirmModal<Video>(
+      videoActions,
+      getters.videos
+    );
+
+    //confirmed getters
     const confirmedVideo = computed<VideoFullInfo>(
       () => store.getters['video/getConfirmedVideo']
     );
-
-    //channel info modal
-    const isChannelInfoModalVisible = computed<boolean>(() => {
-      return store.getters['channel/getInfoModalState'];
-    });
-    const hideChannelInfoModal = () => {
-      store.dispatch(channelActions.toggleInfoModal, false);
-    };
 
     const confirmedChannel = computed(
       () => store.getters['channel/getConfirmedChannel']
     );
 
-    //video info modal
-    const isVideoInfoModalVisible = computed<boolean>(
-      () => store.getters['video/getInfoModalState']
-    );
-    const hideVideoInfoModal = () => {
-      store.dispatch(videoActions.toggleInfoModal, false);
+    //channel info modal
+    const infoGetters = {
+      channels: {
+        isVisible: 'channel/getInfoModalState',
+      },
+      videos: {
+        isVisible: 'video/getInfoModalState',
+      },
     };
+
+    const channelInfoModal = useInfoModal(channelActions, infoGetters.channels);
+
+    const videoInfoModal = useInfoModal(videoActions, infoGetters.videos);
 
     //changing tab when confirmed video or channel modal
     const agreeModalSelectTab = reactive({
@@ -178,24 +172,14 @@ export default defineComponent({
       selectedTab,
       items,
       setSelectedTab,
-      isChannelModalVisible,
-      channels,
-      hideChannelsModal,
-      confirmChannelsModal,
-      selectedChannelId,
-      isChannelInfoModalVisible,
-      hideChannelInfoModal,
+      channelConfirmModal,
+      channelInfoModal,
       confirmedChannel,
+      videoConfirmModal,
+      videoInfoModal,
+      confirmedVideo,
       agreeModalSelectTab,
       showAgreeModalSelectTab,
-      isVideoModalVisible,
-      videos,
-      selectedVideoId,
-      hideVideosModal,
-      confirmVideosModal,
-      confirmedVideo,
-      isVideoInfoModalVisible,
-      hideVideoInfoModal,
     };
   },
 });

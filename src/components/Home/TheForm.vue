@@ -272,10 +272,10 @@ export default defineComponent({
       required: true,
     },
 
-    confirmed: {
-      type: Object as PropType<ChannelFullInfo | VideoFullInfo>,
-      required: false,
-    },
+    // confirmed: {
+    //   type: Object as PropType<ChannelFullInfo | VideoFullInfo>,
+    //   required: false,
+    // },
   },
 
   setup(props) {
