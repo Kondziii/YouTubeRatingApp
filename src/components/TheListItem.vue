@@ -42,7 +42,8 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent } from 'vue';
+import Evaluate from '@/types/Evaluate';
+import { computed, defineComponent, PropType } from 'vue';
 
 export default defineComponent({
   name: 'ChannelListItem',
@@ -78,7 +79,7 @@ export default defineComponent({
 
     type: {
       //channel or video
-      type: String,
+      type: String as PropType<Evaluate>,
       required: true,
     },
   },

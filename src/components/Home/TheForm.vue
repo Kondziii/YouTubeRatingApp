@@ -399,6 +399,11 @@ export default defineComponent({
     const confirmedChannel = computed(() => {
       return store.getters['channel/getConfirmedChannel'];
     });
+
+    const confirmedVideo = computed(
+      () => store.getters['video/getConfirmedVideo']
+    );
+
     const openDetails = () => {
       props.selectedTab === 'channels'
         ? store.dispatch(channelActions.toggleInfoModal, true)
@@ -449,7 +454,21 @@ export default defineComponent({
             agreeModalEvaluate.is = true;
           }
         } else {
-          console.log('viedo');
+          if (confirmedVideo.value === null && userInput.value !== '') {
+            if (type.value === 'title') {
+              await store.dispatch(
+                videoActions.fetchSimilarVideosByTitle,
+                userInput.value
+              );
+            } else if (type.value === 'url') {
+              await store.dispatch(
+                videoActions.fetchSimilarVideosByUrl,
+                userInput.value
+              );
+            }
+          } else {
+            agreeModalEvaluate.is = true;
+          }
         }
       }
       evaluateLoading.value = false;
