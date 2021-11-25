@@ -426,7 +426,9 @@ export default defineComponent({
       message: 'Czy na pewno chcesz przejść do procesu oceniania?',
       confirm: true,
       confirmHandler: () => {
-        router.push(`/evaluate/${confirmedChannel.value.id}`);
+        props.selectedTab === 'channels'
+          ? router.push(`/evaluate/channels/${confirmedChannel.value.id}`)
+          : router.push(`/evaluate/videos/${confirmedVideo.value.id}`);
         agreeModalEvaluate.is = false;
       },
       cancelHandler: () => {
