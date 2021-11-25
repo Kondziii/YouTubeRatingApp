@@ -108,10 +108,7 @@ export default defineComponent({
     };
     const confirmChannelsModal = () => {
       store.dispatch(channelActions.toggleModal, false);
-      store.dispatch(
-        channelActions.fetchFullInfoAboutChannel,
-        selectedChannelId.value
-      );
+      store.dispatch(channelActions.fetchFullInfo, selectedChannelId.value);
     };
 
     // Video confirm
@@ -125,10 +122,7 @@ export default defineComponent({
     };
     const confirmVideosModal = () => {
       store.dispatch(videoActions.toggleModal, false);
-      store.dispatch(
-        videoActions.fetchFullInfoAboutVideo,
-        selectedVideoId.value
-      );
+      store.dispatch(videoActions.fetchFullInfo, selectedVideoId.value);
     };
     const confirmedVideo = computed<VideoFullInfo>(
       () => store.getters['video/getConfirmedVideo']
@@ -164,8 +158,8 @@ export default defineComponent({
       htmlMessage: true,
       confirmHandler: () => {
         selectedTab.value === 'channels'
-          ? store.dispatch(channelActions.resetConfirmedChannel)
-          : store.dispatch(videoActions.resetConfirmedVideo);
+          ? store.dispatch(channelActions.resetConfirmed)
+          : store.dispatch(videoActions.resetConfirmed);
         selectedTab.value = nextTab.value;
         agreeModalSelectTab.is = false;
       },

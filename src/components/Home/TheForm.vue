@@ -257,6 +257,7 @@ import BasicModal from '../Modals/BasicModal.vue';
 import { useRouter } from 'vue-router';
 import { useVideoActions } from '@/store/video/actions';
 import { VideoFullInfo } from '@/types/Video';
+import EvaluateActions from '@/types/EvaluateActions';
 const COMMENTS_LIMIT = 10;
 const VIDEOS_LIMIT = 3;
 
@@ -277,13 +278,15 @@ export default defineComponent({
     },
   },
 
-  emits: ['onSearch'],
-
   setup(props) {
     const router = useRouter();
     const store = useStore();
     const channelActions = useChannelActions();
     const videoActions = useVideoActions();
+
+    const actions = computed<EvaluateActions>(() =>
+      props.selectedTab === 'channels' ? channelActions : videoActions
+    );
 
     const type = ref<EvaluateType>('title');
     const options = [
@@ -322,10 +325,10 @@ export default defineComponent({
       },
     };
     const userInput = ref<string>('');
-    const inputLabel = computed(
+    const inputLabel = computed<string>(
       () => inputParams[props.selectedTab].label[type.value]
     );
-    const inputHint = computed(
+    const inputHint = computed<string>(
       () => inputParams[props.selectedTab].hint[type.value]
     );
 
@@ -334,34 +337,20 @@ export default defineComponent({
     const onSearch = async () => {
       searchLoading.value = true;
       if (userInput.value !== '') {
-        if (props.selectedTab === 'channels') {
-          if (type.value === 'title')
-            await store.dispatch(
-              channelActions.fetchSimilarChannelsByTitle,
+        type.value === 'title'
+          ? await store.dispatch(
+              actions.value.fetchSimilarByTitle,
+              userInput.value
+            )
+          : await store.dispatch(
+              actions.value.fetchSimilarByUrl,
               userInput.value
             );
-          else
-            await store.dispatch(
-              channelActions.fetchSimilarChannelsByUrl,
-              userInput.value
-            );
-        } else {
-          if (type.value === 'title') {
-            await store.dispatch(
-              videoActions.fetchSimilarVideosByTitle,
-              userInput.value
-            );
-          } else {
-            await store.dispatch(
-              videoActions.fetchSimilarVideosByUrl,
-              userInput.value
-            );
-          }
-        }
       }
       searchLoading.value = false;
     };
 
+    //advanced settings
     const isAdvancedSettingsVisible = ref<boolean>(false);
     const setIsAdvancedSettingsVisible = () => {
       isAdvancedSettingsVisible.value = !isAdvancedSettingsVisible.value;
@@ -372,6 +361,7 @@ export default defineComponent({
     const useSubComments = ref<boolean>(true);
     const { dateErr, beginDate, endDate, dateRules } = useDateRules();
 
+    // form reset
     const agreeModalReset = reactive({
       is: false,
       title: 'Uwaga!',
@@ -397,8 +387,8 @@ export default defineComponent({
       userInput.value = '';
       isAdvancedSettingsVisible.value = false;
       confirmedChannel.value
-        ? store.dispatch(channelActions.resetConfirmedChannel)
-        : store.dispatch(videoActions.resetConfirmedVideo);
+        ? store.dispatch(channelActions.resetConfirmed)
+        : store.dispatch(videoActions.resetConfirmed);
     };
 
     const onReset = () => {
@@ -452,12 +442,12 @@ export default defineComponent({
           if (confirmedChannel.value === null && userInput.value !== '') {
             if (type.value === 'title') {
               await store.dispatch(
-                channelActions.fetchSimilarChannelsByTitle,
+                channelActions.fetchSimilarByTitle,
                 userInput.value
               );
             } else if (type.value === 'url') {
               await store.dispatch(
-                channelActions.fetchSimilarChannelsByUrl,
+                channelActions.fetchSimilarByUrl,
                 userInput.value
               );
             }
@@ -468,12 +458,12 @@ export default defineComponent({
           if (confirmedVideo.value === null && userInput.value !== '') {
             if (type.value === 'title') {
               await store.dispatch(
-                videoActions.fetchSimilarVideosByTitle,
+                videoActions.fetchSimilarByTitle,
                 userInput.value
               );
             } else if (type.value === 'url') {
               await store.dispatch(
-                videoActions.fetchSimilarVideosByUrl,
+                videoActions.fetchSimilarByUrl,
                 userInput.value
               );
             }

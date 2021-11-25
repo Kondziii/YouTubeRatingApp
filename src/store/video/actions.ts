@@ -5,14 +5,15 @@ import VideoState from './types';
 import youtube from '@/data/yt-api';
 import useActions from '@/hooks/useActions';
 import { namespaces } from '..';
+import EvaluateActions from '@/types/EvaluateActions';
 
-const videoActions = {
-  fetchSimilarVideosByTitle: 'fetchSimilarVideosByTitle',
-  fetchSimilarVideosByUrl: 'fetchSimilarVideosByUrl',
+const videoActions: EvaluateActions = {
+  fetchSimilarByTitle: 'fetchSimilarByTitle',
+  fetchSimilarByUrl: 'fetchSimilarByUrl',
   toggleModal: 'toggleModal',
-  fetchFullInfoAboutVideo: 'fetchFullInfoAboutVideo',
+  fetchFullInfo: 'fetchFullInfo',
   toggleInfoModal: 'toggleInfoModal',
-  resetConfirmedVideo: 'resetConfirmedVideo',
+  resetConfirmed: 'resetConfirmed',
 };
 
 export const useVideoActions = (): typeof videoActions => {
@@ -20,7 +21,7 @@ export const useVideoActions = (): typeof videoActions => {
 };
 
 export default {
-  async [videoActions.fetchSimilarVideosByTitle](
+  async [videoActions.fetchSimilarByTitle](
     { commit, dispatch },
     payload: string
   ) {
@@ -33,7 +34,7 @@ export default {
     }
   },
 
-  async [videoActions.fetchSimilarVideosByUrl](
+  async [videoActions.fetchSimilarByUrl](
     { commit, dispatch },
     payload: string
   ) {
@@ -50,10 +51,7 @@ export default {
     commit(VideoMutations.SET_MODAL_STATE, payload);
   },
 
-  async [videoActions.fetchFullInfoAboutVideo](
-    { commit, dispatch },
-    payload: string
-  ) {
+  async [videoActions.fetchFullInfo]({ commit, dispatch }, payload: string) {
     try {
       const video = await youtube.getVideoInfoById(payload);
       commit(VideoMutations.SET_CONFIRMED_VIDEO, video);
@@ -66,7 +64,7 @@ export default {
     }
   },
 
-  [videoActions.resetConfirmedVideo]({ commit }) {
+  [videoActions.resetConfirmed]({ commit }) {
     commit(VideoMutations.SET_CONFIRMED_VIDEO, null);
   },
 

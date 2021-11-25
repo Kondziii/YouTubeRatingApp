@@ -55,7 +55,6 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue';
-import { useRouter } from 'vue-router';
 import BasicInstruction from '@/components/LearnMore/BasicInstruction.vue';
 
 export default defineComponent({
@@ -66,15 +65,7 @@ export default defineComponent({
   },
 
   setup() {
-    const router = useRouter();
-
-    const directToApp = () => {
-      router.push('/');
-    };
-
-    return {
-      directToApp,
-    };
+    return {};
   },
 });
 </script>

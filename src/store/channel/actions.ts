@@ -8,14 +8,15 @@ import { namespaces } from '../index';
 import Exception from '@/others/exception';
 import Channel_url from '@/enums/Channel_url';
 import useActions from '@/hooks/useActions';
+import EvaluateActions from '@/types/EvaluateActions';
 
-const ChannelActions = {
-  fetchSimilarChannelsByTitle: 'fetchSimilarChannelsByTitle',
-  fetchSimilarChannelsByUrl: 'fetchSimilarChannelsByUrl',
+const ChannelActions: EvaluateActions = {
+  fetchSimilarByTitle: 'fetchSimilarByTitle',
+  fetchSimilarByUrl: 'fetchSimilarByUrl',
   toggleModal: 'toggleModal',
-  fetchFullInfoAboutChannel: 'fetchFullInfoAboutChannel',
+  fetchFullInfo: 'fetchFullInfo',
   toggleInfoModal: 'toggleInfoModal',
-  resetConfirmedChannel: 'resetConfirmedChannel',
+  resetConfirmed: 'resetConfirmed',
 };
 
 export const useChannelActions = (): typeof ChannelActions => {
@@ -23,7 +24,7 @@ export const useChannelActions = (): typeof ChannelActions => {
 };
 
 export default {
-  async [ChannelActions.fetchSimilarChannelsByTitle](
+  async [ChannelActions.fetchSimilarByTitle](
     { commit, dispatch },
     payload: string
   ) {
@@ -69,7 +70,7 @@ export default {
     }
   },
 
-  async [ChannelActions.fetchSimilarChannelsByUrl](
+  async [ChannelActions.fetchSimilarByUrl](
     { commit, dispatch },
     payload: string
   ) {
@@ -122,10 +123,7 @@ export default {
     commit(ChannelMutations.SET_MODAL_STATE, payload);
   },
 
-  async [ChannelActions.fetchFullInfoAboutChannel](
-    { dispatch, commit },
-    payload: string
-  ) {
+  async [ChannelActions.fetchFullInfo]({ dispatch, commit }, payload: string) {
     const errorActions = useErrorActions();
     try {
       const channel = await youtube.getChannelInfoById(payload);
@@ -153,7 +151,7 @@ export default {
     commit(ChannelMutations.SET_INFO_MODAL_STATE, payload);
   },
 
-  [ChannelActions.resetConfirmedChannel]({ commit }) {
+  [ChannelActions.resetConfirmed]({ commit }) {
     commit(ChannelMutations.SET_CONFIRMED_CHANNEL, null);
   },
 } as ActionTree<ChannelState, RootState>;
