@@ -404,19 +404,13 @@ export default defineComponent({
     );
 
     const openDetails = () => {
-      props.selectedTab === 'channels'
-        ? store.dispatch(channelActions.toggleInfoModal, true)
-        : store.dispatch(videoActions.toggleInfoModal, true);
+      store.dispatch(actions.value.toggleInfoModal, true);
     };
     const resetConfirmed = () => {
       onReset();
     };
     const showConfirmModal = () => {
-      if (props.selectedTab === 'channels') {
-        store.dispatch(channelActions.toggleModal, true);
-      } else {
-        store.dispatch(videoActions.toggleModal, true);
-      }
+      store.dispatch(actions.value.toggleModal, true);
     };
     const evaluateLoading = ref<boolean>(false);
     const agreeModalEvaluate = reactive({
@@ -438,38 +432,24 @@ export default defineComponent({
     const onSubmit = async () => {
       evaluateLoading.value = true;
       if (!dateErr.value) {
-        if (props.selectedTab === 'channels') {
-          if (confirmedChannel.value === null && userInput.value !== '') {
-            if (type.value === 'title') {
-              await store.dispatch(
-                channelActions.fetchSimilarByTitle,
-                userInput.value
-              );
-            } else if (type.value === 'url') {
-              await store.dispatch(
-                channelActions.fetchSimilarByUrl,
-                userInput.value
-              );
-            }
-          } else {
-            agreeModalEvaluate.is = true;
+        if (
+          confirmedChannel.value === null &&
+          confirmedVideo.value === null &&
+          userInput.value !== ''
+        ) {
+          if (type.value === 'title') {
+            await store.dispatch(
+              actions.value.fetchSimilarByTitle,
+              userInput.value
+            );
+          } else if (type.value === 'url') {
+            await store.dispatch(
+              actions.value.fetchSimilarByUrl,
+              userInput.value
+            );
           }
         } else {
-          if (confirmedVideo.value === null && userInput.value !== '') {
-            if (type.value === 'title') {
-              await store.dispatch(
-                videoActions.fetchSimilarByTitle,
-                userInput.value
-              );
-            } else if (type.value === 'url') {
-              await store.dispatch(
-                videoActions.fetchSimilarByUrl,
-                userInput.value
-              );
-            }
-          } else {
-            agreeModalEvaluate.is = true;
-          }
+          agreeModalEvaluate.is = true;
         }
       }
       evaluateLoading.value = false;
