@@ -6,10 +6,18 @@
           <div class="text-h5">Wybrałeś filmik:</div>
         </q-card-section>
         <q-separator dark></q-separator>
-        <q-scroll-area dark style="height: 50vh; min-width: 100%">
+        <q-scroll-area
+          dark
+          style="
+            height: 50vh;
+            min-width: 100%;
+            word-wrap: break-word;
+            overflow-wrap: break-word;
+          "
+        >
           <q-card-section
-            class="q-pt-none flex column justify-center items-center q-mt-md"
-            :style="{ paddingBottom: '0' }"
+            class="q-pt-none flex column justify-between items-center q-mt-md"
+            :style="{ paddingBottom: '0', minWidth: '47vh' }"
           >
             <div class="row flex column items-center q-mb-sm">
               <q-avatar class="avatar">
@@ -63,7 +71,14 @@
                 <label><q-icon name="comment"> </q-icon></label>
               </div>
             </div>
-            <div class="row q-mt-sm">
+            <div
+              class="row q-mt-sm"
+              style="
+                word-wrap: break-word;
+                overflow-wrap: break-word;
+                max-width: 90vw;
+              "
+            >
               <p>{{ video.snippet.description }}</p>
             </div>
             <div
@@ -147,7 +162,7 @@ export default defineComponent({
   @include card($dark-2);
   overflow: auto;
   margin: 0 auto;
-  min-width: 300px;
+  width: 90vw;
   font-size: 1em;
 }
 
@@ -180,7 +195,7 @@ div > div > p {
 
 @media (min-width: $breakpoint-xs-max) {
   .card {
-    min-width: 400px;
+    min-width: 500px;
     font-size: 1.1em;
   }
 }
@@ -190,7 +205,7 @@ div > div > p {
     font-size: 24px;
   }
   .card {
-    min-width: 500px;
+    min-width: 600px;
   }
 }
 </style>

@@ -7,8 +7,8 @@
       <q-separator dark></q-separator>
       <q-scroll-area dark style="height: 50vh; min-width: 100%">
         <q-card-section
-          class="q-pt-none flex column justify-center items-center q-mt-md"
-          :style="{ paddingBottom: '0' }"
+          class="q-pt-none flex column justify-between items-center q-mt-md"
+          :style="{ paddingBottom: '0', minHeight: '47vh' }"
         >
           <div class="row flex column items-center q-mb-sm">
             <q-avatar class="avatar">
@@ -38,13 +38,7 @@
               <label>Filmiki</label>
             </div>
           </div>
-          <div
-            :style="{ width: '100%' }"
-            class="row flex column items-center justify-start q-mt-md"
-          >
-            <p class="highlight">{{ beginDate }}</p>
-            <p>Data utworzenia</p>
-          </div>
+
           <div
             v-if="!!channel.snippet.description"
             class="row q-mt-md"
@@ -52,7 +46,9 @@
           >
             <p>{{ channel.snippet.description }}</p>
           </div>
-
+          <div :style="{ width: '100%' }" class="row q-mt-md">
+            <p>Data utworzenia: {{ beginDate }}</p>
+          </div>
           <div class="info row q-mt-md" :style="{ width: '100%' }">
             Teraz możesz zmodyfikować ustawienia i przejść do oceny!
           </div>
@@ -126,7 +122,7 @@ export default defineComponent({
   @include card($dark-2);
   overflow: auto;
   margin: 0 auto;
-  min-width: 300px;
+  min-width: 90vw;
   font-size: 1em;
 }
 
@@ -159,7 +155,7 @@ div > div > p {
 
 @media (min-width: $breakpoint-xs-max) {
   .card {
-    min-width: 400px;
+    min-width: 500px;
     font-size: 1.1em;
   }
 }
@@ -169,7 +165,7 @@ div > div > p {
     font-size: 24px;
   }
   .card {
-    min-width: 500px;
+    min-width: 600px;
   }
 }
 </style>

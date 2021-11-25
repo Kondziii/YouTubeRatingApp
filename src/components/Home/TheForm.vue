@@ -541,7 +541,7 @@ export default defineComponent({
   justify-content: center;
   align-items: center;
   flex-direction: column;
-  margin: 3% auto 1%;
+  margin: 4% auto 1%;
   color: $red;
   cursor: pointer;
   width: fit-content;

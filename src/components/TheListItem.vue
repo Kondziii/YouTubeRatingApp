@@ -1,7 +1,9 @@
 <template>
   <div :class="itemClasses" @click="select" class="q-my-xs">
     <div class="col-8 flex items-center justify-start no-wrap">
-      <q-avatar class="avatar">
+      <q-avatar
+        :class="type === 'channels' ? 'avatar-channel' : 'avatar-video'"
+      >
         <q-img :src="img" />
       </q-avatar>
       <p>{{ title }}</p>
@@ -177,7 +179,13 @@ p {
   background: $grey-8;
 }
 
-.avatar {
+.avatar-video {
+  width: 80px;
+  height: auto;
+  object-fit: cover;
+}
+
+.avatar-channel {
   width: 60px;
   height: auto;
   object-fit: cover;

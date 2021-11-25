@@ -57,6 +57,10 @@ export default defineComponent({
 <style lang="scss">
 @import '/src/styles/quasar.variables.scss';
 
+:root {
+  font-size: 14px;
+}
+
 .root {
   width: 100%;
   min-height: 100vh !important;
@@ -122,13 +126,13 @@ export default defineComponent({
   .selection-container {
     width: 80%;
   }
-  .html {
-    font-size: 17px;
+  :root {
+    font-size: 16px;
   }
 }
 
 @media (min-width: $breakpoint-sm-max) {
-  .html {
+  :root {
     font-size: 18px;
   }
 }
