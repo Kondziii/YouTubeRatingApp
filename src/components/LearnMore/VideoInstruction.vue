@@ -20,7 +20,6 @@
           (zalecany)
         </li>
         <li>v=DLBgtb4nqnQ</li>
-        <li>DLBgtb4nqnQ</li>
       </ul>
     </template>
     <template #advanced-settings>
@@ -31,7 +30,7 @@
           uwzględniania podkomentarzy) to nie zostanie oceniony.
         </li>
         <li>
-          Uwzględniaj podkomentarze - domyślnie tak oznacza, że podkomentarze
+          Uwzględniaj podkomentarze - domyślnie tak, oznacza, że podkomentarze
           również biorą udział w analizie sentymentu
         </li>
       </ul>

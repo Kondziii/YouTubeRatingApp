@@ -532,7 +532,7 @@ export default defineComponent({
 }
 @media (min-width: $breakpoint-md-min) {
   .input {
-    font-size: 1rem;
+    font-size: 0.95rem;
   }
 }
 

@@ -24,22 +24,22 @@
       </li>
       <li>
         <p>
-          Zatwierdź wprowadzony {{ type_ }} klikając na przycisk "Zatwierdź".
+          Wpisz w pole nazwę lub link do {{ type }} zgodnie z wcześniejszym
+          wyborem i kliknij przycisk "Wyszukaj".
         </p>
       </li>
       <li>
         <p>
-          Powinno pojawić się okienko w którym należy wybrać {{ type_ }}, który
-          nas interesuje i go zatwierdzić.
+          Pojawi się okienko, w którym należy wybrać {{ type_ }}, który nas
+          interesuje i go zatwierdzić.
         </p>
       </li>
       <li>
         <p>
           Następnie możesz otworzyć i zmodyfikować ustawienia niestandardowe
-          klikając na przycisk "pokaż ustawienia niestandardowe" pod polem w
-          którym skopiowałeś link lub nazwę {{ type }}, chociaż zalecane jest
-          aby pozostały domyślne. Ustawienia niestandardowe zawierają
-          następujące wartości:
+          klikając na przycisk "pokaż ustawienia niestandardowe", chociaż
+          zalecane jest aby pozostały domyślne. Ustawienia niestandardowe
+          zawierają następujące wartości:
         </p>
         <slot name="advanced-settings"></slot>
       </li>
@@ -57,6 +57,7 @@
     </p>
     <q-card-actions class="flex justify-end">
       <q-btn
+        :style="{ fontSize: '0.8rem !important' }"
         label="Przejdź do aplikacji"
         type="button"
         color="red"

@@ -20,7 +20,7 @@
             sam temat) stała się inspiracją do stworzenia aplikacji
             umożliwiającej ich ocenę. W następstwie została stworzona aplikacja,
             którą właśnie używasz - daje możliwość sprawdzenia jak konkretny
-            kanał czy filmik jest odbiernay przez widzów serwisu Youtube. Ocena
+            kanał czy filmik jest odbierany przez widzów serwisu Youtube. Ocena
             jest dokonywana na podstawie analizy semantycznej komentarzy
             zamieszczanych przez widzów pod filmikami. W skrócie analiza
             sentymentu jest to jednoznaczna ocena wydźwięku wypowiedzi, czyli

@@ -7,7 +7,7 @@
   >
     <q-card class="card">
       <q-card-section>
-        <div class="text-h5">{{ title }}</div>
+        <div class="text-h6">{{ title }}</div>
       </q-card-section>
 
       <q-card-section v-if="!htmlMessage" class="q-pt-none">

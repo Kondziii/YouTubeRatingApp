@@ -35,17 +35,7 @@ export default {
         {
           is: true,
           title: 'Wystąpił błąd',
-          message: `Ups. Podana nazwa przypomina bardziej adres url filmiku, a nie nazwę kanału. Upewnij się, że wybrałeś odpowiednią opcję.`,
-        },
-        { root: true }
-      );
-    } else if (payload.includes('v=')) {
-      dispatch(
-        errorActions.setError,
-        {
-          is: true,
-          title: 'Wystąpił błąd',
-          message: `Ups. Podana nazwa przypomina bardziej adres url filmiku, a nie nazwę kanału. Upewnij się, że wybrałeś odpowiednią opcję.`,
+          message: `Ups. Podana nazwa przypomina bardziej adres url, a nie nazwę kanału. Upewnij się, że wybrałeś odpowiednią opcję.`,
         },
         { root: true }
       );
@@ -62,6 +52,16 @@ export default {
               is: true,
               title: 'Nie znaleziono kanału',
               message: `Ups. Nie znaleziono żadnego kanału pasującego do podanej nazwy: ${payload}`,
+            },
+            { root: true }
+          );
+        } else {
+          dispatch(
+            errorActions.setError,
+            {
+              is: true,
+              title: 'Przekroczono limit',
+              message: `Ups. Przekroczono dzisiejszy limit danych do wykorzystania.`,
             },
             { root: true }
           );
@@ -114,6 +114,16 @@ export default {
             },
             { root: true }
           );
+        } else {
+          dispatch(
+            errorActions.setError,
+            {
+              is: true,
+              title: 'Przekroczono limit',
+              message: `Ups. Przekroczono dzisiejszy limit danych do wykorzystania.`,
+            },
+            { root: true }
+          );
         }
       }
     }
@@ -140,6 +150,16 @@ export default {
             is: true,
             title: 'Wystąpił błąd',
             message: `Ups. wystąpił błąd z odnalezieniem zatwierdzonego kanału: ${payload}`,
+          },
+          { root: true }
+        );
+      } else {
+        dispatch(
+          errorActions.setError,
+          {
+            is: true,
+            title: 'Przekroczono limit',
+            message: `Ups. Przekroczono dzisiejszy limit danych do wykorzystania.`,
           },
           { root: true }
         );
