@@ -245,7 +245,7 @@
 </template>
 
 <script lang="ts">
-import Evaluate from '@/types/Evaluate';
+import Evaluate, { EvaluateType } from '@/types/Evaluate';
 import { computed, defineComponent, PropType, reactive } from 'vue';
 import { ref } from 'vue';
 import { useStore } from '../../store/index';
@@ -285,7 +285,7 @@ export default defineComponent({
     const channelActions = useChannelActions();
     const videoActions = useVideoActions();
 
-    const type = ref<string>('title');
+    const type = ref<EvaluateType>('title');
     const options = [
       {
         label: 'Wyszukaj po nazwie',
@@ -296,41 +296,40 @@ export default defineComponent({
         value: 'url',
       },
     ];
-    const userInput = ref<string>('');
-    const inputLabel = computed(() => {
-      if (props.selectedTab === 'channels') {
-        if (type.value === 'title') return 'Podaj nazwę kanału*';
-        else if (type.value === 'url') return 'Podaj link do kanału*';
-      } else if (props.selectedTab === 'videos') {
-        if (type.value === 'title') return 'Podaj nazwę filmiku*';
-        else if (type.value === 'url') return 'Podaj link do filmiku*';
-      }
-      return '';
-    });
-    const inputHint = computed(() => {
-      if (props.selectedTab === 'channels') {
-        if (type.value === 'title') return 'Na przykład: Google Developers';
-        else if (type.value === 'url')
-          return 'Na przykład: https://www.youtube.com/channel/UC0rqucBdTuFTjJiefW5t-IQ';
-      } else if (props.selectedTab === 'videos') {
-        if (type.value === 'title')
-          return 'Na przykład: Google Coding Interview With A Normal Software Engineer';
-        else if (type.value === 'url')
-          return 'Na przykład: https://www.youtube.com/watch?v=rw4s4M3hFfs&ab_channel=Cl%C3%A9mentMihailescu';
-      }
-      return '';
-    });
 
-    const isAdvancedSettingsVisible = ref<boolean>(false);
-    const setIsAdvancedSettingsVisible = () => {
-      isAdvancedSettingsVisible.value = !isAdvancedSettingsVisible.value;
+    // input
+    const inputParams = {
+      channels: {
+        label: {
+          title: 'Podaj nazwę kanału*',
+          url: 'Podaj link do kanału*',
+        },
+        hint: {
+          title: 'Na przykład: Google Developers',
+          url: 'Na przykład: https://www.youtube.com/channel/UC0rqucBdTuFTjJiefW5t-IQ',
+        },
+      },
+      videos: {
+        label: {
+          title: 'Podaj nazwę filmiku*',
+          url: 'Podaj link do filmiku*',
+        },
+        hint: {
+          title:
+            'Na przykład: Google Coding Interview With A Normal Software Engineer',
+          url: 'https://www.youtube.com/watch?v=rw4s4M3hFfs&ab_channel=Cl%C3%A9mentMihailescu',
+        },
+      },
     };
-    const commentsLimit = ref<number>(COMMENTS_LIMIT);
-    const videosLimit = ref<number>(VIDEOS_LIMIT);
-    const useTime = ref<boolean>(false);
-    const useSubComments = ref<boolean>(true);
-    const { dateErr, beginDate, endDate, dateRules } = useDateRules();
+    const userInput = ref<string>('');
+    const inputLabel = computed(
+      () => inputParams[props.selectedTab].label[type.value]
+    );
+    const inputHint = computed(
+      () => inputParams[props.selectedTab].hint[type.value]
+    );
 
+    //loading
     const searchLoading = ref<boolean>(false);
     const onSearch = async () => {
       searchLoading.value = true;
@@ -362,6 +361,16 @@ export default defineComponent({
       }
       searchLoading.value = false;
     };
+
+    const isAdvancedSettingsVisible = ref<boolean>(false);
+    const setIsAdvancedSettingsVisible = () => {
+      isAdvancedSettingsVisible.value = !isAdvancedSettingsVisible.value;
+    };
+    const commentsLimit = ref<number>(COMMENTS_LIMIT);
+    const videosLimit = ref<number>(VIDEOS_LIMIT);
+    const useTime = ref<boolean>(false);
+    const useSubComments = ref<boolean>(true);
+    const { dateErr, beginDate, endDate, dateRules } = useDateRules();
 
     const agreeModalReset = reactive({
       is: false,
