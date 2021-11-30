@@ -60,8 +60,8 @@ export default {
             errorActions.setError,
             {
               is: true,
-              title: 'Przekroczono limit',
-              message: `Ups. Przekroczono dzisiejszy limit danych do wykorzystania.`,
+              title: 'Błąd serwera',
+              message: `Ups. Wystąpił błąd z serwerem.`,
             },
             { root: true }
           );
@@ -119,8 +119,8 @@ export default {
             errorActions.setError,
             {
               is: true,
-              title: 'Przekroczono limit',
-              message: `Ups. Przekroczono dzisiejszy limit danych do wykorzystania.`,
+              title: 'Błąd serwera',
+              message: `Ups. Wystąpił błąd z serwerem.`,
             },
             { root: true }
           );
@@ -158,8 +158,8 @@ export default {
           errorActions.setError,
           {
             is: true,
-            title: 'Przekroczono limit',
-            message: `Ups. Przekroczono dzisiejszy limit danych do wykorzystania.`,
+            title: 'Błąd serwera',
+            message: `Ups. Wystąpił błąd z serwerem.`,
           },
           { root: true }
         );

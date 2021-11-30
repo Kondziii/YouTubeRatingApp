@@ -5,7 +5,7 @@ import { ActionTree } from 'vuex';
 import VideoState from './types';
 import youtube from '@/data/yt-api';
 import useActions from '@/hooks/useActions';
-import { namespaces, store } from '..';
+import { namespaces } from '..';
 import EvaluateActions from '@/types/EvaluateActions';
 import Exception from '@/others/exception';
 
@@ -59,8 +59,8 @@ export default {
             errorActions.setError,
             {
               is: true,
-              title: 'Przekroczono limit',
-              message: `Ups. Przekroczono dzisiejszy limit danych do wykorzystania.`,
+              title: 'Błąd serwera',
+              message: `Ups. Wystąpił błąd z serwerem.`,
             },
             { root: true }
           );
@@ -105,8 +105,8 @@ export default {
             errorActions.setError,
             {
               is: true,
-              title: 'Przekroczono limit',
-              message: `Ups. Przekroczono dzisiejszy limit danych do wykorzystania.`,
+              title: 'Błąd serwera',
+              message: `Ups. Wystąpił błąd z serwerem.`,
             },
             { root: true }
           );
@@ -145,8 +145,8 @@ export default {
           errorActions.setError,
           {
             is: true,
-            title: 'Przekroczono limit',
-            message: `Ups. Przekroczono dzisiejszy limit danych do wykorzystania.`,
+            title: 'Błąd serwera',
+            message: `Ups. Wystąpił błąd z serwerem.`,
           },
           { root: true }
         );

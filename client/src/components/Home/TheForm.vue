@@ -266,8 +266,7 @@ import { useRouter } from 'vue-router';
 import { useVideoActions } from '@/store/video/actions';
 import { VideoFullInfo } from '@/types/Video';
 import EvaluateActions from '@/types/EvaluateActions';
-const COMMENTS_LIMIT = 10;
-const VIDEOS_LIMIT = 3;
+import { COMMENTS_LIMIT, VIDEOS_LIMIT } from '../../../config';
 
 export default defineComponent({
   name: 'TheForm',

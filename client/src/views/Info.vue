@@ -25,13 +25,6 @@
             zamieszczanych przez widzów pod filmikami. W skrócie analiza
             sentymentu jest to jednoznaczna ocena wydźwięku wypowiedzi, czyli
             stwierdzenie czy wypowiedź jest negatywna, neutralna czy pozytywna.
-            Jeśli kogoś ten temat zainteresował to odsyłam do materiałów
-            dostępnych w Internecie np.
-            <a
-              href="https://brand24.pl/blog/co-to-jest-analiza-sentymentu-oraz-jak-mozesz-ja-wykorzystac/"
-              target="_blank"
-              >Analiza sentymentu</a
-            >
           </p>
         </li>
         <li>

@@ -37,7 +37,7 @@ export default defineComponent({
 @import '/src/styles/quasar.variables.scss';
 
 .footer {
-  background: rgba(41, 42, 44, 0.7);
+  background: $dark-2;
   height: 25vh;
 }
 

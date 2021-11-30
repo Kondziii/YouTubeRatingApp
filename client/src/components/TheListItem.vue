@@ -183,6 +183,7 @@ p {
   width: 80px;
   height: auto;
   object-fit: cover;
+  margin-left: -5px;
 }
 
 .avatar-channel {
