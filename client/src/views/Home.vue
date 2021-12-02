@@ -57,12 +57,12 @@ import TheForm from '@/components/Home/TheForm.vue';
 import useTabs from '@/hooks/useTabs';
 import ConfirmChannelModal from '@/components/Modals/ConfirmChannelModal.vue';
 import { useStore } from '@/store/index';
-import { ChannelBasic } from '@/types/Channel';
+import { Channel } from '@/types/Channel';
 import { useChannelActions } from '@/store/channel/actions';
 import ConfirmChannelInfoModal from '@/components/Modals/ConfirmChannelInfoModal.vue';
 import BasicModal from '@/components/Modals/BasicModal.vue';
 import ConfirmVideoModal from '@/components/Modals/ConfirmVideoModal.vue';
-import Video, { VideoFullInfo } from '@/types/Video';
+import { Video } from '@/types/Video';
 import { useVideoActions } from '@/store/video/actions';
 import ConfirmVideoInfoModal from '@/components/Modals/ConfirmVideoInfoModal.vue';
 import useConfirmModal from '@/hooks/useConfirmModal';
@@ -109,7 +109,7 @@ export default defineComponent({
     };
 
     //confirm modals
-    const channelConfirmModal = useConfirmModal<ChannelBasic>(
+    const channelConfirmModal = useConfirmModal<Channel>(
       channelActions,
       getters.channels
     );
@@ -120,11 +120,11 @@ export default defineComponent({
     );
 
     //confirmed getters
-    const confirmedVideo = computed<VideoFullInfo>(
+    const confirmedVideo = computed<Video>(
       () => store.getters['video/getConfirmedVideo']
     );
 
-    const confirmedChannel = computed(
+    const confirmedChannel = computed<Channel>(
       () => store.getters['channel/getConfirmedChannel']
     );
 

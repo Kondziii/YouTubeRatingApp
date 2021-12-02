@@ -1,8 +1,8 @@
-import { ChannelBasic, ChannelFullInfo } from '@/types/Channel';
+import { Channel } from '@/types/Channel';
 
 export interface ChannelState {
-  channels: ChannelBasic[];
+  channels: Channel[];
   isModalVisible: boolean;
-  confirmedChannel: ChannelFullInfo | null;
+  confirmedChannel: Channel | null;
   isInfoModalVisible: boolean;
 }

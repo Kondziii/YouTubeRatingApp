@@ -1,4 +1,4 @@
-import Video, { VideoFullInfo } from '@/types/Video';
+import { Video } from '@/types/Video';
 import { MutationTree } from 'vuex';
 import VideoState from './types';
 
@@ -18,7 +18,7 @@ export default {
     state.isModalVisible = payload;
   },
 
-  [VideoMutations.SET_CONFIRMED_VIDEO](state, payload: VideoFullInfo) {
+  [VideoMutations.SET_CONFIRMED_VIDEO](state, payload: Video) {
     state.confirmedVideo = payload;
   },
 

@@ -1,5 +1,5 @@
 import { ChannelState } from './types';
-import { ChannelBasic, ChannelFullInfo } from '@/types/Channel';
+import { Channel } from '@/types/Channel';
 import { MutationTree } from 'vuex';
 
 export enum ChannelMutations {
@@ -10,7 +10,7 @@ export enum ChannelMutations {
 }
 
 export default {
-  [ChannelMutations.SET_CHANNELS](state, payload: Array<ChannelBasic>): void {
+  [ChannelMutations.SET_CHANNELS](state, payload: Array<Channel>): void {
     state.channels = payload;
   },
 
@@ -18,10 +18,7 @@ export default {
     state.isModalVisible = payload;
   },
 
-  [ChannelMutations.SET_CONFIRMED_CHANNEL](
-    state,
-    payload: ChannelFullInfo
-  ): void {
+  [ChannelMutations.SET_CONFIRMED_CHANNEL](state, payload: Channel): void {
     state.confirmedChannel = payload;
   },
 

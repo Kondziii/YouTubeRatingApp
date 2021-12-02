@@ -7,7 +7,6 @@ import youtube from '@/data/yt-api';
 import useActions from '@/hooks/useActions';
 import { namespaces } from '..';
 import EvaluateActions from '@/types/EvaluateActions';
-import Exception from '@/others/exception';
 
 const videoActions: EvaluateActions = {
   fetchSimilarByTitle: 'fetchSimilarByTitle',
@@ -43,27 +42,31 @@ export default {
         const videos = await youtube.getVideosByTitle(payload);
         commit(VideoMutations.SET_VIDEOS, videos);
         dispatch(videoActions.toggleModal, true);
-      } catch (error) {
-        if (error instanceof Exception) {
-          dispatch(
-            errorActions.setError,
-            {
-              is: true,
-              title: 'Nie znaleziono filmiku',
-              message: `Ups. Nie znaleziono żadnego filmiku pasującego do podanej nazwy: ${payload}`,
-            },
-            { root: true }
-          );
-        } else {
-          dispatch(
-            errorActions.setError,
-            {
-              is: true,
-              title: 'Błąd serwera',
-              message: `Ups. Wystąpił błąd z serwerem.`,
-            },
-            { root: true }
-          );
+      } catch (error: any) {
+        if (error.response) {
+          const status = error.response.status;
+
+          if (status === 404) {
+            dispatch(
+              errorActions.setError,
+              {
+                is: true,
+                title: 'Nie znaleziono filmiku',
+                message: `Ups. Nie znaleziono żadnego filmiku pasującego do podanej nazwy: ${payload}`,
+              },
+              { root: true }
+            );
+          } else if (status === 500) {
+            dispatch(
+              errorActions.setError,
+              {
+                is: true,
+                title: 'Błąd serwera',
+                message: `Ups. Wystąpił błąd z serwerem.`,
+              },
+              { root: true }
+            );
+          }
         }
       }
     }
@@ -89,27 +92,31 @@ export default {
         const videos = await youtube.getVideosByUrl(payload);
         commit(VideoMutations.SET_VIDEOS, videos);
         dispatch(videoActions.toggleModal, true);
-      } catch (error) {
-        if (error instanceof Exception) {
-          dispatch(
-            errorActions.setError,
-            {
-              is: true,
-              title: 'Nie znaleziono filmiku',
-              message: `Ups. Nie znaleziono żadnego filmiku pasującego do podanego adresu url: ${payload}`,
-            },
-            { root: true }
-          );
-        } else {
-          dispatch(
-            errorActions.setError,
-            {
-              is: true,
-              title: 'Błąd serwera',
-              message: `Ups. Wystąpił błąd z serwerem.`,
-            },
-            { root: true }
-          );
+      } catch (error: any) {
+        if (error.response) {
+          const status = error.response.status;
+
+          if (status === 404) {
+            dispatch(
+              errorActions.setError,
+              {
+                is: true,
+                title: 'Nie znaleziono filmiku',
+                message: `Ups. Nie znaleziono żadnego filmiku pasującego do podanego adresu url: ${payload}`,
+              },
+              { root: true }
+            );
+          } else if (status === 500) {
+            dispatch(
+              errorActions.setError,
+              {
+                is: true,
+                title: 'Błąd serwera',
+                message: `Ups. Wystąpił błąd z serwerem.`,
+              },
+              { root: true }
+            );
+          }
         }
       }
     }
@@ -128,28 +135,32 @@ export default {
       setTimeout(() => {
         dispatch(videoActions.toggleInfoModal, true);
       }, 300);
-    } catch (error) {
-      if (error instanceof Exception) {
-        commit(VideoMutations.SET_CONFIRMED_VIDEO, null);
-        dispatch(
-          errorActions.setError,
-          {
-            is: true,
-            title: 'Nie znaleziono filmiku',
-            message: `Ups. Nie znaleziono żadnego filmiku pasującego do podanego id: ${payload}`,
-          },
-          { root: true }
-        );
-      } else {
-        dispatch(
-          errorActions.setError,
-          {
-            is: true,
-            title: 'Błąd serwera',
-            message: `Ups. Wystąpił błąd z serwerem.`,
-          },
-          { root: true }
-        );
+    } catch (error: any) {
+      if (error.response) {
+        const status = error.response.status;
+
+        if (status === 404) {
+          commit(VideoMutations.SET_CONFIRMED_VIDEO, null);
+          dispatch(
+            errorActions.setError,
+            {
+              is: true,
+              title: 'Nie znaleziono filmiku',
+              message: `Ups. Nie znaleziono żadnego filmiku pasującego do podanego id: ${payload}`,
+            },
+            { root: true }
+          );
+        } else if (status === 500) {
+          dispatch(
+            errorActions.setError,
+            {
+              is: true,
+              title: 'Błąd serwera',
+              message: `Ups. Wystąpił błąd z serwerem.`,
+            },
+            { root: true }
+          );
+        }
       }
     }
   },

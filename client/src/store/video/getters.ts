@@ -1,7 +1,7 @@
 import { RootState } from './../types';
 import { GetterTree } from 'vuex';
 import VideoState from './types';
-import Video, { VideoFullInfo } from '@/types/Video';
+import { Video } from '@/types/Video';
 
 export default {
   getVideos(state): Video[] | null {
@@ -12,7 +12,7 @@ export default {
     return state.isModalVisible;
   },
 
-  getConfirmedVideo(state): VideoFullInfo | null {
+  getConfirmedVideo(state): Video | null {
     return state.confirmedVideo;
   },
 

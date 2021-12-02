@@ -4,6 +4,7 @@ import axios from 'axios';
 import { KEY, URL_YOUTUBE_API } from '../config';
 import { RequestHandler } from 'express';
 import { Video } from '../types/Video';
+import { Channel } from '../types/Channel';
 
 export const getChannelsByKeyWord: RequestHandler = async (req, res, next) => {
   const params = req.params as { keyWord: string };
@@ -34,7 +35,7 @@ export const getChannelsByKeyWord: RequestHandler = async (req, res, next) => {
           description: item.snippet.description,
           publishedAt: item.snippet.publishedAt,
           image: item.snippet.thumbnails.default.url,
-        };
+        } as Channel;
       })
     );
   }
@@ -68,9 +69,9 @@ export const getChannelsById: RequestHandler = async (req, res, next) => {
           description: item.snippet.description,
           publishedAt: item.snippet.publishedAt,
           image: item.snippet.thumbnails.default.url,
-          statistics: query.part.includes('statistics') && item.statistics,
+          statistics: query.part?.includes('statistics') && item.statistics,
           uploads:
-            query.part.includes('contentDetails') &&
+            query.part?.includes('contentDetails') &&
             item.contentDetails?.relatedPlaylists.uploads,
         };
       })

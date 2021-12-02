@@ -1,10 +1,9 @@
-import { URL_YOUTUBE_API, KEY } from '../../config';
-import { ChannelBasic, ChannelFullInfo } from '@/types/Channel';
+import { Channel } from '@/types/Channel';
 import axios from 'axios';
-import Exception from '@/others/exception';
 import Channel_url from '@/enums/Channel_url';
-import Video, { VideoFullInfo } from '@/types/Video';
-import CommentThread from '@/types/CommentThread';
+import { Video } from '@/types/Video';
+import { Comment } from '@/types/CommentThread';
+import { URL_API } from '../../config';
 
 const extractChannelIdFromUrl = (url: string): string => {
   if (url.lastIndexOf('/') === -1) {
@@ -25,169 +24,73 @@ const extractVideoIdFromUrl = (url: string): string => {
 };
 
 export default {
-  getChannelsByTitle: async (title: string): Promise<ChannelBasic[]> => {
-    const response = await axios.get(`${URL_YOUTUBE_API}/search`, {
-      params: {
-        key: KEY,
-        part: 'snippet',
-        maxResults: 25,
-        type: 'channel',
-        q: title,
-      },
-    });
-
-    if (!response || response.data.items.length === 0) {
-      throw new Exception('Channel has not be found!', 404);
-    }
-
-    return response.data.items;
+  getChannelsByTitle: async (title: string): Promise<Channel[]> => {
+    return (await axios.get(`${URL_API}/channels/getByKeyWord/${title}`)).data;
   },
 
-  getChannelInfoById: async (id: string): Promise<ChannelFullInfo> => {
-    const response = await axios.get(`${URL_YOUTUBE_API}/channels`, {
-      params: {
-        key: KEY,
-        part: 'snippet,statistics,contentDetails',
-        id: id,
-      },
-    });
-
-    if (!response || response.data.items.length === 0) {
-      throw new Exception('Channel has not be found!', 404);
-    }
-
-    return response.data.items[0];
+  getChannelInfoById: async (id: string): Promise<Channel> => {
+    return (
+      await axios.get(`${URL_API}/channels/getById/${id}`, {
+        params: {
+          part: 'snippet,statistics,contentDetails',
+        },
+      })
+    ).data[0];
   },
 
   getChannelsByUrl: async (
     url: string,
     type: Channel_url
-  ): Promise<ChannelBasic[]> => {
-    let response;
+  ): Promise<Channel[]> => {
+    let response: Array<Channel>;
 
     switch (type) {
       case Channel_url.STANDARD_URL: {
-        response = await axios.get(`${URL_YOUTUBE_API}/channels`, {
-          params: {
-            key: KEY,
-            part: 'snippet',
-            id: extractChannelIdFromUrl(url),
-          },
-        });
+        response = (
+          await axios.get(
+            `${URL_API}/channels/getById/${extractChannelIdFromUrl(url)}`
+          )
+        ).data;
         break;
       }
       case Channel_url.CUSTOM_URL: {
-        response = await axios.get(`${URL_YOUTUBE_API}/search`, {
-          params: {
-            key: KEY,
-            part: 'snippet',
-            maxResults: 25,
-            type: 'channel',
-            q: extractChannelIdFromUrl(url),
-          },
-        });
+        response = (
+          await axios.get(
+            `${URL_API}/channels/getByKeyWord/${extractChannelIdFromUrl(url)}`
+          )
+        ).data;
         break;
       }
     }
-    if (!response || response.data.items.length === 0) {
-      throw new Exception('Channel has not be found!', 404);
-    }
-    return response.data.items;
+    return response;
   },
 
   getChannelVideos: async (playlistId: string): Promise<Video[]> => {
-    let response;
-    const videos: Array<Video> = [];
-
-    do {
-      response = await axios.get(`${URL_YOUTUBE_API}/playlistItems`, {
-        params: {
-          key: KEY,
-          part: 'id,snippet',
-          maxResults: 50,
-          playlistId: playlistId,
-          pageToken: response?.data?.nextPageToken
-            ? response.data.nextPageToken
-            : '',
-        },
-      });
-      if (!response || response.data.items.length === 0) {
-        throw new Exception('Wrong id of channel playlist!', 404);
-      }
-
-      videos.push(...response.data.items);
-    } while (response.data.nextPageToken);
-    return videos;
+    return (await axios.get(`${URL_API}/channels/getVideos/${playlistId}`))
+      .data;
   },
 
-  getVideoComments: async (videoId: string): Promise<CommentThread[]> => {
-    let response;
-    const comments: Array<CommentThread> = [];
-
-    do {
-      response = await axios.get(`${URL_YOUTUBE_API}/commentThreads`, {
-        params: {
-          key: KEY,
-          part: 'snippet,replies',
-          maxResults: 100,
-          videoId: videoId,
-          pageToken: response?.data?.nextPageToken
-            ? response.data.nextPageToken
-            : '',
-        },
-      });
-      if (!response || response.data.items.length === 0) {
-        throw new Exception('Wrong id of video!', 404);
-      }
-      comments.push(...response.data.items);
-    } while (response.data.nextPageToken);
-    return response.data.items;
+  getVideoComments: async (videoId: string): Promise<Comment[]> => {
+    return (await axios.get(`${URL_API}/videos/getComments/${videoId}`)).data;
   },
 
   getVideosByTitle: async (title: string): Promise<Video[]> => {
-    const response = await axios.get(`${URL_YOUTUBE_API}/search`, {
-      params: {
-        key: KEY,
-        part: 'snippet',
-        maxResults: 25,
-        type: 'video',
-        q: title,
-      },
-    });
-    if (!response || response.data.items.length === 0) {
-      throw new Exception('The video has not be found!', 404);
-    }
-    return response.data.items;
+    return (await axios.get(`${URL_API}/videos/getByKeyWord/${title}`)).data;
   },
 
   getVideosByUrl: async (url: string): Promise<Video[]> => {
-    const response = await axios.get(`${URL_YOUTUBE_API}/videos`, {
-      params: {
-        key: KEY,
-        part: 'snippet',
-        maxResults: 25,
-        id: extractVideoIdFromUrl(url),
-      },
-    });
-    if (!response || response.data.items.length === 0) {
-      throw new Exception('The video has not be found!', 404);
-    }
-
-    return response.data.items;
+    return (
+      await axios.get(`${URL_API}/videos/getById/${extractVideoIdFromUrl(url)}`)
+    ).data;
   },
 
-  getVideoInfoById: async (videoId: string): Promise<VideoFullInfo> => {
-    const response = await axios.get(`${URL_YOUTUBE_API}/videos`, {
-      params: {
-        key: KEY,
-        part: 'snippet,statistics',
-        id: videoId,
-      },
-    });
-
-    if (!response || response.data.items.length === 0) {
-      throw new Exception('The video has not be found!', 404);
-    }
-    return response.data.items[0];
+  getVideoInfoById: async (videoId: string): Promise<Video> => {
+    return (
+      await axios.get(`${URL_API}/videos/getById/${videoId}`, {
+        params: {
+          part: 'snippet,statistics',
+        },
+      })
+    ).data[0];
   },
 };

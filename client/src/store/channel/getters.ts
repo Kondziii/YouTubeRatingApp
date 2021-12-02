@@ -1,10 +1,10 @@
 import { RootState } from './../types';
 import { GetterTree } from 'vuex';
 import { ChannelState } from './types';
-import { ChannelBasic, ChannelFullInfo } from '@/types/Channel';
+import { Channel } from '@/types/Channel';
 
 export default {
-  getChannels(state): ChannelBasic | unknown {
+  getChannels(state): Channel | unknown {
     return state.channels;
   },
 
@@ -12,7 +12,7 @@ export default {
     return state.isModalVisible;
   },
 
-  getConfirmedChannel(state): ChannelFullInfo | null {
+  getConfirmedChannel(state): Channel | null {
     return state.confirmedChannel;
   },
 

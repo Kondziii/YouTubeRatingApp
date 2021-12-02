@@ -12,9 +12,9 @@
         >
           <div class="row flex column items-center q-mb-sm">
             <q-avatar class="avatar">
-              <q-img :src="channel.snippet.thumbnails.default.url"></q-img>
+              <q-img :src="channel.image"></q-img>
             </q-avatar>
-            <h6 class="highlight">{{ channel.snippet.title }}</h6>
+            <h6 class="highlight">{{ channel.title }}</h6>
           </div>
           <div class="row q-gutter-lg">
             <div class="flex column items-center">
@@ -40,11 +40,11 @@
           </div>
 
           <div
-            v-if="!!channel.snippet.description"
+            v-if="!!channel.description"
             class="row q-mt-md"
             :style="{ textAlign: 'justify' }"
           >
-            <p>{{ channel.snippet.description }}</p>
+            <p>{{ channel.description }}</p>
           </div>
           <div :style="{ width: '100%' }" class="row q-mt-md">
             <p>Data utworzenia: {{ beginDate }}</p>
@@ -78,7 +78,7 @@
 <script lang="ts">
 import { ref, defineComponent, watch, computed } from 'vue';
 import { useStore } from '@/store/index';
-import { ChannelFullInfo } from '@/types/Channel';
+import { Channel } from '@/types/Channel';
 
 export default defineComponent({
   name: 'ConfirmChannelInfoModal',
@@ -89,12 +89,12 @@ export default defineComponent({
     const store = useStore();
     const isVisible = ref<boolean>(true);
 
-    const channel = computed<ChannelFullInfo>(() => {
+    const channel = computed<Channel>(() => {
       return store.getters['channel/getConfirmedChannel'];
     });
 
     const beginDate = computed<string>(() =>
-      new Date(channel.value.snippet.publishedAt).toLocaleDateString()
+      new Date(channel.value.publishedAt).toLocaleDateString()
     );
 
     const linkToChannel = computed<string>(

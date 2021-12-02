@@ -4,11 +4,11 @@
       <the-list-item
         v-for="channel in channels"
         type="channels"
-        :key="channel.id.channelId"
-        :img="channel.snippet.thumbnails.default.url"
-        :title="channel.snippet.title"
-        :id="channel.id?.channelId || channel.id"
-        :selected="isChannelSelected(channel.id?.channelId || channel.id)"
+        :key="channel.id"
+        :img="channel.image"
+        :title="channel.title"
+        :id="channel.id"
+        :selected="isChannelSelected(channel.id)"
         @onClick="selectChannel"
       ></the-list-item>
     </template>
@@ -16,7 +16,7 @@
 </template>
 
 <script lang="ts">
-import { ChannelBasic } from '@/types/Channel';
+import { Channel } from '@/types/Channel';
 import { defineComponent, onBeforeMount, PropType } from 'vue';
 import TheListItem from '@/components/TheListItem.vue';
 import ConfirmModalBasic from '@/components/Modals/ConfirmModalBasic.vue';
@@ -31,7 +31,7 @@ export default defineComponent({
 
   props: {
     channels: {
-      type: Array as PropType<ChannelBasic[]>,
+      type: Array as PropType<Channel[]>,
       required: true,
     },
 
@@ -50,24 +50,9 @@ export default defineComponent({
   setup(props, context) {
     onBeforeMount(() => {
       if (props.confirmed) {
-        const confirmedChannel = props.channels.find((e) => {
-          typeof e?.id === 'string' ? e.id : e.id.channelId;
-        });
-        if (confirmedChannel) {
-          context.emit(
-            'update:selectedItemId',
-            typeof confirmedChannel?.id === 'string'
-              ? confirmedChannel.id
-              : confirmedChannel.id.channelId
-          );
-        }
+        selectChannel(props.confirmed);
       } else {
-        context.emit(
-          'update:selectedItemId',
-          typeof props.channels[0]?.id === 'string'
-            ? props.channels[0].id
-            : props.channels[0]?.id.channelId || ''
-        );
+        selectChannel(props.channels[0].id);
       }
     });
 

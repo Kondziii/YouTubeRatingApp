@@ -54,8 +54,8 @@
             mode="out-in"
           >
             <the-list-item
-              :img="confirmed.snippet.thumbnails.default.url"
-              :title="confirmed.snippet.title"
+              :img="confirmed.image"
+              :title="confirmed.title"
               :id="confirmed.id"
               :key="confirmed.id"
               model="formItem"
@@ -254,17 +254,16 @@
 
 <script lang="ts">
 import Evaluate, { EvaluateType } from '@/types/Evaluate';
-import { computed, defineComponent, PropType, reactive } from 'vue';
-import { ref } from 'vue';
+import { computed, defineComponent, PropType, reactive, ref } from 'vue';
 import { useStore } from '../../store/index';
 import useDateRules from '@/hooks/useDateRules';
 import { useChannelActions } from '@/store/channel/actions';
-import { ChannelFullInfo } from '@/types/Channel';
+import { Channel } from '@/types/Channel';
 import TheListItem from '@/components/TheListItem.vue';
 import BasicModal from '../Modals/BasicModal.vue';
 import { useRouter } from 'vue-router';
 import { useVideoActions } from '@/store/video/actions';
-import { VideoFullInfo } from '@/types/Video';
+import { Video } from '@/types/Video';
 import EvaluateActions from '@/types/EvaluateActions';
 import { COMMENTS_LIMIT, VIDEOS_LIMIT } from '../../../config';
 
@@ -277,10 +276,11 @@ export default defineComponent({
     selectedTab: {
       type: String as PropType<Evaluate>,
       required: true,
+      default: 'channels',
     },
 
     confirmed: {
-      type: Object as PropType<ChannelFullInfo | VideoFullInfo>,
+      type: Object as PropType<Channel | Video>,
       required: false,
     },
   },

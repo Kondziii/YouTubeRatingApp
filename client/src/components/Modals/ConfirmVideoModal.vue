@@ -4,12 +4,12 @@
       <the-list-item
         v-for="video in videos"
         type="videos"
-        :id="video.id?.videoId || video.id"
-        :key="video.id?.videoId || video.id"
-        :img="video.snippet.thumbnails.default.url"
-        :title="video.snippet.title"
+        :id="video.id"
+        :key="video.id"
+        :img="video.image"
+        :title="video.title"
         @onClick="selectVideo"
-        :selected="isVideoSelected(video.id?.videoId || video.id)"
+        :selected="isVideoSelected(video.id)"
       ></the-list-item>
     </template>
   </confirm-modal-basic>
@@ -18,7 +18,7 @@
 <script lang="ts">
 import { defineComponent, onBeforeMount, PropType } from 'vue';
 import ConfirmModalBasic from '@/components/Modals/ConfirmModalBasic.vue';
-import Video from '@/types/Video';
+import { Video } from '@/types/Video';
 import TheListItem from '@/components/TheListItem.vue';
 
 export default defineComponent({
@@ -43,28 +43,16 @@ export default defineComponent({
     confirmed: {
       type: String,
       required: false,
+      default: '',
     },
   },
 
   setup(props, context) {
     onBeforeMount(() => {
       if (props.confirmed) {
-        const confirmedVideo = props.videos.find((e) => {
-          typeof e?.id === 'string' ? e.id : e.id.videoId;
-        });
-        if (confirmedVideo) {
-          selectVideo(
-            typeof confirmedVideo?.id === 'string'
-              ? confirmedVideo.id
-              : confirmedVideo.id.videoId
-          );
-        }
+        selectVideo(props.confirmed);
       } else {
-        selectVideo(
-          typeof props.videos[0]?.id === 'string'
-            ? props.videos[0].id
-            : props.videos[0]?.id.videoId || ''
-        );
+        selectVideo(props.videos[0].id);
       }
     });
 

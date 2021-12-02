@@ -5,7 +5,6 @@ import { ChannelState } from './types';
 import youtube from '@/data/yt-api';
 import { ChannelMutations } from './mutations';
 import { namespaces } from '../index';
-import Exception from '@/others/exception';
 import Channel_url from '@/enums/Channel_url';
 import useActions from '@/hooks/useActions';
 import EvaluateActions from '@/types/EvaluateActions';
@@ -44,27 +43,30 @@ export default {
         const channels = await youtube.getChannelsByTitle(payload);
         commit(ChannelMutations.SET_CHANNELS, channels);
         dispatch(ChannelActions.toggleModal, true);
-      } catch (error) {
-        if (error instanceof Exception) {
-          dispatch(
-            errorActions.setError,
-            {
-              is: true,
-              title: 'Nie znaleziono kanału',
-              message: `Ups. Nie znaleziono żadnego kanału pasującego do podanej nazwy: ${payload}`,
-            },
-            { root: true }
-          );
-        } else {
-          dispatch(
-            errorActions.setError,
-            {
-              is: true,
-              title: 'Błąd serwera',
-              message: `Ups. Wystąpił błąd z serwerem.`,
-            },
-            { root: true }
-          );
+      } catch (error: any) {
+        if (error.response) {
+          const status = error.response.status;
+          if (status === 404) {
+            dispatch(
+              errorActions.setError,
+              {
+                is: true,
+                title: 'Nie znaleziono kanału',
+                message: `Ups. Nie znaleziono żadnego kanału pasującego do podanej nazwy: ${payload}`,
+              },
+              { root: true }
+            );
+          } else if (status === 500) {
+            dispatch(
+              errorActions.setError,
+              {
+                is: true,
+                title: 'Błąd serwera',
+                message: `Ups. Wystąpił błąd z serwerem lub przekroczono limit.`,
+              },
+              { root: true }
+            );
+          }
         }
       }
     }
@@ -103,27 +105,30 @@ export default {
         const channels = await youtube.getChannelsByUrl(payload, type);
         commit(ChannelMutations.SET_CHANNELS, channels);
         dispatch(ChannelActions.toggleModal, true);
-      } catch (error) {
-        if (error instanceof Exception) {
-          dispatch(
-            errorActions.setError,
-            {
-              is: true,
-              title: 'Nie znaleziono kanału',
-              message: `Ups. Nie znaleziono żadnego kanału pasującego do podanego url: ${payload}`,
-            },
-            { root: true }
-          );
-        } else {
-          dispatch(
-            errorActions.setError,
-            {
-              is: true,
-              title: 'Błąd serwera',
-              message: `Ups. Wystąpił błąd z serwerem.`,
-            },
-            { root: true }
-          );
+      } catch (error: any) {
+        if (error.response) {
+          const status = error.response.status;
+          if (status === 404) {
+            dispatch(
+              errorActions.setError,
+              {
+                is: true,
+                title: 'Nie znaleziono kanału',
+                message: `Ups. Nie znaleziono żadnego kanału pasującego do podanego url: ${payload}`,
+              },
+              { root: true }
+            );
+          } else if (status === 500) {
+            dispatch(
+              errorActions.setError,
+              {
+                is: true,
+                title: 'Błąd serwera',
+                message: `Ups. Wystąpił błąd z serwerem.`,
+              },
+              { root: true }
+            );
+          }
         }
       }
     }
@@ -141,28 +146,31 @@ export default {
       setTimeout(() => {
         dispatch(ChannelActions.toggleInfoModal, true);
       }, 300);
-    } catch (error) {
-      if (error instanceof Exception) {
-        commit(ChannelMutations.SET_CONFIRMED_CHANNEL, null);
-        dispatch(
-          errorActions.setError,
-          {
-            is: true,
-            title: 'Wystąpił błąd',
-            message: `Ups. wystąpił błąd z odnalezieniem zatwierdzonego kanału: ${payload}`,
-          },
-          { root: true }
-        );
-      } else {
-        dispatch(
-          errorActions.setError,
-          {
-            is: true,
-            title: 'Błąd serwera',
-            message: `Ups. Wystąpił błąd z serwerem.`,
-          },
-          { root: true }
-        );
+    } catch (error: any) {
+      if (error.response) {
+        const status = error.response.status;
+        if (status === 404) {
+          commit(ChannelMutations.SET_CONFIRMED_CHANNEL, null);
+          dispatch(
+            errorActions.setError,
+            {
+              is: true,
+              title: 'Wystąpił błąd',
+              message: `Ups. wystąpił błąd z odnalezieniem zatwierdzonego kanału: ${payload}`,
+            },
+            { root: true }
+          );
+        } else if (status === 500) {
+          dispatch(
+            errorActions.setError,
+            {
+              is: true,
+              title: 'Błąd serwera',
+              message: `Ups. Wystąpił błąd z serwerem.`,
+            },
+            { root: true }
+          );
+        }
       }
     }
   },

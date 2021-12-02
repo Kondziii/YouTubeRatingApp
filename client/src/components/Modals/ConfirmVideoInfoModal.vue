@@ -17,13 +17,13 @@
         >
           <q-card-section
             class="q-pt-none flex column justify-between items-center q-mt-md"
-            :style="{ paddingBottom: '0', minWidth: '47vh' }"
+            :style="{ paddingBottom: '0', minHeight: '47vh' }"
           >
             <div class="row flex column items-center q-mb-sm">
               <q-avatar class="avatar">
-                <q-img :src="video.snippet.thumbnails.default.url"></q-img>
+                <q-img :src="video.image"></q-img>
               </q-avatar>
-              <h6 class="highlight">{{ video.snippet.title }}</h6>
+              <h6 class="highlight">{{ video.title }}</h6>
             </div>
             <div class="row q-gutter-lg justify-center align-center">
               <div class="flex column items-center">
@@ -79,7 +79,7 @@
                 max-width: 90vw;
               "
             >
-              <p>{{ video.snippet.description }}</p>
+              <p>{{ video.description }}</p>
             </div>
             <div
               :style="{ width: '100%' }"
@@ -117,7 +117,7 @@
 
 <script lang="ts">
 import { useStore } from '@/store/index';
-import { VideoFullInfo } from '@/types/Video';
+import { Video } from '@/types/Video';
 import { computed, defineComponent, ref, watch } from 'vue';
 
 export default defineComponent({
@@ -129,7 +129,7 @@ export default defineComponent({
     const isVisible = ref<boolean>(true);
     const store = useStore();
 
-    const video = computed<VideoFullInfo>(
+    const video = computed<Video>(
       () => store.getters['video/getConfirmedVideo']
     );
 
@@ -138,7 +138,7 @@ export default defineComponent({
     );
 
     const beginDate = computed<string>(() =>
-      new Date(video.value.snippet.publishedAt).toLocaleDateString()
+      new Date(video.value.publishedAt).toLocaleDateString()
     );
 
     watch(isVisible, () => {
