@@ -86,4 +86,10 @@ export default defineComponent({
   @include card($dark-2);
   min-width: 300px;
 }
+
+@media (min-width: $breakpoint-xs-max) {
+  .card {
+    min-width: 400px;
+  }
+}
 </style>

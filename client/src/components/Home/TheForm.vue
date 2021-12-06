@@ -88,19 +88,11 @@
             name="settings"
             mode="out-in"
           >
-            <div class="q-gutter-md" v-if="isAdvancedSettingsVisible">
-              <div v-if="selectedTab !== 'videos'" class="q-mb-lg">
-                <q-slider
-                  dark
-                  :min="1"
-                  :max="100"
-                  color="red"
-                  :label-value="'Minimalna liczba filmików: ' + videosLimit"
-                  label-always
-                  v-model="videosLimit"
-                />
-              </div>
-              <div>
+            <div
+              :class="selectedTab === 'videos' ? 'q-gutter-xs' : 'q-gutter-sm'"
+              v-if="isAdvancedSettingsVisible"
+            >
+              <div v-if="selectedTab === 'channels'">
                 <q-slider
                   dark
                   :min="1"
@@ -204,12 +196,20 @@
                   </transition>
                 </div>
               </transition>
-              <q-checkbox
-                v-model="useSubComments"
-                label="Uwzględniaj podkomentarze"
-                color="red"
-                dark
-              />
+              <div class="flex column justify-start q-gutter-y-sm">
+                <q-checkbox
+                  v-model="useSubComments"
+                  label="Uwzględniaj podkomentarze"
+                  color="red"
+                  dark
+                />
+                <q-checkbox
+                  v-model="useAuthorAnswers"
+                  label="Uwzględniaj odpowiedzi autora"
+                  color="red"
+                  dark
+                />
+              </div>
             </div>
           </transition>
         </div>
@@ -265,7 +265,7 @@ import { useRouter } from 'vue-router';
 import { useVideoActions } from '@/store/video/actions';
 import { Video } from '@/types/Video';
 import EvaluateActions from '@/types/EvaluateActions';
-import { COMMENTS_LIMIT, VIDEOS_LIMIT } from '../../../config';
+import { COMMENTS_LIMIT } from '../../../config';
 
 export default defineComponent({
   name: 'TheForm',
@@ -363,9 +363,9 @@ export default defineComponent({
       isAdvancedSettingsVisible.value = !isAdvancedSettingsVisible.value;
     };
     const commentsLimit = ref<number>(COMMENTS_LIMIT);
-    const videosLimit = ref<number>(VIDEOS_LIMIT);
     const useTime = ref<boolean>(false);
     const useSubComments = ref<boolean>(true);
+    const useAuthorAnswers = ref<boolean>(false);
     const { dateErr, beginDate, endDate, dateRules } = useDateRules();
 
     // form reset
@@ -470,10 +470,10 @@ export default defineComponent({
       inputHint,
       isAdvancedSettingsVisible,
       setIsAdvancedSettingsVisible,
-      videosLimit,
       commentsLimit,
       useTime,
       useSubComments,
+      useAuthorAnswers,
       beginDate,
       endDate,
       onReset,

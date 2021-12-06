@@ -1,6 +1,6 @@
 <template>
   <basic-container type="card--transparent">
-    <the-header></the-header>
+    <the-form-header></the-form-header>
     <basic-tabs
       :items="items"
       :selectedTab="selectedTab"
@@ -52,7 +52,7 @@
 
 <script lang="ts">
 import { computed, defineComponent, reactive, ref } from 'vue';
-import TheHeader from '@/components/Home/TheHeader.vue';
+import TheFormHeader from '@/components/Home/TheFormHeader.vue';
 import TheForm from '@/components/Home/TheForm.vue';
 import useTabs from '@/hooks/useTabs';
 import ConfirmChannelModal from '@/components/Modals/ConfirmChannelModal.vue';
@@ -72,7 +72,7 @@ export default defineComponent({
   name: 'Home',
 
   components: {
-    TheHeader,
+    TheFormHeader,
     TheForm,
     ConfirmChannelModal,
     ConfirmChannelInfoModal,
