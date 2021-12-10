@@ -17,7 +17,7 @@ export const useEvaluateActions = (): typeof EvaluateActions => {
 };
 
 export default {
-  [EvaluateActions.setParams]({ commit }, payload: EvaluateState) {
-    commit(EvaluateMutations.SET_PARAMS, payload);
+  [EvaluateActions.setParams]({ commit, state }, payload: { params: unknown }) {
+    commit(EvaluateMutations.SET_PARAMS, { ...state.params, ...payload });
   },
 } as ActionTree<EvaluateState, RootState>;

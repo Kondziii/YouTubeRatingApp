@@ -132,6 +132,7 @@ export interface Video {
   title: string;
   publishedAt: string;
   image: string;
+  imageHigh: string;
   statistics?: {
     viewCount: number;
     favoriteCount: number;

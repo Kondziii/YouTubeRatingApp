@@ -1,4 +1,6 @@
-import { ref, watch } from 'vue';
+import { Channel } from './../types/Channel';
+import { ref, watch, computed } from 'vue';
+import { useStore } from '@/store/index';
 
 interface DateRules {
   dateErr: {
@@ -14,9 +16,25 @@ interface DateRules {
 }
 
 export default (): DateRules => {
+  const store = useStore();
+  const computedChannel = computed<Channel | null>(
+    () => store.getters['channel/getConfirmedChannel']
+  );
+
   const dateErr = ref<boolean>(false);
   const beginDate = ref<string>('');
   const endDate = ref<string>('');
+
+  watch(computedChannel, (currVal) => {
+    if (currVal)
+      beginDate.value = currVal?.publishedAt
+        .split('T')[0]
+        .split('-')
+        .reverse()
+        .join('/');
+
+    endDate.value = new Date().toLocaleDateString().replaceAll('.', '/');
+  });
 
   const dateRules = (value: string): string | void => {
     if (!value || value.length === 0) {

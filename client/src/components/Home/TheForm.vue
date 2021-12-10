@@ -266,6 +266,7 @@ import { useVideoActions } from '@/store/video/actions';
 import { Video } from '@/types/Video';
 import EvaluateActions from '@/types/EvaluateActions';
 import { COMMENTS_LIMIT } from '../../../config';
+import { useEvaluateActions } from '@/store/evaluate/actions';
 
 export default defineComponent({
   name: 'TheForm',
@@ -290,6 +291,7 @@ export default defineComponent({
     const store = useStore();
     const channelActions = useChannelActions();
     const videoActions = useVideoActions();
+    const evaluateActions = useEvaluateActions();
 
     const actions = computed<EvaluateActions>(() =>
       props.selectedTab === 'channels' ? channelActions : videoActions
@@ -327,7 +329,7 @@ export default defineComponent({
         hint: {
           title:
             'Na przykład: Google Coding Interview With A Normal Software Engineer',
-          url: 'https://www.youtube.com/watch?v=rw4s4M3hFfs&ab_channel=Cl%C3%A9mentMihailescu',
+          url: 'Na przykład: https://www.youtube.com/watch?v=rw4s4M3hFfs&ab_channel=Cl%C3%A9mentMihailescu',
         },
       },
     };
@@ -426,6 +428,17 @@ export default defineComponent({
       message: 'Czy na pewno chcesz przejść do procesu oceniania?',
       confirm: true,
       confirmHandler: () => {
+        store.dispatch(evaluateActions.setParams, {
+          params: {
+            type: props.selectedTab,
+            useDates: useTime.value,
+            beginDate: beginDate.value,
+            endDate: endDate.value,
+            useSubComments: useSubComments.value,
+            useAuthorAnswers: useAuthorAnswers.value,
+          },
+        });
+
         props.selectedTab === 'channels'
           ? router.push(`/evaluate/channels/${confirmedChannel.value.id}`)
           : router.push(`/evaluate/videos/${confirmedVideo.value.id}`);

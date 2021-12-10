@@ -1,7 +1,7 @@
 import { RootState } from './../types';
 import { Module } from 'vuex';
 import { EvaluateState } from './type';
-import { COMMENTS_LIMIT } from 'config';
+import { COMMENTS_LIMIT } from '../../../config';
 import mutations from './mutations';
 import actions from './actions';
 import getters from './getters';

@@ -38,6 +38,7 @@ export const getVideosByKeyWord: RequestHandler = async (req, res, next) => {
           title: item.snippet.title,
           publishedAt: item.snippet.publishedAt,
           image: item.snippet.thumbnails.default.url,
+          imageHigh: item.snippet.thumbnails.high.url,
         } as Video;
       })
     );
@@ -74,6 +75,7 @@ export const getVideoById: RequestHandler = async (req, res, next) => {
           title: item.snippet.title,
           publishedAt: item.snippet.publishedAt,
           image: item.snippet.thumbnails.default.url,
+          imageHigh: item.snippet.thumbnails.high.url,
           statistics: query.part?.includes('statistics') && item.statistics,
         } as Video;
       })
