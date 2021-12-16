@@ -41,14 +41,14 @@ export default defineComponent({
   min-height: 100vh;
   display: flex;
   justify-content: center;
-  align-items: center;
-  margin-bottom: 30vh;
-  margin-top: 5vh;
+  align-items: flex-start;
+  margin-bottom: 25vh;
+  margin-top: 8vh;
 }
 
 @media (min-width: $breakpoint-md-max) {
   .container {
-    margin-bottom: 25vh;
+    margin-bottom: 22vh;
   }
 }
 

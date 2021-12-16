@@ -69,9 +69,6 @@ export default defineComponent({
   min-height: 100vh !important;
   overflow: hidden;
   position: relative;
-  display: flex;
-  justify-content: center;
-  align-items: center;
 }
 
 .background {
