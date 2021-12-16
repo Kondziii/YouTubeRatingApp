@@ -1,12 +1,12 @@
 import { Comment } from './../types/Comment';
 import { Sentiment } from './../types/Sentiment';
-import { getComments } from './helpers/getComments';
+import { getComments, stateCompound } from './helpers/getComments';
 import { VideoBySearch, VideoById, Video } from './../types/Video';
 import axios from 'axios';
 import { KEY, URL_YOUTUBE_API } from '../config';
 import { RequestHandler } from 'express';
+import { BASIC_SENTIMENT_THRESHOLD } from '../config';
 const vader = require('vader-sentiment');
-const translatte = require('translatte');
 
 export const getVideosByKeyWord: RequestHandler = async (req, res, next) => {
   const params = req.params as { keyWord: string };
@@ -85,10 +85,17 @@ export const getVideoById: RequestHandler = async (req, res, next) => {
 
 export const getVideoComments: RequestHandler = async (req, res, next) => {
   const params = req.params as { videoId: string };
-  const query = req.query as { channelId: string };
+  const query = req.query as unknown as {
+    channelId: string;
+    subtitles: boolean;
+  };
 
   try {
-    res.status(200).json(await getComments(params.videoId, query.channelId));
+    res
+      .status(200)
+      .json(
+        await getComments(params.videoId, query.channelId, query.subtitles)
+      );
   } catch (error: any) {
     next({ message: error.message, status: error.status });
   }
@@ -96,11 +103,18 @@ export const getVideoComments: RequestHandler = async (req, res, next) => {
 
 export const getVideoSentiment: RequestHandler = async (req, res, next) => {
   const params = req.params as { videoId: string };
-  const query = req.query as { channelId: string };
+  const query = req.query as unknown as {
+    channelId: string;
+    subtitles: boolean;
+  };
   let comments: Array<Comment>;
 
   try {
-    comments = await getComments(params.videoId, query.channelId || '');
+    comments = await getComments(
+      params.videoId,
+      query.channelId,
+      query.subtitles
+    );
 
     const count = {
       positive: 0,
@@ -114,19 +128,17 @@ export const getVideoSentiment: RequestHandler = async (req, res, next) => {
       compound: 0,
     };
     for (const comment of comments) {
-      const translated_comment = await translatte(comment.text, { to: 'en' });
       const sentiment: Sentiment =
-        await vader.SentimentIntensityAnalyzer.polarity_scores(
-          translated_comment.text
-        );
+        await vader.SentimentIntensityAnalyzer.polarity_scores(comment.text);
 
       sum.positive += sentiment.pos;
       sum.neutral += sentiment.neu;
       sum.negative += sentiment.neg;
       sum.compound += sentiment.compound;
 
-      if (sentiment.compound >= 0.05) count.positive++;
-      else if (sentiment.compound <= -0.05) count.negative++;
+      if (sentiment.compound >= BASIC_SENTIMENT_THRESHOLD) count.positive++;
+      else if (sentiment.compound <= -BASIC_SENTIMENT_THRESHOLD)
+        count.negative++;
       else count.neutral++;
     }
 
@@ -135,7 +147,11 @@ export const getVideoSentiment: RequestHandler = async (req, res, next) => {
     sum.neutral /= comments.length;
     sum.compound /= comments.length;
 
+    const vote = stateCompound(sum.compound, comments.length);
+
     res.status(200).json({
+      vote: vote,
+      comments: comments.length,
       count,
       sum,
     });

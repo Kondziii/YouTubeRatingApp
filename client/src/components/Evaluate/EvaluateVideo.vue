@@ -6,10 +6,10 @@
     <q-separator dark />
     <q-card-section v-if="!!video">
       <div class="row justify-center items-start q-col-gutter-lg">
-        <div class="col-xs-12 col-sm-6 col-md-4">
-          <img :style="{ width: '100%' }" :src="video.imageHigh" alt="" />
+        <div class="col-xs-12 col-sm-6 col-md-5">
+          <youtube height="250" width="100%" :src="video.id"></youtube>
         </div>
-        <div class="col-xs-12 col-sm-6 col-md-8">
+        <div class="col-xs-12 col-sm-6 col-md-7">
           <ul style="list-style: none">
             <li class="video-title">{{ video.title }}</li>
             <li class="video-details">

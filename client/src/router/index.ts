@@ -4,6 +4,7 @@ const Info = () => import('../views/Info.vue');
 const EvaluateChannel = () =>
   import('../components/Evaluate/EvaluateChannel.vue');
 const EvaluateVideo = () => import('../components/Evaluate/EvaluateVideo.vue');
+const History = () => import('../views/History.vue');
 
 const routes: Array<RouteRecordRaw> = [
   {
@@ -27,6 +28,11 @@ const routes: Array<RouteRecordRaw> = [
     name: 'EvaluateVideo',
     component: EvaluateVideo,
     props: true,
+  },
+  {
+    path: '/history',
+    name: 'History',
+    component: History,
   },
 ];
 

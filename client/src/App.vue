@@ -1,6 +1,7 @@
 <template>
   <q-layout class="root">
     <div class="background" />
+    <the-header></the-header>
     <router-view v-slot="slotProps">
       <transition
         enter-active-class="animate__animated animate__fadeInUp"
@@ -25,11 +26,13 @@ import TheFooter from '@/components/TheFooter.vue';
 import { useStore } from '@/store/index';
 import BasicModal from '@/components/Modals/BasicModal.vue';
 import { useErrorActions } from '@/store/error/actions';
+import TheHeader from '@/components/TheHeader.vue';
 
 export default defineComponent({
   components: {
     TheFooter,
     BasicModal,
+    TheHeader,
   },
 
   setup() {
@@ -99,7 +102,6 @@ export default defineComponent({
 
 .q-btn .q-icon {
   font-size: 1rem !important;
-  margin-right: 6px !important;
 }
 
 #close .q-icon {
