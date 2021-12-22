@@ -7,6 +7,8 @@ import { KEY, URL_YOUTUBE_API } from '../config';
 import { RequestHandler } from 'express';
 import { BASIC_SENTIMENT_THRESHOLD } from '../config';
 const vader = require('vader-sentiment');
+const { Language } = require('node-nlp');
+const LanguageDetector = new Language();
 
 export const getVideosByKeyWord: RequestHandler = async (req, res, next) => {
   const params = req.params as { keyWord: string };
@@ -116,44 +118,67 @@ export const getVideoSentiment: RequestHandler = async (req, res, next) => {
       query.subtitles
     );
 
-    const count = {
+    const commentCount = {
+      all: 0,
+      processed: 0,
+      excluded: 0,
+    };
+
+    const commentVoteCount = {
       positive: 0,
       neutral: 0,
       negative: 0,
     };
-    const sum = {
+
+    type avgOptions = {
+      [key: string]: number;
+    };
+
+    const avg: avgOptions = {
       positive: 0,
       neutral: 0,
       negative: 0,
       compound: 0,
     };
+
     for (const comment of comments) {
-      const sentiment: Sentiment =
-        await vader.SentimentIntensityAnalyzer.polarity_scores(comment.text);
+      const { language } = LanguageDetector.guessBest(comment.text, [
+        'en',
+        'pl',
+      ]);
 
-      sum.positive += sentiment.pos;
-      sum.neutral += sentiment.neu;
-      sum.negative += sentiment.neg;
-      sum.compound += sentiment.compound;
+      if (language === 'English') {
+        const sentiment: Sentiment =
+          await vader.SentimentIntensityAnalyzer.polarity_scores(comment.text);
 
-      if (sentiment.compound >= BASIC_SENTIMENT_THRESHOLD) count.positive++;
-      else if (sentiment.compound <= -BASIC_SENTIMENT_THRESHOLD)
-        count.negative++;
-      else count.neutral++;
+        if (sentiment.compound >= BASIC_SENTIMENT_THRESHOLD)
+          commentVoteCount.positive++;
+        else if (sentiment.compound <= BASIC_SENTIMENT_THRESHOLD)
+          commentVoteCount.negative++;
+        else commentVoteCount.neutral++;
+
+        avg.positive += sentiment.pos;
+        avg.neutral += sentiment.neu;
+        avg.negative += sentiment.neg;
+        avg.compound += sentiment.compound;
+      } else {
+        commentCount.excluded++;
+      }
+      commentCount.all++;
     }
+    commentCount.processed = commentCount.all - commentCount.excluded;
 
-    sum.positive /= comments.length;
-    sum.negative /= comments.length;
-    sum.neutral /= comments.length;
-    sum.compound /= comments.length;
+    Object.keys(avg).forEach((key) => {
+      avg[key] /= commentCount.processed;
+    });
 
-    const vote = stateCompound(sum.compound, comments.length);
+    const vote = stateCompound(avg.compound, commentCount.processed);
 
     res.status(200).json({
-      vote: vote,
-      comments: comments.length,
-      count,
-      sum,
+      vote,
+      commentCount,
+      commentVoteCount,
+      avg,
     });
   } catch (error: any) {
     next({ message: error.message, status: error.status });

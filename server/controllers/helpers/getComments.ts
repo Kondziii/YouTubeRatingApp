@@ -96,12 +96,12 @@ export const stateCompound = (
       : negativeThreshold;
 
   if (compound >= BASIC_SENTIMENT_THRESHOLD) {
-    if (compound >= positiveThreshold) vote = 'bardzo pozytywny';
-    else vote = 'pozytywny';
+    if (compound >= positiveThreshold) vote = 'very positive';
+    else vote = 'positive';
   } else if (compound <= BASIC_SENTIMENT_THRESHOLD) {
-    if (compound <= negativeThreshold) vote = 'bardzo negatywny';
-    else vote = 'negatywny';
-  } else vote = 'neutralny';
+    if (compound <= negativeThreshold) vote = 'very negative';
+    else vote = 'negative';
+  } else vote = 'neutral';
 
   return vote;
 };

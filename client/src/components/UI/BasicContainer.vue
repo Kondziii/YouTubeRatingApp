@@ -43,7 +43,7 @@ export default defineComponent({
   justify-content: center;
   align-items: flex-start;
   margin-bottom: 25vh;
-  margin-top: 8vh;
+  margin-top: 10vh;
 }
 
 @media (min-width: $breakpoint-md-max) {
