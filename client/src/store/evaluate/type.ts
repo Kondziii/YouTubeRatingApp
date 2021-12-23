@@ -1,13 +1,7 @@
-import Evaluate from '@/types/Evaluate';
+import { EvaluateParams } from './../../types/EvaluateParams';
+import { Sentiment } from './../../types/Sentiment';
 
 export interface EvaluateState {
-  params: {
-    type: Evaluate;
-    minComments: number;
-    useDates: boolean;
-    beginDate: string | null;
-    endDate: string | null;
-    useSubComments: boolean;
-    useAuthorAnswers: boolean;
-  };
+  params: EvaluateParams | null;
+  result: Sentiment | null;
 }

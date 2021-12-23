@@ -11,27 +11,30 @@
     </template>
     <template #links>
       <p>
-        Link do filmiku znajdziesz po jego odtworzeniu podobnie jak na
-        zdjęciach. Link skopiowany powinien wyglądać nastęująco:
+        You can find address url in YouTube after playing the video. It should
+        look similar to the examples below.
       </p>
       <ul class="nested wrap-text q-mb-md">
         <li>
           https://www.youtube.com/watch?v=DLBgtb4nqnQ&t=3s&ab_channel=GoogleDevelopers
-          (zalecany)
+          (recommended)
         </li>
         <li>v=DLBgtb4nqnQ</li>
       </ul>
     </template>
     <template #advanced-settings>
       <ul class="nested q-mb-md">
-        <li>
-          Minimalna liczby komentarzy - jeżeli filmik ma mniej niż ustalony próg
-          komentarzy (dotyczy to tylko komentarzy najwyższego rzędu, bez
-          uwzględniania podkomentarzy) to nie zostanie oceniony.
+        <li class="q-mb-xs">
+          <span style="font-weight: bold">Take subcomments into account </span>
+          - default yes, it means that answers for comments will also take part
+          in evaluation
         </li>
-        <li>
-          Uwzględniaj podkomentarze - domyślnie tak, oznacza, że podkomentarze
-          również biorą udział w analizie sentymentu
+        <li class="q-mb-xs">
+          <span style="font-weight: bold"
+            >Take author's answers into account</span
+          >
+          - default no, it means that answers for comments written by the author
+          of video will be excluded from evaluation.
         </li>
       </ul>
     </template>

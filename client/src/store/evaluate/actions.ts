@@ -1,3 +1,4 @@
+import { Sentiment } from './../../types/Sentiment';
 import useActions from '@/hooks/useActions';
 import { EvaluateMutations } from './mutations';
 import { RootState } from './../types';
@@ -7,6 +8,7 @@ import { namespaces } from '..';
 
 const EvaluateActions = {
   setParams: 'setParams',
+  setResult: 'setResult',
 };
 
 export const useEvaluateActions = (): typeof EvaluateActions => {
@@ -19,5 +21,9 @@ export const useEvaluateActions = (): typeof EvaluateActions => {
 export default {
   [EvaluateActions.setParams]({ commit, state }, payload: { params: unknown }) {
     commit(EvaluateMutations.SET_PARAMS, { ...state.params, ...payload });
+  },
+
+  [EvaluateActions.setResult]({ commit }, payload: Sentiment) {
+    commit(EvaluateMutations.SET_RESULT, payload);
   },
 } as ActionTree<EvaluateState, RootState>;

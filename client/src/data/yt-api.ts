@@ -4,6 +4,7 @@ import Channel_url from '@/enums/Channel_url';
 import { Video } from '@/types/Video';
 import { Comment } from '@/types/CommentThread';
 import { URL_API } from '../../config';
+import { Sentiment } from '@/types/Sentiment';
 
 const extractChannelIdFromUrl = (url: string): string => {
   if (url.lastIndexOf('/') === -1) {
@@ -92,5 +93,20 @@ export default {
         },
       })
     ).data[0];
+  },
+
+  getVideoSentiment: async (
+    videoId: string,
+    channelId: string,
+    subcomments: boolean
+  ): Promise<Sentiment> => {
+    return (
+      await axios.get(`${URL_API}/videos/getSentiment/${videoId}`, {
+        params: {
+          channelId: channelId,
+          subcomments: subcomments,
+        },
+      })
+    ).data;
   },
 };

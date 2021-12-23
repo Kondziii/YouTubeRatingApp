@@ -1,3 +1,5 @@
+import { EvaluateParams } from './../../types/EvaluateParams';
+import { EvaluateMutations } from './../evaluate/mutations';
 import { useErrorActions } from './../error/actions';
 import { VideoMutations } from './mutations';
 import { RootState } from './../types';
@@ -15,6 +17,7 @@ const videoActions: EvaluateActions = {
   fetchFullInfo: 'fetchFullInfo',
   toggleInfoModal: 'toggleInfoModal',
   resetConfirmed: 'resetConfirmed',
+  analyzeSentiment: 'analyzeSentiment',
 };
 
 export const useVideoActions = (): typeof videoActions => {
@@ -32,8 +35,8 @@ export default {
         errorActions.setError,
         {
           is: true,
-          title: 'Wystapił błąd',
-          message: `Ups. Podana nazwa przypomina bardziej adres url, a nie nazwę filmiku. Upewnij się, że wybrałeś odpowiednią opcję.`,
+          title: 'Error occurred',
+          message: `Oops. The entered value is more like url address. Make sure you've selected correct option.`,
         },
         { root: true }
       );
@@ -51,8 +54,8 @@ export default {
               errorActions.setError,
               {
                 is: true,
-                title: 'Nie znaleziono filmiku',
-                message: `Ups. Nie znaleziono żadnego filmiku pasującego do podanej nazwy: ${payload}`,
+                title: `The video hasn't been found`,
+                message: `Oops. There hasn't been found any result that corresponds to the entered value: ${payload}`,
               },
               { root: true }
             );
@@ -61,8 +64,8 @@ export default {
               errorActions.setError,
               {
                 is: true,
-                title: 'Błąd serwera',
-                message: `Ups. Wystąpił błąd z serwerem.`,
+                title: 'Server error',
+                message: `Oops. Error occurred to the exceeding the available limit for youtube data.`,
               },
               { root: true }
             );
@@ -82,8 +85,8 @@ export default {
         errorActions.setError,
         {
           is: true,
-          title: 'Wystapił błąd',
-          message: `Ups. Podany adres url przypomina bardziej nazwę filmiku. Upewnij się, że wybrałeś odpowiednią opcję.`,
+          title: 'Error occurred',
+          message: `Oops. The entered value is more like a title. Make sure you've selected correct option.`,
         },
         { root: true }
       );
@@ -101,8 +104,8 @@ export default {
               errorActions.setError,
               {
                 is: true,
-                title: 'Nie znaleziono filmiku',
-                message: `Ups. Nie znaleziono żadnego filmiku pasującego do podanego adresu url: ${payload}`,
+                title: `The video hasn't been found`,
+                message: `Oops. There hasn't been found any result that corresponds to the entered value: ${payload}`,
               },
               { root: true }
             );
@@ -111,8 +114,8 @@ export default {
               errorActions.setError,
               {
                 is: true,
-                title: 'Błąd serwera',
-                message: `Ups. Wystąpił błąd z serwerem.`,
+                title: 'Server error',
+                message: `Oops. Error occurred to the exceeding the available limit for youtube data.`,
               },
               { root: true }
             );
@@ -131,7 +134,6 @@ export default {
     try {
       const video = await youtube.getVideoInfoById(payload);
       commit(VideoMutations.SET_CONFIRMED_VIDEO, video);
-      console.log(video);
       setTimeout(() => {
         dispatch(videoActions.toggleInfoModal, true);
       }, 300);
@@ -145,8 +147,8 @@ export default {
             errorActions.setError,
             {
               is: true,
-              title: 'Nie znaleziono filmiku',
-              message: `Ups. Nie znaleziono żadnego filmiku pasującego do podanego id: ${payload}`,
+              title: `The video hasn't been found`,
+              message: `Oops. There hasn't been found any results that corresponds to the entered value ${payload}`,
             },
             { root: true }
           );
@@ -155,8 +157,8 @@ export default {
             errorActions.setError,
             {
               is: true,
-              title: 'Błąd serwera',
-              message: `Ups. Wystąpił błąd z serwerem.`,
+              title: 'Server error',
+              message: `Oops. Error occurred to the exceeding the available limit for youtube data.`,
             },
             { root: true }
           );
@@ -171,5 +173,36 @@ export default {
 
   [videoActions.toggleInfoModal]({ commit }, payload: boolean) {
     commit(VideoMutations.SET_INFO_MODAL_STATE, payload);
+  },
+
+  async [videoActions.analyzeSentiment](
+    { commit, dispatch, rootGetters },
+    payload: { videoId: string; channelId: string }
+  ) {
+    const errorActions = useErrorActions();
+
+    const evaluateParams: EvaluateParams = rootGetters['evaluate/getParams'];
+
+    try {
+      const sentiment = await youtube.getVideoSentiment(
+        payload.videoId,
+        !evaluateParams.useAuthorAnswers ? payload.channelId : '',
+        evaluateParams.useSubComments
+      );
+      commit(`evaluate/${EvaluateMutations.SET_RESULT}`, sentiment, {
+        root: true,
+      });
+      console.log(sentiment);
+    } catch (error) {
+      dispatch(
+        errorActions.setError,
+        {
+          is: true,
+          title: 'Server error',
+          message: `Oops. Error occurred to the exceeding the available limit for youtube data.`,
+        },
+        { root: true }
+      );
+    }
   },
 } as ActionTree<VideoState, RootState>;

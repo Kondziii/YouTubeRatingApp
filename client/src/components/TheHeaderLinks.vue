@@ -1,7 +1,7 @@
 <template>
-  <router-link class="link" to="/">Ocena</router-link>
-  <router-link class="link" to="/learn-more">Pomoc</router-link>
-  <router-link class="link" to="/history">Historia</router-link>
+  <router-link class="link" to="/">Evaluate</router-link>
+  <router-link class="link" to="/learn-more">Help</router-link>
+  <router-link class="link" to="/history">History</router-link>
   <a class="link" href="https://youtube.com" target="_blank">YouTube</a>
 </template>
 

@@ -1,34 +1,29 @@
 <template>
   <basic-container type="card--normal--dark">
     <q-card-section>
-      <h1>Informacje dotyczące aplikacji</h1>
+      <h1>About application</h1>
     </q-card-section>
     <q-card-section>
       <ol>
         <li>
-          <p>Ogólne</p>
+          <p>General</p>
           <p>
-            YouTube to serwis internetowy, który powstał w 2005 roku i stał się
-            jednym z najbardziej popularnych i najbardziej rozpoznawalnych
-            serwisów w Internecie. Wedlug statystyk pochodzących z 2020 roku w
-            serwisie zarejestrwano ponad 37 milionów kanałów oraz szacuję się,
-            że ludzie z całego świata dostarczają około 500 godzin wideo
-            materiałów w każdej minucie na serwery Youtube.
+            YouTube is a website that was founded in 2005 and has become one of
+            the most popular and most recognizable websites in Internet.
+            According to statistics from 2020, over 37 milion channels have been
+            registered and it is being estimated that people all over the world
+            provide around 500 hours of content in every minute.
           </p>
           <p>
-            Tak duża liczba materiałów (często wiele kanałów lub filmików na ten
-            sam temat) stała się inspiracją do stworzenia aplikacji
-            umożliwiającej ich ocenę. W następstwie została stworzona aplikacja,
-            którą właśnie używasz - daje możliwość sprawdzenia jak konkretny
-            kanał czy filmik jest odbierany przez widzów serwisu Youtube. Ocena
-            jest dokonywana na podstawie analizy semantycznej komentarzy
-            zamieszczanych przez widzów pod filmikami. W skrócie analiza
-            sentymentu jest to jednoznaczna ocena wydźwięku wypowiedzi, czyli
-            stwierdzenie czy wypowiedź jest negatywna, neutralna czy pozytywna.
+            Such a huge number of channels and videos has became an inspiration
+            to create app that enables user to evaluate them based on comments.
+            Evaluation based on comments relies on performing its sentiment
+            analysis. The app is using library called vader sentiment. If you
+            want to get know more about it, you can just google it.
           </p>
         </li>
         <li>
-          <p>Instrukcja obsługi aplikacji</p>
+          <p>Instruction</p>
           <basic-tabs
             :items="items"
             :selectedTab="selectedTab"
@@ -61,11 +56,11 @@ export default defineComponent({
   setup() {
     const { items, selectedTab, setSelectedTab } = useTabs([
       {
-        label: 'Kanały',
+        label: 'Channels',
         value: 'channels',
       },
       {
-        label: 'Filmiki',
+        label: 'Videos',
         value: 'videos',
       },
     ]);

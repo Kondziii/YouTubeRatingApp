@@ -2,63 +2,59 @@
   <div class="instruction-container">
     <ol>
       <li>
-        <p>Wybierz sposób wyszukania {{ type }} - dostępne są dwie metody</p>
+        <p>Select search method for a {{ type }} - available two options</p>
         <ol type="a" class="nested">
           <li>
-            <p>po tytule</p>
+            <p>based on title</p>
             <slot name="title-img"></slot>
-            <p class="warn">Uwaga!</p>
+            <p class="warn">Warning!</p>
             <p>
-              Nie jest konieczne wpisywanie całej nazwy {{ type }}. Jednakże
-              jest to wysoce rekomendowane, ponieważ zwiększa prawdopodobieństwo
-              wyszukania {{ type }} o który ci chodzi.
+              There isn't necessary to enter whole name of the {{ type }}.
+              However, it's recommended because it increases the possibility to
+              find the {{ type }} that you intend to find.
             </p>
           </li>
           <li>
-            <p>po linku</p>
+            <p>based on url address</p>
             <slot name="url-img"></slot>
-            <p class="warn">Uwaga!</p>
+            <p class="warn">Warning!</p>
             <slot name="links"></slot>
           </li>
         </ol>
       </li>
       <li>
         <p>
-          Wpisz w pole nazwę lub link do {{ type }} zgodnie z wcześniejszym
-          wyborem i kliknij przycisk "Wyszukaj".
+          Enter the name or link to the {{ type }} according to chosen option
+          and then press button "Search"
         </p>
       </li>
       <li>
         <p>
-          Pojawi się okienko, w którym należy wybrać {{ type_ }}, który nas
-          interesuje i go zatwierdzić.
+          You should see the window that contains one or more {{ type }}s that
+          corresponds to the entered value. Just find your destination
+          {{ type }} and confirm it.
         </p>
       </li>
       <li>
-        <p>
-          Następnie możesz otworzyć i zmodyfikować ustawienia niestandardowe
-          klikając na przycisk "pokaż ustawienia niestandardowe", chociaż
-          zalecane jest aby pozostały domyślne. Ustawienia niestandardowe
-          zawierają następujące wartości:
-        </p>
+        <p>Now you can open advanced settings and modify its default values.</p>
         <slot name="advanced-settings"></slot>
       </li>
       <li>
         <p>
-          Kliknij przycisk "Przejdź do oceny" i następnie zaczekaj na rezultat.
+          Finally, press button "Evaluate" and wait for the evaluation result.
         </p>
-        <p class="warn">Uwaga!</p>
+        <p class="warn">Warning!</p>
         <slot name="time-warn"></slot>
       </li>
     </ol>
     <p>
-      Jeśli tu dotarłeś to już wszystko co potrzebne wiesz, więc możesz przejść
-      do korzystania z aplikacji.
+      If you get to this section, you probably know everything you have to know
+      about the app. Now is the time to evaluate something!
     </p>
     <q-card-actions class="flex justify-end">
       <q-btn
         :style="{ fontSize: '0.8rem !important' }"
-        label="Przejdź do aplikacji"
+        label="Move to evaluate"
         type="button"
         color="red"
         icon-right="arrow_forward"
@@ -90,15 +86,11 @@ export default defineComponent({
       router.push('/');
     };
     const type = computed(() =>
-      props.model === 'videos' ? 'filmiku' : 'kanału'
-    );
-    const type_ = computed(() =>
-      props.model === 'videos' ? 'filmik' : 'kanał'
+      props.model === 'videos' ? 'video' : 'channel'
     );
 
     return {
       type,
-      type_,
       directToApp,
     };
   },

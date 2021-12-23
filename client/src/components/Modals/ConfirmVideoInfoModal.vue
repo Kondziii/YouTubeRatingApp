@@ -3,7 +3,7 @@
     <q-dialog v-model="isVisible">
       <q-card class="card">
         <q-card-section class="section">
-          <div class="text-h5">Wybrałeś filmik:</div>
+          <div class="text-h5">Chosen video:</div>
         </q-card-section>
         <q-separator dark></q-separator>
         <q-scroll-area
@@ -27,45 +27,34 @@
             </div>
             <div class="row q-gutter-lg justify-center align-center">
               <div class="flex column items-center">
-                <q-tooltip>Polubienia</q-tooltip>
+                <q-tooltip>Likes</q-tooltip>
                 <p class="highlight">
                   {{
                     video.statistics.likeCount
                       ? video.statistics.likeCount
-                      : 'brak'
+                      : 'unknown'
                   }}
                 </p>
                 <label><q-icon name="thumb_up"></q-icon></label>
               </div>
               <div class="flex column items-center">
-                <q-tooltip>Nie polubienia</q-tooltip>
-                <p class="highlight">
-                  {{
-                    video.statistics.dislikeCount
-                      ? video.statistics.dislikeCount
-                      : 'brak'
-                  }}
-                </p>
-                <label><q-icon name="thumb_down"> </q-icon></label>
-              </div>
-              <div class="flex column items-center">
-                <q-tooltip>Liczba wyświetleń</q-tooltip>
+                <q-tooltip>Views count</q-tooltip>
                 <p class="highlight">
                   {{
                     video.statistics.viewCount
                       ? video.statistics.viewCount
-                      : 'brak'
+                      : 'unknown'
                   }}
                 </p>
                 <label><q-icon name="visibility"> </q-icon></label>
               </div>
               <div class="flex column items-center">
-                <q-tooltip>Liczba komentarzy</q-tooltip>
+                <q-tooltip>Comments count</q-tooltip>
                 <p class="highlight">
                   {{
                     video.statistics.commentCount
                       ? video.statistics.commentCount
-                      : 'brak'
+                      : 'unknown'
                   }}
                 </p>
                 <label><q-icon name="comment"> </q-icon></label>
@@ -85,11 +74,12 @@
               :style="{ width: '100%' }"
               class="row q-mt-sm flex justify-start"
             >
-              <p>Data dodania: {{ beginDate }}</p>
+              <p>Published date: {{ beginDate }}</p>
             </div>
 
             <div class="info row q-mt-md" :style="{ width: '100%' }">
-              Teraz możesz zmodyfikować ustawienia i przejść do oceny!
+              Now you can change advanced settings and move to evaluation
+              process!
             </div>
           </q-card-section>
         </q-scroll-area>
@@ -105,10 +95,10 @@
             :style="{ textDecoration: 'none' }"
           >
             <q-btn id="yt" color="red" flat icon-right="fab fa-youtube">
-              Zobacz w</q-btn
+              View in</q-btn
             >
           </a>
-          <q-btn class="q-ml-sm" label="Rozumiem" color="red" v-close-popup />
+          <q-btn class="q-ml-sm" label="Close" color="red" v-close-popup />
         </q-card-actions>
       </q-card>
     </q-dialog>

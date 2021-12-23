@@ -1,19 +1,19 @@
 <template>
   <header class="text-center">
     <h2 class="header q-pa-lg">
-      Czy chcesz zobaczyć jak odbierany jest kanał lub filmik przez widzów
-      portalu
+      Do you want to check the perception of a channel or video from the website
       <a href="https://www.youtube.com/" target="_blank"
         ><img class="logo" src="../../assets/logo-yt.png"
       /></a>
-      na podstawie komentarzy?
+      based on comments?
     </h2>
     <q-separator dark />
     <div class="q-px-sm q-my-lg">
       <p class="content-header q-pr-xs">
-        Jeśli tak to dobrze trafiłeś, wypełnij pole i przejdź do oceny.
+        If the answer is yes, you've found proper app. Just fill the form below
+        and move to evaluate.
       </p>
-      <router-link to="/learn-more"> Dowiedz się więcej </router-link>
+      <router-link to="/learn-more"> Learn more </router-link>
     </div>
   </header>
 </template>

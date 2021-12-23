@@ -5,6 +5,7 @@ type EvaluateActions = {
   fetchFullInfo: 'fetchFullInfo';
   toggleInfoModal: 'toggleInfoModal';
   resetConfirmed: 'resetConfirmed';
+  analyzeSentiment: 'analyzeSentiment';
 };
 
 export default EvaluateActions;

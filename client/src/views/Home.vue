@@ -84,11 +84,11 @@ export default defineComponent({
   setup() {
     const { items, selectedTab, setSelectedTab } = useTabs([
       {
-        label: 'Kanały',
+        label: 'Channels',
         value: 'channels',
       },
       {
-        label: 'Filmiki',
+        label: 'Videos',
         value: 'videos',
       },
     ]);
@@ -145,9 +145,9 @@ export default defineComponent({
     //changing tab when confirmed video or channel modal
     const agreeModalSelectTab = reactive({
       is: false,
-      title: 'Uwaga!',
-      message: `<p class="q-mb-xs">Czy na pewno chcesz zmienić kategorię wyszukiwania?</p>
-        <p>Utracisz wszystkie bieżące ustawienia.</p>`,
+      title: 'Warning!',
+      message: `<p class="q-mb-xs">Are you sure you want to change search category?</p>
+        <p>You will lose current settings.</p>`,
       confirm: true,
       htmlMessage: true,
       confirmHandler: () => {

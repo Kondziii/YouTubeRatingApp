@@ -36,7 +36,7 @@
           <div class="flex justify-center q-mt-xs-lg q-mt-md-md q-mb-md">
             <q-btn
               class="actions"
-              label="Wyszukaj"
+              label="Search"
               type="button"
               color="red"
               icon="search"
@@ -75,8 +75,8 @@
             ></q-icon>
             {{
               !isAdvancedSettingsVisible
-                ? 'Otwórz ustawienia zaawansowane'
-                : 'Schowaj ustawienia zaawansowane'
+                ? 'Show advanced settings'
+                : 'Hide advanced settings'
             }}<q-icon
               v-if="!isAdvancedSettingsVisible"
               name="arrow_drop_down"
@@ -98,7 +98,7 @@
                   :min="1"
                   :max="100"
                   color="red"
-                  :label-value="'Minimalna liczba komentarzy: ' + commentsLimit"
+                  :label-value="'Minimal comments amount: ' + commentsLimit"
                   label-always
                   v-model="commentsLimit"
                 />
@@ -107,9 +107,7 @@
               <div v-if="selectedTab !== 'videos'">
                 <q-toggle dark v-model="useTime" color="red" />
                 <label>{{
-                  !useTime
-                    ? 'Nie uwzględniaj ram czasowych'
-                    : 'Uwzględniaj ramy czasowe'
+                  !useTime ? 'Default date frames' : 'Custom date frames'
                 }}</label>
               </div>
 
@@ -119,7 +117,7 @@
                     <q-input
                       class="date-input"
                       filled
-                      label="Od"
+                      label="From"
                       color="black"
                       dark
                       label-color="grey-3"
@@ -160,7 +158,7 @@
                       label-color="grey-3"
                       color="black"
                       v-model="endDate"
-                      label="Do"
+                      label="To"
                       :rules="[(v) => dateRules(v)]"
                     >
                       <template v-slot:append>
@@ -191,7 +189,7 @@
                   </div>
                   <transition name="err">
                     <label v-show="dateErr" class="err-label"
-                      >Nieprawidłowe daty!</label
+                      >Incorrect dates!</label
                     >
                   </transition>
                 </div>
@@ -199,13 +197,13 @@
               <div class="flex column justify-start q-gutter-y-sm">
                 <q-checkbox
                   v-model="useSubComments"
-                  label="Uwzględniaj podkomentarze"
+                  label="Take subcomments into account"
                   color="red"
                   dark
                 />
                 <q-checkbox
                   v-model="useAuthorAnswers"
-                  label="Uwzględniaj odpowiedzi autora"
+                  label="Take author's answers into account"
                   color="red"
                   dark
                 />
@@ -218,7 +216,7 @@
     <q-separator dark />
     <q-card-actions class="flex justify-end align-center q-ma-md">
       <q-btn
-        label="Zresetuj"
+        label="Reset"
         type="reset"
         flat
         class="q-ml-sm actions"
@@ -226,7 +224,7 @@
       />
       <q-btn
         class="actions"
-        label="Przejdź do oceny"
+        label="Evaluate"
         type="submit"
         color="red"
         :loading="evaluateLoading"
@@ -300,11 +298,11 @@ export default defineComponent({
     const type = ref<EvaluateType>('title');
     const options = [
       {
-        label: 'Wyszukaj po nazwie',
+        label: 'Search by title',
         value: 'title',
       },
       {
-        label: 'Wyszukaj po linku',
+        label: 'Search by link',
         value: 'url',
       },
     ];
@@ -313,23 +311,23 @@ export default defineComponent({
     const inputParams = {
       channels: {
         label: {
-          title: 'Podaj nazwę kanału*',
-          url: 'Podaj link do kanału*',
+          title: 'Type channel title*',
+          url: 'Type link to channel*',
         },
         hint: {
-          title: 'Na przykład: Google Developers',
-          url: 'Na przykład: https://www.youtube.com/channel/UC0rqucBdTuFTjJiefW5t-IQ',
+          title: 'Example: Google Developers',
+          url: 'Example: https://www.youtube.com/channel/UC0rqucBdTuFTjJiefW5t-IQ',
         },
       },
       videos: {
         label: {
-          title: 'Podaj nazwę filmiku*',
-          url: 'Podaj link do filmiku*',
+          title: 'Type video title*',
+          url: 'Type link to video*',
         },
         hint: {
           title:
-            'Na przykład: Google Coding Interview With A Normal Software Engineer',
-          url: 'Na przykład: https://www.youtube.com/watch?v=rw4s4M3hFfs&ab_channel=Cl%C3%A9mentMihailescu',
+            'Example: Google Coding Interview With A Normal Software Engineer',
+          url: 'Example: https://www.youtube.com/watch?v=rw4s4M3hFfs&ab_channel=Cl%C3%A9mentMihailescu',
         },
       },
     };
@@ -373,9 +371,9 @@ export default defineComponent({
     // form reset
     const agreeModalReset = reactive({
       is: false,
-      title: 'Uwaga!',
-      message: `<p class="q-mb-xs">Czy na pewno chcesz zresetować formularz?</p>
-        <p>Utracisz wszystkie bieżace ustawienia.</p> `,
+      title: 'Warning!',
+      message: `<p class="q-mb-xs">Are you sure you want to reset the form?</p>
+        <p>You will lose current settings.</p> `,
       confirm: true,
       htmlMessage: true,
       confirmHandler: () => {
@@ -391,6 +389,7 @@ export default defineComponent({
       commentsLimit.value = COMMENTS_LIMIT;
       useTime.value = false;
       useSubComments.value = true;
+      useAuthorAnswers.value = false;
       beginDate.value = '';
       endDate.value = '';
       userInput.value = '';
@@ -424,8 +423,8 @@ export default defineComponent({
     const evaluateLoading = ref<boolean>(false);
     const agreeModalEvaluate = reactive({
       is: false,
-      title: 'Uwaga!',
-      message: 'Czy na pewno chcesz przejść do procesu oceniania?',
+      title: 'Warning!',
+      message: 'Are you sure you want to move to the evaluation process?',
       confirm: true,
       confirmHandler: () => {
         store.dispatch(evaluateActions.setParams, {

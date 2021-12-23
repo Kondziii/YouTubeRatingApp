@@ -2,7 +2,7 @@
   <q-dialog v-model="isVisible">
     <q-card class="card">
       <q-card-section class="section">
-        <div class="text-h5">Wybrałeś kanał:</div>
+        <div class="text-h5">Chosen channel:</div>
       </q-card-section>
       <q-separator dark></q-separator>
       <q-scroll-area dark style="height: 50vh; min-width: 100%">
@@ -22,20 +22,20 @@
                 {{
                   channel.statistics.subscriberCount
                     ? channel.statistics.subscriberCount
-                    : 'brak'
+                    : 'unknown'
                 }}
               </p>
-              <label>Subskrybenci</label>
+              <label>Subscribers</label>
             </div>
             <div class="flex column items-center">
               <p class="highlight">
                 {{
                   channel.statistics.videoCount
                     ? channel.statistics.videoCount
-                    : 'brak'
+                    : 'unknown'
                 }}
               </p>
-              <label>Filmiki</label>
+              <label>Videos</label>
             </div>
           </div>
 
@@ -47,10 +47,10 @@
             <p>{{ channel.description }}</p>
           </div>
           <div :style="{ width: '100%' }" class="row q-mt-md">
-            <p>Data utworzenia: {{ beginDate }}</p>
+            <p>Published date: {{ beginDate }}</p>
           </div>
           <div class="info row q-mt-md" :style="{ width: '100%' }">
-            Teraz możesz zmodyfikować ustawienia i przejść do oceny!
+            Now you can change advanced settings and move to evaluation process!
           </div>
         </q-card-section>
       </q-scroll-area>
@@ -66,10 +66,10 @@
           :style="{ textDecoration: 'none' }"
         >
           <q-btn id="yt" color="red" flat icon-right="fab fa-youtube">
-            Zobacz w</q-btn
+            View in</q-btn
           >
         </a>
-        <q-btn class="q-ml-sm" label="Rozumiem" color="red" v-close-popup />
+        <q-btn class="q-ml-sm" label="Close" color="red" v-close-popup />
       </q-card-actions>
     </q-card>
   </q-dialog>

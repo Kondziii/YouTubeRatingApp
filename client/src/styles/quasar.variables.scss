@@ -11,10 +11,18 @@ $dark-2: rgb(36, 37, 38);
 $dark-3: rgb(32, 33, 34);
 $dark-4: rgb(50, 51, 52);
 
-$positive: #21ba45;
-$negative: #c10015;
+// $positive: #21ba45;
+// $negative: #c10015;
 $info: #31ccec;
 $warning: #f2c037;
+
+//Evaluation variables
+$positive-background: rgb(18, 155, 41);
+$positive: rgb(13, 107, 28);
+$negative-background: rgb(194, 54, 26);
+$negative: rgb(131, 39, 20);
+$neutral-background: rgb(201, 174, 20);
+$neutral: rgb(145, 125, 14);
 
 @import '~quasar-variables-styl';
 

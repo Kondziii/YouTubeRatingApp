@@ -11,12 +11,12 @@
     </template>
     <template #links>
       <p>
-        Link do kanału może różnie wyglądać. Poniżej przedstwione zostały
-        wszystkie możliwe formaty wyszukiwania po linku:
+        Url addresses may look differently. Below you can find examples that are
+        valid with the app format requirements.
       </p>
       <ul class="nested wrap-text q-mb-md">
         <li>
-          https://www.youtube.com/channel/UCW5YeuERMmlnqo4oq8vwUpg (zalecany)
+          https://www.youtube.com/channel/UCW5YeuERMmlnqo4oq8vwUpg (recommended)
         </li>
         <li>https://www.youtube.com/c/TheNetNinja</li>
         <li>https://www.youtube.com/googlecode</li>
@@ -24,30 +24,36 @@
     </template>
     <template #advanced-settings>
       <ul class="nested q-mb-md">
-        <li>
-          Minimalna liczba filmików - kanał musi posiadać co najmniej tyle
-          filmików ile wynosi ten próg, domyślnie 3
+        <li class="q-mb-xs">
+          <span style="font-weight: bold">Minimal comments amount</span> - it's
+          the threshold, channel's videos that has less comments than this value
+          will be excluded from the sentiment analysis in order to make analysis
+          more reliable.
         </li>
-        <li>
-          Minimalna liczby komentarzy - filmiki tego kanału, które mają mniej
-          niż 10 komentarzy (dotyczy to tylko komentarzy najwyższego rzędu, bez
-          uwzględniania podkomentarzy) zostaną wykluczone z analizy.
+        <li class="q-mb-xs">
+          <span style="font-weight: bold">Default/custom date frames</span> - in
+          default case all videos of channel will be passed to the evaluation
+          process, in the latter case some videos that aren't within entered
+          dates will be excluded
         </li>
-        <li>
-          Uwzględniaj ramy czasowe - domyslnie kanał oceniany jest od momentu
-          powstania, ale możesz to ograniczyć podając datę początkową i końcową
+        <li class="q-mb-xs">
+          <span style="font-weight: bold">Take subcomments into account </span>
+          - default yes, it means that answers for comments will also take part
+          in evaluation
         </li>
-        <li>
-          Uwzględniaj podkomentarze - domyślnie tak oznacza, że podkomentarze
-          również biorą udział w analizie sentymentu
+        <li class="q-mb-xs">
+          <span style="font-weight: bold"
+            >Take author's answers into account</span
+          >
+          - default no, it means that answers for comments written by the author
+          of channel will be excluded from evaluation.
         </li>
       </ul>
     </template>
     <template #time-warn>
       <p>
-        Analiza może potrwać od klku do kilkudziesięciu minut w zależności od
-        tego jak rozbudowany jest kanał, więc bądź cierliwy i nie zamykaj
-        aplikacji.😃
+        Evaluation process may last for a while depending on the degree of
+        channel expansion so be patient and don't close the app.
       </p>
     </template>
   </basic-instruction>

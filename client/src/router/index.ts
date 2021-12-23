@@ -1,9 +1,9 @@
 import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router';
 import Home from '../views/Home.vue';
 const Info = () => import('../views/Info.vue');
-const EvaluateChannel = () =>
-  import('../components/Evaluate/EvaluateChannel.vue');
-const EvaluateVideo = () => import('../components/Evaluate/EvaluateVideo.vue');
+const EvaluateChannel = () => import('../views/EvaluateChannel.vue');
+const EvaluateVideo = () => import('../views/EvaluateVideo.vue');
+const EvaluateVideoResult = () => import('../views/EvaluateVideoResult.vue');
 const History = () => import('../views/History.vue');
 
 const routes: Array<RouteRecordRaw> = [
@@ -28,6 +28,14 @@ const routes: Array<RouteRecordRaw> = [
     name: 'EvaluateVideo',
     component: EvaluateVideo,
     props: true,
+    children: [
+      {
+        path: 'result',
+        name: 'EvaluateVideoResult',
+        component: EvaluateVideoResult,
+        props: true,
+      },
+    ],
   },
   {
     path: '/history',

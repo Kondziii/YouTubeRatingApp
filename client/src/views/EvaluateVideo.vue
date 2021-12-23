@@ -1,7 +1,7 @@
 <template>
   <basic-container type="card--transparent" class="q-pa-sm">
     <header class="q-pa-lg text-center">
-      <h1>Trwa ocenianie wybranego filmiku</h1>
+      <h1>The selected video is being evaluated</h1>
     </header>
     <q-separator dark />
     <q-card-section v-if="!!video">
@@ -26,10 +26,8 @@
                 }"
                 class="q-mt-lg"
               >
-                <li class="q-mb-sm">
-                  {{ video.statistics.viewCount }} wyświetleń
-                </li>
-                <li>{{ video.statistics.commentCount }} kometarzy</li>
+                <li class="q-mb-sm">{{ video.statistics.viewCount }} views</li>
+                <li>{{ video.statistics.commentCount }} comments</li>
               </ul>
             </li>
           </ul>
@@ -37,18 +35,38 @@
       </div>
     </q-card-section>
     <q-separator dark></q-separator>
-    <q-card-section class="flex column items-center justify-center">
-      <p class="wait-title">Bądź cierpliwy, może to chwilę potrwać.</p>
+    <q-card-section
+      v-if="result === null"
+      class="flex column items-center justify-center"
+    >
+      <p class="wait-title">Be patient, it may take a while.</p>
       <q-spinner-dots color="red" size="3rem" />
     </q-card-section>
+    <q-card-section
+      v-else-if="!isResultVisible"
+      class="flex column items-center justify-center"
+    >
+      <p class="wait-title">Evaluation has been successfully completed.</p>
+      <div :style="{ width: '100%' }" class="flex justify-end">
+        <q-btn
+          @click="isResultVisible = !isResultVisible"
+          class="q-mt-sm"
+          color="red"
+          :to="{ name: 'EvaluateVideoResult' }"
+          >Show result</q-btn
+        >
+      </div>
+    </q-card-section>
+    <router-view v-else :result="result"></router-view>
   </basic-container>
 </template>
 
 <script lang="ts">
-import { computed, defineComponent } from 'vue';
+import { computed, defineComponent, ref, watchEffect } from 'vue';
 import { useStore } from '@/store/index';
 import { Video } from '@/types/Video';
 import { useVideoActions } from '@/store/video/actions';
+import { Sentiment } from '@/types/Sentiment';
 
 export default defineComponent({
   name: 'EvaluateVideo',
@@ -72,13 +90,28 @@ export default defineComponent({
     );
 
     if (!video.value) {
-      console.log('elo');
       store.dispatch(videoActions.fetchFullInfo, props.id);
     }
+
+    watchEffect(() => {
+      if (video.value)
+        store.dispatch(videoActions.analyzeSentiment, {
+          videoId: video.value.id,
+          channelId: video.value.channelId,
+        });
+    });
+
+    const result = computed<Sentiment>(
+      () => store.getters['evaluate/getResult']
+    );
+
+    const isResultVisible = ref<boolean>(false);
 
     return {
       video,
       releaseDate,
+      result,
+      isResultVisible,
     };
   },
 });

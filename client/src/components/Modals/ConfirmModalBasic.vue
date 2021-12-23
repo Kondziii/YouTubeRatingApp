@@ -8,23 +8,23 @@
   >
     <q-card class="card" style="width: 700px; max-width: 90vw">
       <q-card-section class="flex justify-between">
-        <div class="text-h5">Potwierdź swój wybór</div>
+        <div class="text-h5">Confirm your choice</div>
         <q-btn id="close" dense icon="close" @click="cancel">
-          <q-tooltip>Anuluj</q-tooltip>
+          <q-tooltip>Cancel</q-tooltip>
         </q-btn>
       </q-card-section>
       <q-separator dark></q-separator>
       <q-scroll-area dark style="height: 50vh; max-width: 100%">
         <q-card-section>
           <slot name="items"></slot>
-          <p class="text-center not-found">Nie znaleziono więcej rezultatów</p>
+          <p class="text-center not-found">Haven't found more results</p>
         </q-card-section>
       </q-scroll-area>
       <q-separator dark></q-separator>
       <q-card-section>
         <q-card-actions align="right" class="q-mx-sm q-mb-sm">
-          <q-btn flat label="Anuluj" color="red" @click="cancel" />
-          <q-btn label="Zatwerdź" color="red" @click="confirm" />
+          <q-btn flat label="Cancel" color="red" @click="cancel" />
+          <q-btn label="Confirm" color="red" @click="confirm" />
         </q-card-actions>
       </q-card-section>
     </q-card>

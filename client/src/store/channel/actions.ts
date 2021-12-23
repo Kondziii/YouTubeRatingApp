@@ -16,6 +16,7 @@ const ChannelActions: EvaluateActions = {
   fetchFullInfo: 'fetchFullInfo',
   toggleInfoModal: 'toggleInfoModal',
   resetConfirmed: 'resetConfirmed',
+  analyzeSentiment: 'analyzeSentiment',
 };
 
 export const useChannelActions = (): typeof ChannelActions => {
@@ -33,8 +34,8 @@ export default {
         errorActions.setError,
         {
           is: true,
-          title: 'Wystąpił błąd',
-          message: `Ups. Podana nazwa przypomina bardziej adres url, a nie nazwę kanału. Upewnij się, że wybrałeś odpowiednią opcję.`,
+          title: 'Error occurred',
+          message: `Oops. The entered value is more like a url address. Make sure you've selected correct option.`,
         },
         { root: true }
       );
@@ -51,8 +52,8 @@ export default {
               errorActions.setError,
               {
                 is: true,
-                title: 'Nie znaleziono kanału',
-                message: `Ups. Nie znaleziono żadnego kanału pasującego do podanej nazwy: ${payload}`,
+                title: `The channel hasn't been found`,
+                message: `Oops. There hasn't been found any results that corresponds to the entered value: ${payload}`,
               },
               { root: true }
             );
@@ -61,8 +62,8 @@ export default {
               errorActions.setError,
               {
                 is: true,
-                title: 'Błąd serwera',
-                message: `Ups. Wystąpił błąd z serwerem lub przekroczono limit.`,
+                title: 'Server error',
+                message: `Oops. Error occurred to the exceeding the available limit for youtube data.`,
               },
               { root: true }
             );
@@ -82,8 +83,8 @@ export default {
         errorActions.setError,
         {
           is: true,
-          title: 'Wystąpił błąd',
-          message: `Ups. Podany adres url przypomina bardzej nazwę kanału. Upewnij się, że wybrałeś odpowiednią opcję.`,
+          title: 'Error occurred',
+          message: `Oops. The entered value is more like a title. Make sure you've selected correct option.`,
         },
         { root: true }
       );
@@ -92,8 +93,8 @@ export default {
         errorActions.setError,
         {
           is: true,
-          title: 'Wystąpił błąd',
-          message: `Ups. Podana nazwa przypomina bardziej adres url filmiku, a nie url kanału. Upewnij się, że wybrałeś odpowiednią opcję.`,
+          title: 'Error occurred',
+          message: `Oops. The entered url address is more like url for video. Make sure you've selected correct option.`,
         },
         { root: true }
       );
@@ -113,8 +114,8 @@ export default {
               errorActions.setError,
               {
                 is: true,
-                title: 'Nie znaleziono kanału',
-                message: `Ups. Nie znaleziono żadnego kanału pasującego do podanego url: ${payload}`,
+                title: `The channel hasn't been found`,
+                message: `Oops. There hasn't been found any results that corresponds to the entered value: ${payload}`,
               },
               { root: true }
             );
@@ -123,8 +124,8 @@ export default {
               errorActions.setError,
               {
                 is: true,
-                title: 'Błąd serwera',
-                message: `Ups. Wystąpił błąd z serwerem.`,
+                title: 'Server error',
+                message: `Oops. Error occurred to the exceeding the available limit for youtube data.`,
               },
               { root: true }
             );
@@ -155,8 +156,8 @@ export default {
             errorActions.setError,
             {
               is: true,
-              title: 'Wystąpił błąd',
-              message: `Ups. wystąpił błąd z odnalezieniem zatwierdzonego kanału: ${payload}`,
+              title: 'Error occurred',
+              message: `Oops. The confirmed channel hasn't been found: ${payload}`,
             },
             { root: true }
           );
@@ -165,8 +166,8 @@ export default {
             errorActions.setError,
             {
               is: true,
-              title: 'Błąd serwera',
-              message: `Ups. Wystąpił błąd z serwerem.`,
+              title: 'Server error',
+              message: `Oops. Error occurred to the exceeding the available limit for youtube data.`,
             },
             { root: true }
           );

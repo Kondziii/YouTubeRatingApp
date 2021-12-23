@@ -6,17 +6,18 @@
           ><img class="logo" src="../assets/logo-pł.png" alt=""
         /></a>
         <div>
-          <p class="name">Politechnika Łódzka</p>
+          <p class="name">Lodz University of Technology</p>
           <p class="name-detail">
-            Wydział Fizyki Technicznej,<br />
-            Matematyki Stosowanej i Informatyki
+            Faculty of Technical Physics,<br />
+            Applied Mathematics and Computer Science
           </p>
         </div>
       </div>
     </div>
     <div class="col-sm-12 col-md-6 text-center">
       <p class="rights">
-        Copyright &copy; 2021/2022, Projekt inżynierski - Konrad Chojnacki
+        Copyright &copy; 2021/2022, Engineering project created by Konrad
+        Chojnacki
       </p>
     </div>
   </q-footer>

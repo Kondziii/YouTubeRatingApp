@@ -17,12 +17,12 @@
       </q-card-section>
 
       <q-card-actions align="right" class="q-mx-xs-sm q-mx-sm-md q-mb-sm">
-        <q-btn v-if="!confirm" label="Rozumiem" color="red" v-close-popup />
+        <q-btn v-if="!confirm" label="OK" color="red" v-close-popup />
         <div v-else>
-          <q-btn flat label="Nie" color="red" v-close-popup />
+          <q-btn flat label="No" color="red" v-close-popup />
           <q-btn
             class="q-ml-sm"
-            label="Tak"
+            label="Yes"
             color="red"
             v-close-popup
             @click="confirmEmit"

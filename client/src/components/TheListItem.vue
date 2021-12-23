@@ -27,7 +27,7 @@
           icon="details"
           @click="openDetails"
         >
-          <q-tooltip>Szczegóły</q-tooltip>
+          <q-tooltip>Details</q-tooltip>
         </q-btn>
         <q-btn
           @click.stop
@@ -36,7 +36,7 @@
           icon="clear"
           @click="resetConfirmed"
         >
-          <q-tooltip>Anuluj</q-tooltip>
+          <q-tooltip>Cancel</q-tooltip>
         </q-btn>
       </div>
     </div>
@@ -200,7 +200,7 @@ p {
 @media (min-width: $breakpoint-xs-max) {
   a {
     &::before {
-      content: 'Zobacz w' !important;
+      content: 'View in' !important;
       margin-right: 5px;
     }
   }

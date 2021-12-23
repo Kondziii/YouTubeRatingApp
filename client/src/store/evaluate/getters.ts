@@ -6,4 +6,8 @@ export default {
   getParams(state) {
     return state.params;
   },
+
+  getResult(state) {
+    return state.result;
+  },
 } as GetterTree<EvaluateState, RootState>;

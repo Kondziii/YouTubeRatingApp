@@ -9,6 +9,9 @@ import { BASIC_SENTIMENT_THRESHOLD } from '../config';
 const vader = require('vader-sentiment');
 const { Language } = require('node-nlp');
 const LanguageDetector = new Language();
+const { SentimentAnalyzer } = require('node-nlp');
+
+const sentimentAnalyzer = new SentimentAnalyzer({ language: 'en' });
 
 export const getVideosByKeyWord: RequestHandler = async (req, res, next) => {
   const params = req.params as { keyWord: string };
@@ -89,14 +92,14 @@ export const getVideoComments: RequestHandler = async (req, res, next) => {
   const params = req.params as { videoId: string };
   const query = req.query as unknown as {
     channelId: string;
-    subtitles: boolean;
+    subcomments: boolean;
   };
 
   try {
     res
       .status(200)
       .json(
-        await getComments(params.videoId, query.channelId, query.subtitles)
+        await getComments(params.videoId, query.channelId, query.subcomments)
       );
   } catch (error: any) {
     next({ message: error.message, status: error.status });
@@ -107,7 +110,7 @@ export const getVideoSentiment: RequestHandler = async (req, res, next) => {
   const params = req.params as { videoId: string };
   const query = req.query as unknown as {
     channelId: string;
-    subtitles: boolean;
+    subcomments: boolean;
   };
   let comments: Array<Comment>;
 
@@ -115,7 +118,7 @@ export const getVideoSentiment: RequestHandler = async (req, res, next) => {
     comments = await getComments(
       params.videoId,
       query.channelId,
-      query.subtitles
+      query.subcomments
     );
 
     const commentCount = {
@@ -142,18 +145,26 @@ export const getVideoSentiment: RequestHandler = async (req, res, next) => {
     };
 
     for (const comment of comments) {
-      const { language } = LanguageDetector.guessBest(comment.text, [
-        'en',
-        'pl',
-      ]);
+      let language;
+      try {
+        language = LanguageDetector.guessBest(comment.text, [
+          'en',
+          'pl',
+        ]).language;
+      } catch (error) {
+        console.log(
+          `Language undetected. Comment ${comment.text} will be excluded.`
+        );
+      }
 
-      if (language === 'English') {
+      if (language && language === 'English') {
         const sentiment: Sentiment =
           await vader.SentimentIntensityAnalyzer.polarity_scores(comment.text);
+        console.log(sentiment);
 
         if (sentiment.compound >= BASIC_SENTIMENT_THRESHOLD)
           commentVoteCount.positive++;
-        else if (sentiment.compound <= BASIC_SENTIMENT_THRESHOLD)
+        else if (sentiment.compound <= -BASIC_SENTIMENT_THRESHOLD)
           commentVoteCount.negative++;
         else commentVoteCount.neutral++;
 
