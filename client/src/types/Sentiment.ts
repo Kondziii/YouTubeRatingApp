@@ -14,6 +14,6 @@ export interface Sentiment {
     positive: number;
     neutral: number;
     negative: number;
-    compound: number;
+    compound?: number;
   };
 }

@@ -9,9 +9,6 @@ import { BASIC_SENTIMENT_THRESHOLD } from '../config';
 const vader = require('vader-sentiment');
 const { Language } = require('node-nlp');
 const LanguageDetector = new Language();
-const { SentimentAnalyzer } = require('node-nlp');
-
-const sentimentAnalyzer = new SentimentAnalyzer({ language: 'en' });
 
 export const getVideosByKeyWord: RequestHandler = async (req, res, next) => {
   const params = req.params as { keyWord: string };
