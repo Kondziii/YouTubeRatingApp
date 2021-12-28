@@ -1,7 +1,14 @@
 <template>
-  <div :style="{ width: '100%' }">
-    <p :class="['banner', bannerClass]">{{ vote }}</p>
-  </div>
+  <transition name="expand" appear>
+    <div :class="bannerClass" :style="{ width: '100%' }">
+      <transition
+        enter-active-class="animate__animated animate__fadeIn animate__delay-2s "
+        appear
+      >
+        <p class="banner">{{ vote }}</p>
+      </transition>
+    </div>
+  </transition>
 </template>
 
 <script lang="ts">
@@ -67,6 +74,20 @@ div {
   .negative {
     color: $negative;
     background: $negative-background;
+  }
+}
+
+.expand-enter-active {
+  animation: expand 2s ease-in;
+}
+
+@keyframes expand {
+  from {
+    opacity: 0;
+    width: 0;
+  }
+  to {
+    width: 100%;
   }
 }
 </style>

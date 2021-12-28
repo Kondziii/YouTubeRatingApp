@@ -1,7 +1,12 @@
 <template>
-  <div>
+  <transition
+    appear
+    enter-active-class="animate__animated animate__fadeIn animate__delay-3s"
+    leave-active-class="animate__animated animate__fadeOut"
+    tag="div"
+  >
     <DoughnutChart v-bind="doughnutChartProps"></DoughnutChart>
-  </div>
+  </transition>
 </template>
 
 <script lang="ts">
@@ -48,8 +53,7 @@ export default defineComponent({
             'rgb(201, 174, 20)',
             'rgb(194, 54, 26)',
           ],
-          hoverOffset: 7,
-          offset: 2,
+          hoverOffset: 3,
           borderColor: 'transparent',
           hoverBackgroundColor: [
             'rgba(18, 155, 41, 0.9)',
@@ -118,4 +122,4 @@ export default defineComponent({
 });
 </script>
 
-<style scoped></style>
+<style lang="scss" scoped></style>

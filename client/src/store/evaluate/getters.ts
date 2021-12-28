@@ -7,7 +7,7 @@ export default {
     return state.params;
   },
 
-  getResult(state) {
-    return state.result;
+  getVideoResult(state) {
+    return state.videoResult;
   },
 } as GetterTree<EvaluateState, RootState>;

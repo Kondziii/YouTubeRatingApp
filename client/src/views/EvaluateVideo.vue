@@ -1,7 +1,14 @@
 <template>
   <basic-container type="card--transparent" class="q-pa-sm">
     <header class="q-pa-lg text-center">
-      <h1>The selected video is being evaluated</h1>
+      <transition
+        enter-active-class="animate__animated animate__fadeInUp"
+        leave-active-class="animate__animated animate__fadeInDown"
+        mode="out-in"
+      >
+        <h1 v-if="result === null">The selected video is being evaluated</h1>
+        <h1 v-else>The video has been evaluated</h1>
+      </transition>
     </header>
     <q-separator dark />
     <q-card-section v-if="!!video">
@@ -35,29 +42,48 @@
       </div>
     </q-card-section>
     <q-separator dark></q-separator>
-    <q-card-section
-      v-if="result === null"
-      class="flex column items-center justify-center"
+    <transition
+      enter-active-class="animate__animated animate__fadeInUp"
+      leave-active-class="animate__animated animate__fadeOut"
+      mode="out-in"
     >
-      <p class="wait-title">Be patient, it may take a while.</p>
-      <q-spinner-dots color="red" size="3rem" />
-    </q-card-section>
-    <q-card-section
-      v-else-if="!isResultVisible"
-      class="flex column items-center justify-center"
+      <q-card-section
+        v-if="result === null"
+        class="flex column items-center justify-center"
+      >
+        <p class="wait-title">Be patient, it may take a while.</p>
+        <q-spinner-dots color="red" size="3rem" />
+      </q-card-section>
+      <q-card-section
+        v-else-if="!isResultVisible"
+        class="flex column items-center justify-center"
+      >
+        <p class="wait-title">Evaluation has been successfully completed.</p>
+        <div :style="{ width: '100%' }" class="flex justify-end">
+          <q-btn
+            @click="isResultVisible = !isResultVisible"
+            class="q-mt-sm"
+            color="red"
+            :to="{ name: 'EvaluateVideoResult' }"
+            >Show result</q-btn
+          >
+        </div>
+      </q-card-section>
+    </transition>
+    <router-view
+      v-if="result && isResultVisible"
+      :result="result"
+      v-slot="{ Component }"
     >
-      <p class="wait-title">Evaluation has been successfully completed.</p>
-      <div :style="{ width: '100%' }" class="flex justify-end">
-        <q-btn
-          @click="isResultVisible = !isResultVisible"
-          class="q-mt-sm"
-          color="red"
-          :to="{ name: 'EvaluateVideoResult' }"
-          >Show result</q-btn
-        >
-      </div>
-    </q-card-section>
-    <router-view v-else :result="result"></router-view>
+      <transition
+        enter-active-class="animate__animated animate__fadeInUp animate__delay-1s"
+        leave-active-class="animate__animated animate__fadeOut"
+        mode="out-in"
+        appear
+      >
+        <component :is="Component"></component>
+      </transition>
+    </router-view>
   </basic-container>
 </template>
 
@@ -102,7 +128,7 @@ export default defineComponent({
     });
 
     const result = computed<Sentiment>(
-      () => store.getters['evaluate/getResult']
+      () => store.getters['evaluate/getVideoResult']
     );
 
     const isResultVisible = ref<boolean>(false);

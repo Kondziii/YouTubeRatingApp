@@ -65,15 +65,32 @@ export default defineComponent({
 
     watch(isVisible, () => {
       context.emit('close');
+      if (resolveModal.value) {
+        resolveModal.value(false);
+      }
     });
+
+    const resolveModal = ref<
+      ((value: boolean | PromiseLike<boolean>) => void) | null
+    >(null);
 
     const confirmEmit = () => {
       context.emit('confirm');
+      if (resolveModal.value) {
+        resolveModal.value(true);
+      }
+    };
+
+    const getConfirm = () => {
+      return new Promise<boolean>((resolve) => {
+        resolveModal.value = resolve;
+      });
     };
 
     return {
       isVisible,
       confirmEmit,
+      getConfirm,
     };
   },
 });

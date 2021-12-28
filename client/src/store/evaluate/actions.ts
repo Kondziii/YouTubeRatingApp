@@ -8,7 +8,7 @@ import { namespaces } from '..';
 
 const EvaluateActions = {
   setParams: 'setParams',
-  setResult: 'setResult',
+  setVideoResult: 'setVideoResult',
 };
 
 export const useEvaluateActions = (): typeof EvaluateActions => {
@@ -23,7 +23,7 @@ export default {
     commit(EvaluateMutations.SET_PARAMS, { ...state.params, ...payload });
   },
 
-  [EvaluateActions.setResult]({ commit }, payload: Sentiment) {
-    commit(EvaluateMutations.SET_RESULT, payload);
+  [EvaluateActions.setVideoResult]({ commit }, payload: Sentiment) {
+    commit(EvaluateMutations.SET_VIDEO_RESULT, payload);
   },
 } as ActionTree<EvaluateState, RootState>;

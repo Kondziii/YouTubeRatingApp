@@ -18,7 +18,7 @@ const EvaluateModule: Module<EvaluateState, RootState> = {
       useSubComments: true,
       useAuthorAnswers: false,
     },
-    result: null,
+    videoResult: null,
   }),
   mutations,
   actions,

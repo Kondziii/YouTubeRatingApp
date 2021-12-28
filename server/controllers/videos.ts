@@ -157,7 +157,6 @@ export const getVideoSentiment: RequestHandler = async (req, res, next) => {
       if (language && language === 'English') {
         const sentiment: Sentiment =
           await vader.SentimentIntensityAnalyzer.polarity_scores(comment.text);
-        console.log(sentiment);
 
         if (sentiment.compound >= BASIC_SENTIMENT_THRESHOLD)
           commentVoteCount.positive++;
@@ -187,6 +186,7 @@ export const getVideoSentiment: RequestHandler = async (req, res, next) => {
       commentCount,
       commentVoteCount,
       avg,
+      date: new Date().toISOString(),
     });
   } catch (error: any) {
     next({ message: error.message, status: error.status });

@@ -4,7 +4,7 @@ import { EvaluateState } from './type';
 
 export enum EvaluateMutations {
   SET_PARAMS = 'SET_PARAMS',
-  SET_RESULT = 'SET_RESULT',
+  SET_VIDEO_RESULT = 'SET_VIDEO_RESULT',
 }
 
 export default {
@@ -12,7 +12,7 @@ export default {
     state.params = payload.params;
   },
 
-  [EvaluateMutations.SET_RESULT](state, payload: Sentiment) {
-    state.result = payload;
+  [EvaluateMutations.SET_VIDEO_RESULT](state, payload: Sentiment) {
+    state.videoResult = payload;
   },
 } as MutationTree<EvaluateState>;

@@ -16,4 +16,5 @@ export interface Sentiment {
     negative: number;
     compound?: number;
   };
+  date: string;
 }

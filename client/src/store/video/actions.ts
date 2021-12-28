@@ -189,10 +189,9 @@ export default {
         !evaluateParams.useAuthorAnswers ? payload.channelId : '',
         evaluateParams.useSubComments
       );
-      commit(`evaluate/${EvaluateMutations.SET_RESULT}`, sentiment, {
+      commit(`evaluate/${EvaluateMutations.SET_VIDEO_RESULT}`, sentiment, {
         root: true,
       });
-      console.log(sentiment);
     } catch (error) {
       dispatch(
         errorActions.setError,
