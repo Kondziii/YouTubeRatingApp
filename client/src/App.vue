@@ -111,13 +111,13 @@ export default defineComponent({
   font-size: 1.2rem !important;
 }
 
-#yt .q-icon {
-  margin-left: 6px !important;
-}
-
 @media (min-width: $breakpoint-md-min) {
   .q-field__label {
     font-size: 0.9em !important;
+  }
+
+  #yt .q-icon {
+    margin-left: 6px !important;
   }
 }
 

@@ -1,3 +1,4 @@
+import { Sentiment } from './Sentiment';
 export interface Video {
   id: string;
   channelId: string;
@@ -11,4 +12,10 @@ export interface Video {
     favoriteCount: number;
     commentCount: number;
   };
+}
+
+export interface VideoHistory {
+  id: string;
+  video: Video;
+  result: Sentiment;
 }

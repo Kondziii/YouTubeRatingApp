@@ -84,8 +84,8 @@
     </q-card-section>
     <q-separator dark></q-separator>
     <q-card-actions class="flex justify-end q-pa-lg">
-      <q-btn color="red" flat>Save</q-btn>
-      <q-btn color="red" :to="{ name: 'Home' }">Close</q-btn>
+      <q-btn color="red" flat @click="saveVideoResult">Save</q-btn>
+      <q-btn color="red" :to="{ name: 'Home' }" replace>Close</q-btn>
     </q-card-actions>
   </div>
 </template>
@@ -123,7 +123,9 @@ export default defineComponent({
     },
   },
 
-  setup(props) {
+  emits: ['save'],
+
+  setup(props, { emit }) {
     const modal = ref<typeof BasicModal>();
 
     const avgValues = computed(() => {
@@ -175,12 +177,17 @@ export default defineComponent({
       return date.toLocaleDateString() + ', ' + date.toLocaleTimeString();
     });
 
+    const saveVideoResult = () => {
+      emit('save');
+    };
+
     return {
       avgValues,
       tooltipsContent,
       modalLeave,
       modal,
       evaluationDate,
+      saveVideoResult,
     };
   },
 });

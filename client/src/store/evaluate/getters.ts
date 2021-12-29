@@ -10,4 +10,8 @@ export default {
   getVideoResult(state) {
     return state.videoResult;
   },
+
+  getVideoHistory(state) {
+    return state.videoHistory;
+  },
 } as GetterTree<EvaluateState, RootState>;

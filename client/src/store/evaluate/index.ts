@@ -5,6 +5,7 @@ import { COMMENTS_LIMIT } from '../../../config';
 import mutations from './mutations';
 import actions from './actions';
 import getters from './getters';
+import { VideoHistory } from '@/types/Video';
 
 const EvaluateModule: Module<EvaluateState, RootState> = {
   namespaced: true,
@@ -19,6 +20,9 @@ const EvaluateModule: Module<EvaluateState, RootState> = {
       useAuthorAnswers: false,
     },
     videoResult: null,
+    videoHistory: JSON.parse(
+      window.localStorage.getItem('video-history') || '[]'
+    ) as Array<VideoHistory>,
   }),
   mutations,
   actions,

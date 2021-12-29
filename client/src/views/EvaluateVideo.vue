@@ -65,6 +65,7 @@
             class="q-mt-sm"
             color="red"
             :to="{ name: 'EvaluateVideoResult' }"
+            replace
             >Show result</q-btn
           >
         </div>
@@ -81,7 +82,7 @@
         mode="out-in"
         appear
       >
-        <component :is="Component"></component>
+        <component :is="Component" @save="addToHistory"></component>
       </transition>
     </router-view>
   </basic-container>
@@ -93,6 +94,7 @@ import { useStore } from '@/store/index';
 import { Video } from '@/types/Video';
 import { useVideoActions } from '@/store/video/actions';
 import { Sentiment } from '@/types/Sentiment';
+import { useEvaluateActions } from '@/store/evaluate/actions';
 
 export default defineComponent({
   name: 'EvaluateVideo',
@@ -106,6 +108,7 @@ export default defineComponent({
 
   setup(props) {
     const store = useStore();
+    const evaluateActions = useEvaluateActions();
     const videoActions = useVideoActions();
     const video = computed<Video>(
       () => store.getters['video/getConfirmedVideo']
@@ -133,11 +136,19 @@ export default defineComponent({
 
     const isResultVisible = ref<boolean>(false);
 
+    const addToHistory = () => {
+      store.dispatch(evaluateActions.saveVideoResult, {
+        result: result.value,
+        video: video.value,
+      });
+    };
+
     return {
       video,
       releaseDate,
       result,
       isResultVisible,
+      addToHistory,
     };
   },
 });

@@ -6,19 +6,29 @@
       >
         <q-img :src="img" />
       </q-avatar>
-      <p>{{ title }}</p>
+      <div class="flex column justify-start" :style="{ width: '100%' }">
+        <p>{{ title }}</p>
+        <p v-if="!!description" class="description">{{ description }}</p>
+      </div>
     </div>
     <div class="col-4 flex justify-center items-center">
-      <a
+      <q-btn
         v-if="model === ''"
+        type="a"
         :href="urlLink"
         target="_blank"
-        class="flex items-center justify-center"
+        id="yt"
+        icon-right="fab fa-youtube"
+        color="red"
         @click.stop
       >
-        <q-icon name="fab fa-youtube"></q-icon>
-      </a>
-      <div v-else class="q-mr-sm flex justify-center items-center">
+        {{ $q.screen.gt.sm ? 'View in' : '' }}
+      </q-btn>
+
+      <div
+        v-else-if="model === 'formItem'"
+        class="q-mr-sm flex justify-center items-center"
+      >
         <q-btn
           @click.stop
           id="details"
@@ -37,6 +47,30 @@
           @click="resetConfirmed"
         >
           <q-tooltip>Cancel</q-tooltip>
+        </q-btn>
+      </div>
+
+      <div v-else class="q-mr-sm flex justify-center items-center q-gutter-sm">
+        <q-btn
+          type="a"
+          :href="urlLink"
+          target="_blank"
+          icon="fab fa-youtube"
+          color="red"
+          flat
+          id="clear"
+        >
+          <q-tooltip>View in YouTube</q-tooltip>
+        </q-btn>
+        <q-btn
+          @click.stop
+          id="clear"
+          color="red"
+          icon="clear"
+          class="link"
+          @click="deleteItem"
+        >
+          <q-tooltip>Delete</q-tooltip>
         </q-btn>
       </div>
     </div>
@@ -73,7 +107,7 @@ export default defineComponent({
     },
 
     model: {
-      //formItem or default
+      //formItem, history or default
       type: String,
       required: false,
       default: '',
@@ -84,9 +118,19 @@ export default defineComponent({
       type: String as PropType<Evaluate>,
       required: true,
     },
+
+    description: {
+      type: String,
+      required: false,
+    },
+
+    index: {
+      type: Number,
+      required: false,
+    },
   },
 
-  emits: ['onClick', 'openDetails', 'reset', 'showList'],
+  emits: ['onClick', 'openDetails', 'reset', 'showList', 'delete'],
 
   setup(props, context) {
     const urlLink = computed(() => {
@@ -101,6 +145,8 @@ export default defineComponent({
     const select = () => {
       if (props.model === 'formItem') {
         context.emit('showList');
+      } else if (props.model === 'history') {
+        context.emit('onClick', props.index);
       } else {
         context.emit('onClick', props.id);
       }
@@ -113,6 +159,7 @@ export default defineComponent({
         'items-center',
         { selected: props.selected },
         { formItem: props.model === 'formItem' },
+        { historyItem: props.model === 'history' },
       ];
     });
 
@@ -124,12 +171,17 @@ export default defineComponent({
       context.emit('reset');
     };
 
+    const deleteItem = () => {
+      context.emit('delete', props.index);
+    };
+
     return {
       urlLink,
       select,
       itemClasses,
       openDetails,
       resetConfirmed,
+      deleteItem,
     };
   },
 });
@@ -152,14 +204,6 @@ export default defineComponent({
   }
 
   a {
-    text-decoration: none;
-    color: white;
-    border-radius: 20px;
-    font-size: 0.9rem;
-    background: $red;
-    width: fit-content;
-    padding: 4px 10px;
-
     &::before {
       content: '';
     }
@@ -197,11 +241,23 @@ p {
   background: $dark-4;
 }
 
+.historyItem {
+  .avatar-video {
+    width: 80px;
+    height: auto;
+  }
+}
+
+.description {
+  font-size: 0.8rem;
+  color: #aaa;
+}
+
 @media (min-width: $breakpoint-xs-max) {
-  a {
-    &::before {
-      content: 'View in' !important;
-      margin-right: 5px;
+  .historyItem {
+    .avatar-video {
+      width: 100px;
+      height: auto;
     }
   }
 }

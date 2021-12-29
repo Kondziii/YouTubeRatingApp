@@ -60,4 +60,9 @@ export default defineComponent({
   @include card(rgb(36, 37, 38));
   box-shadow: none;
 }
+
+.card--none {
+  @include card(transparent);
+  box-shadow: none;
+}
 </style>
