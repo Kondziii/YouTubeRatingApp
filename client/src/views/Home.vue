@@ -11,7 +11,7 @@
     <the-form
       :selectedTab="selectedTab"
       :key="selectedTab"
-      :confirmed="confirmedChannel || confirmedVideo"
+      :confirmed="confirmedChannel || confirmedVideo || null"
     ></the-form>
     <confirm-channel-modal
       v-if="channelConfirmModal.isVisible.value"
@@ -82,16 +82,19 @@ export default defineComponent({
   },
 
   setup() {
-    const { items, selectedTab, setSelectedTab } = useTabs([
-      {
-        label: 'Channels',
-        value: 'channels',
-      },
-      {
-        label: 'Videos',
-        value: 'videos',
-      },
-    ]);
+    const { items, selectedTab, setSelectedTab } = useTabs(
+      [
+        {
+          label: 'Channels',
+          value: 'channels',
+        },
+        {
+          label: 'Videos',
+          value: 'videos',
+        },
+      ],
+      'Home'
+    );
 
     const store = useStore();
     const channelActions = useChannelActions();

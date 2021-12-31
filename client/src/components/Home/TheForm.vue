@@ -3,7 +3,9 @@
     <q-card-section class="q-mx-sm-md q-mx-md-lg">
       <transition
         enter-active-class="animate__animated animate__slideInLeft"
-        leave-active-class="animate__animated animate__slideOutRight"
+        :leave-active-class="
+          confirmed === null ? '' : 'animate__animated animate__slideOutRight'
+        "
         appear
         mode="out-in"
       >
@@ -252,7 +254,14 @@
 
 <script lang="ts">
 import Evaluate, { EvaluateType } from '@/types/Evaluate';
-import { computed, defineComponent, PropType, reactive, ref } from 'vue';
+import {
+  computed,
+  defineComponent,
+  nextTick,
+  PropType,
+  reactive,
+  ref,
+} from 'vue';
 import { useStore } from '../../store/index';
 import useDateRules from '@/hooks/useDateRules';
 import { useChannelActions } from '@/store/channel/actions';
@@ -287,9 +296,15 @@ export default defineComponent({
   setup(props) {
     const router = useRouter();
     const store = useStore();
+
     const channelActions = useChannelActions();
     const videoActions = useVideoActions();
     const evaluateActions = useEvaluateActions();
+
+    nextTick(() => {
+      store.dispatch(channelActions.resetConfirmed);
+      store.dispatch(videoActions.resetConfirmed);
+    });
 
     const actions = computed<EvaluateActions>(() =>
       props.selectedTab === 'channels' ? channelActions : videoActions

@@ -89,12 +89,13 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, ref, watchEffect } from 'vue';
+import { computed, defineComponent, ref, onBeforeMount } from 'vue';
 import { useStore } from '@/store/index';
 import { Video } from '@/types/Video';
 import { useVideoActions } from '@/store/video/actions';
 import { Sentiment } from '@/types/Sentiment';
 import { useEvaluateActions } from '@/store/evaluate/actions';
+import { useRoute } from 'vue-router';
 
 export default defineComponent({
   name: 'EvaluateVideo',
@@ -108,6 +109,8 @@ export default defineComponent({
 
   setup(props) {
     const store = useStore();
+    const route = useRoute();
+    const query = route.query as unknown as { history: boolean };
     const evaluateActions = useEvaluateActions();
     const videoActions = useVideoActions();
     const video = computed<Video>(
@@ -121,9 +124,8 @@ export default defineComponent({
     if (!video.value) {
       store.dispatch(videoActions.fetchFullInfo, props.id);
     }
-
-    watchEffect(() => {
-      if (video.value)
+    onBeforeMount(() => {
+      if (video.value && !query.history)
         store.dispatch(videoActions.analyzeSentiment, {
           videoId: video.value.id,
           channelId: video.value.channelId,
@@ -134,7 +136,7 @@ export default defineComponent({
       () => store.getters['evaluate/getVideoResult']
     );
 
-    const isResultVisible = ref<boolean>(false);
+    const isResultVisible = ref<boolean>(query.history ? true : false);
 
     const addToHistory = () => {
       store.dispatch(evaluateActions.saveVideoResult, {

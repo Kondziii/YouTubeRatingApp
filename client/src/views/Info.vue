@@ -54,16 +54,19 @@ export default defineComponent({
   name: 'Info',
 
   setup() {
-    const { items, selectedTab, setSelectedTab } = useTabs([
-      {
-        label: 'Channels',
-        value: 'channels',
-      },
-      {
-        label: 'Videos',
-        value: 'videos',
-      },
-    ]);
+    const { items, selectedTab, setSelectedTab } = useTabs(
+      [
+        {
+          label: 'Channels',
+          value: 'channels',
+        },
+        {
+          label: 'Videos',
+          value: 'videos',
+        },
+      ],
+      'LearnMore'
+    );
 
     const selectedInstruction = computed(() => {
       if (selectedTab.value === 'channels') return 'channel-instruction';

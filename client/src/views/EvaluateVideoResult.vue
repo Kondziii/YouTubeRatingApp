@@ -84,8 +84,13 @@
     </q-card-section>
     <q-separator dark></q-separator>
     <q-card-actions class="flex justify-end q-pa-lg">
-      <q-btn color="red" flat @click="saveVideoResult">Save</q-btn>
-      <q-btn color="red" :to="{ name: 'Home' }" replace>Close</q-btn>
+      <q-btn v-if="!query.history" color="red" flat @click="saveVideoResult"
+        >Save</q-btn
+      >
+      <q-btn v-if="!query.history" color="red" :to="{ name: 'Home' }" replace
+        >Close</q-btn
+      >
+      <q-btn v-else color="red" @click="$router.go(-1)">Close</q-btn>
     </q-card-actions>
   </div>
 </template>
@@ -105,6 +110,7 @@ import EvaluateChart from '@/components/Evaluate/EvaluateChart.vue';
 import EvaluateBadge from '@/components/Evaluate/EvaluateBadge.vue';
 import { onBeforeRouteLeave } from 'vue-router';
 import BasicModal from '@/components/Modals/BasicModal.vue';
+import { useRoute } from 'vue-router';
 
 export default defineComponent({
   name: 'EvaluateVideoResult',
@@ -126,6 +132,9 @@ export default defineComponent({
   emits: ['save'],
 
   setup(props, { emit }) {
+    const route = useRoute();
+    const query = route.query as unknown as { history: boolean };
+
     const modal = ref<typeof BasicModal>();
 
     const avgValues = computed(() => {
@@ -162,6 +171,9 @@ export default defineComponent({
     });
 
     onBeforeRouteLeave(async () => {
+      if (query.history) {
+        return true;
+      }
       modalLeave.is = true;
       const answer = await nextTick(async () => {
         if (modal.value) {
@@ -188,6 +200,7 @@ export default defineComponent({
       modal,
       evaluationDate,
       saveVideoResult,
+      query,
     };
   },
 });

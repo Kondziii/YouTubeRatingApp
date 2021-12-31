@@ -12,7 +12,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue';
+import { defineComponent, watch } from 'vue';
 import useTabs from '@/hooks/useTabs';
 import VideoHistory from '@/components/history/VideoHistory.vue';
 import ChannelHistory from '@/components/history/ChannelHistory.vue';
@@ -26,16 +26,19 @@ export default defineComponent({
   },
 
   setup() {
-    const { items, selectedTab, setSelectedTab } = useTabs([
-      {
-        label: 'Channels',
-        value: 'channel',
-      },
-      {
-        label: 'Videos',
-        value: 'video',
-      },
-    ]);
+    const { items, selectedTab, setSelectedTab } = useTabs(
+      [
+        {
+          label: 'Channels',
+          value: 'channel',
+        },
+        {
+          label: 'Videos',
+          value: 'video',
+        },
+      ],
+      'History'
+    );
 
     return {
       items,

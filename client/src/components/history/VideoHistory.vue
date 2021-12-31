@@ -71,6 +71,8 @@ import { VideoHistory } from '@/types/Video';
 import TheListItem from '@/components/TheListItem.vue';
 import BasicModal from '@/components/Modals/BasicModal.vue';
 import { useRouter } from 'vue-router';
+import { useVideoActions } from '@/store/video/actions';
+import { VideoMutations } from '@/store/video/mutations';
 
 export default defineComponent({
   name: 'VideoHistory',
@@ -123,7 +125,19 @@ export default defineComponent({
     };
 
     const showResult = (index: string) => {
-      const historyItem = videoItems[index];
+      store.commit(
+        `video/${VideoMutations.SET_CONFIRMED_VIDEO}`,
+        videoItems.value[index].video
+      );
+      store.dispatch(
+        evaluateActions.setVideoResult,
+        videoItems.value[index].result
+      );
+
+      router.push({
+        path: `/evaluate/videos/${videoItems.value[index].video.id}/result`,
+        query: { history: 'true' },
+      });
     };
 
     return {
