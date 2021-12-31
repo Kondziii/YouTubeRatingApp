@@ -5,6 +5,8 @@ const EvaluateChannel = () => import('../views/EvaluateChannel.vue');
 const EvaluateVideo = () => import('../views/EvaluateVideo.vue');
 const EvaluateVideoResult = () => import('../views/EvaluateVideoResult.vue');
 const History = () => import('../views/History.vue');
+const EvaluateChannelResult = () =>
+  import('../views/EvaluateChannelResult.vue');
 
 const routes: Array<RouteRecordRaw> = [
   {
@@ -22,6 +24,13 @@ const routes: Array<RouteRecordRaw> = [
     name: 'EvaluateChannel',
     component: EvaluateChannel,
     props: true,
+    children: [
+      {
+        path: 'result',
+        name: 'EvaluateChannelResult',
+        component: EvaluateChannelResult,
+      },
+    ],
   },
   {
     path: '/evaluate/videos/:id',

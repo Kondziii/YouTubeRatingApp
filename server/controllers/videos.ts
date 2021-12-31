@@ -1,15 +1,8 @@
-import { Comment } from './../types/Comment';
-import { Sentiment } from './../types/Sentiment';
-import {
-  getComments,
-  stateCompound,
-  getVideoSentimentHelper,
-} from './helpers/getComments';
+import { getComments, getVideoSentimentHelper } from './helpers/sentiment';
 import { VideoBySearch, VideoById, Video } from './../types/Video';
 import axios from 'axios';
 import { KEY, URL_YOUTUBE_API } from '../config';
 import { RequestHandler } from 'express';
-import { BASIC_SENTIMENT_THRESHOLD } from '../config';
 
 export const getVideosByKeyWord: RequestHandler = async (req, res, next) => {
   const params = req.params as { keyWord: string };

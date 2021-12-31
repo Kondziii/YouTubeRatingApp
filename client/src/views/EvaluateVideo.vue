@@ -1,15 +1,19 @@
 <template>
   <basic-container type="card--transparent" class="q-pa-sm">
-    <header class="q-pa-lg text-center">
-      <transition
-        enter-active-class="animate__animated animate__fadeInUp"
-        leave-active-class="animate__animated animate__fadeInDown"
-        mode="out-in"
-      >
-        <h1 v-if="result === null">The selected video is being evaluated</h1>
-        <h1 v-else>The video has been evaluated</h1>
-      </transition>
-    </header>
+    <transition
+      enter-active-class="animate__animated animate__fadeInUp"
+      leave-active-class="animate__animated animate__fadeInDown"
+      mode="out-in"
+    >
+      <evaluate-header
+        v-if="result === null"
+        title="The selected video is being evaluated"
+      ></evaluate-header>
+      <evaluate-header
+        v-else
+        title="The video has been evaluated"
+      ></evaluate-header>
+    </transition>
     <q-separator dark />
     <q-card-section v-if="!!video">
       <div class="row justify-center items-start q-col-gutter-lg">
@@ -47,29 +51,13 @@
       leave-active-class="animate__animated animate__fadeOut"
       mode="out-in"
     >
-      <q-card-section
-        v-if="result === null"
-        class="flex column items-center justify-center"
-      >
-        <p class="wait-title">Be patient, it may take a while.</p>
-        <q-spinner-dots color="red" size="3rem" />
-      </q-card-section>
-      <q-card-section
+      <evaluate-wait v-if="result === null"> </evaluate-wait>
+      <evaluate-wait
         v-else-if="!isResultVisible"
-        class="flex column items-center justify-center"
-      >
-        <p class="wait-title">Evaluation has been successfully completed.</p>
-        <div :style="{ width: '100%' }" class="flex justify-end">
-          <q-btn
-            @click="isResultVisible = !isResultVisible"
-            class="q-mt-sm"
-            color="red"
-            :to="{ name: 'EvaluateVideoResult' }"
-            replace
-            >Show result</q-btn
-          >
-        </div>
-      </q-card-section>
+        finished
+        to="EvaluateVideoResult"
+        @click="isResultVisible = !isResultVisible"
+      ></evaluate-wait>
     </transition>
     <router-view
       v-if="result && isResultVisible"
@@ -89,19 +77,15 @@
 </template>
 
 <script lang="ts">
-import {
-  computed,
-  defineComponent,
-  ref,
-  onBeforeMount,
-  watchEffect,
-} from 'vue';
+import { computed, defineComponent, ref, watchEffect } from 'vue';
 import { useStore } from '@/store/index';
 import { Video } from '@/types/Video';
 import { useVideoActions } from '@/store/video/actions';
 import { Sentiment } from '@/types/Sentiment';
 import { useEvaluateActions } from '@/store/evaluate/actions';
 import { useRoute } from 'vue-router';
+import EvaluateHeader from '@/components/Evaluate/EvaluateHeader.vue';
+import EvaluateWait from '@/components/Evaluate/EvaluateWait.vue';
 
 export default defineComponent({
   name: 'EvaluateVideo',
@@ -111,6 +95,11 @@ export default defineComponent({
       type: String,
       required: true,
     },
+  },
+
+  components: {
+    EvaluateHeader,
+    EvaluateWait,
   },
 
   setup(props) {
@@ -165,10 +154,6 @@ export default defineComponent({
 <style lang="scss" scoped>
 @import '/src/styles/quasar.variables.scss';
 
-header h1 {
-  @include header();
-}
-
 ul {
   font-size: 0.9rem;
 
@@ -178,12 +163,5 @@ ul {
   .video-details {
     color: #aaa;
   }
-}
-
-.wait-title {
-  font-size: 1rem;
-  font-weight: 300;
-  font-style: italic;
-  margin: 0;
 }
 </style>

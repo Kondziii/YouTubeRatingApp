@@ -65,7 +65,7 @@
           :href="linkToChannel"
           :style="{ textDecoration: 'none' }"
         >
-          <q-btn id="yt" color="red" flat icon-right="fab fa-youtube">
+          <q-btn id="yt_2" color="red" flat icon-right="fab fa-youtube">
             View in</q-btn
           >
         </a>

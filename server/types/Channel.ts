@@ -78,6 +78,7 @@ export interface Channel {
   description: string;
   publishedAt: string;
   image: string;
+  imageHigh: string;
   statistics?: {
     viewCount: number;
     subscriberCount: number;

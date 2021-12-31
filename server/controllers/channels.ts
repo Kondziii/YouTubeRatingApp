@@ -35,6 +35,7 @@ export const getChannelsByKeyWord: RequestHandler = async (req, res, next) => {
           description: item.snippet.description,
           publishedAt: item.snippet.publishedAt,
           image: item.snippet.thumbnails.default.url,
+          imageHigh: item.snippet.thumbnails.high.url,
         } as Channel;
       })
     );
@@ -69,6 +70,7 @@ export const getChannelsById: RequestHandler = async (req, res, next) => {
           description: item.snippet.description,
           publishedAt: item.snippet.publishedAt,
           image: item.snippet.thumbnails.default.url,
+          imageHigh: item.snippet.thumbnails.high.url,
           statistics: query.part?.includes('statistics') && item.statistics,
           uploads:
             query.part?.includes('contentDetails') &&
@@ -121,3 +123,5 @@ export const getVideos: RequestHandler = async (req, res, next) => {
     res.json(videos);
   }
 };
+
+export const getChannelSentiment: RequestHandler = () => {};
