@@ -38,6 +38,7 @@ export default defineComponent({
     const bannerClass = computed(() => {
       if (props.vote.includes('positive')) return 'positive';
       else if (props.vote.includes('neutral')) return 'neutral';
+      else if (props.vote.includes('unknown')) return 'unknown';
       else return 'negative';
     });
 
@@ -74,6 +75,11 @@ div {
   .negative {
     color: $negative;
     background: $negative-background;
+  }
+
+  .unknown {
+    color: $unknown;
+    background: $unknown-background;
   }
 }
 

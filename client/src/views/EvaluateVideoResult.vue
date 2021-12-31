@@ -48,7 +48,7 @@
           </evaluate-badge>
         </div>
       </div>
-      <div class="row">
+      <div class="row" v-if="isResultKnown">
         <div
           class="col-xs-12 col-md-6 q-mb-md"
           :style="{ position: 'relative' }"
@@ -193,6 +193,10 @@ export default defineComponent({
       emit('save');
     };
 
+    const isResultKnown = computed(() => {
+      return props.result.vote !== 'unknown';
+    });
+
     return {
       avgValues,
       tooltipsContent,
@@ -201,6 +205,7 @@ export default defineComponent({
       evaluationDate,
       saveVideoResult,
       query,
+      isResultKnown,
     };
   },
 });

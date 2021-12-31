@@ -176,10 +176,15 @@ export const getVideoSentiment: RequestHandler = async (req, res, next) => {
     commentCount.processed = commentCount.all - commentCount.excluded;
 
     Object.keys(avg).forEach((key) => {
-      avg[key] /= commentCount.processed;
+      if (avg[key] !== 0) {
+        avg[key] /= commentCount.processed;
+      }
     });
 
-    const vote = stateCompound(avg.compound, commentCount.processed);
+    const vote =
+      commentCount.processed === 0
+        ? 'unknown'
+        : stateCompound(avg.compound, commentCount.processed);
 
     res.status(200).json({
       vote,

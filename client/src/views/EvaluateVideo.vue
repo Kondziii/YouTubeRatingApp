@@ -89,7 +89,13 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, ref, onBeforeMount } from 'vue';
+import {
+  computed,
+  defineComponent,
+  ref,
+  onBeforeMount,
+  watchEffect,
+} from 'vue';
 import { useStore } from '@/store/index';
 import { Video } from '@/types/Video';
 import { useVideoActions } from '@/store/video/actions';
@@ -121,10 +127,10 @@ export default defineComponent({
       new Date(video.value.publishedAt).toLocaleDateString()
     );
 
-    if (!video.value) {
-      store.dispatch(videoActions.fetchFullInfo, props.id);
-    }
-    onBeforeMount(() => {
+    watchEffect(() => {
+      if (!video.value) {
+        store.dispatch(videoActions.fetchFullInfo, props.id);
+      }
       if (video.value && !query.history)
         store.dispatch(videoActions.analyzeSentiment, {
           videoId: video.value.id,
