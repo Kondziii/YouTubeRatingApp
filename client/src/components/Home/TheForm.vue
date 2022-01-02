@@ -445,6 +445,7 @@ export default defineComponent({
         store.dispatch(evaluateActions.setParams, {
           params: {
             type: props.selectedTab,
+            minComments: commentsLimit.value,
             useDates: useTime.value,
             beginDate: beginDate.value,
             endDate: endDate.value,

@@ -14,4 +14,8 @@ export default {
   getVideoHistory(state) {
     return state.videoHistory;
   },
+
+  getChannelResult(state) {
+    return state.channelResult;
+  },
 } as GetterTree<EvaluateState, RootState>;

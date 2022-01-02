@@ -5,8 +5,19 @@ import channelRoutes from './routes/channels';
 import videoRoutes from './routes/videos';
 import { Request, Response, NextFunction } from 'express';
 import { HOSTNAME, PORT } from './config';
+const { queryParser } = require('express-query-parser');
 
 const app = express();
+
+app.use(
+  queryParser({
+    parseNull: true,
+    parseUndefined: true,
+    parseBoolean: true,
+    parseNumber: true,
+  })
+);
+
 app.use(bodyParser.json());
 
 app.use((req: Request, res: Response, next: NextFunction) => {

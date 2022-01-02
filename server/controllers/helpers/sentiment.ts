@@ -1,85 +1,24 @@
-import axios from 'axios';
 import {
-  URL_YOUTUBE_API,
-  KEY,
+  CHANNEL_COUNT_VIDEOS_PRIVILEGE,
+  CHANNEL_SENTIMENT_PRIVILEGE,
+  CHANNEL_SENTIMENT_THRESHOLD,
+  CHANNEL_PRIVILEGE_THRESHOLD,
+  CHANNEL_BASIC_SENTIMENT_THRESHOLD,
+} from './../../config';
+import { VideoSentiment } from './../../types/Sentiment';
+import {
   SENTIMENT_THRESHOLD,
   COMMENT_COUNT_SENTIMENT_PRIVILEGE,
   SENTIMENT_PRIVILEGE,
   PRIVILEGE_THRESHOLD,
   BASIC_SENTIMENT_THRESHOLD,
 } from '../../config';
-import { CommentThread, CommentThreadItem, Comment } from '../../types/Comment';
+import { Comment } from '../../types/Comment';
 import { Sentiment } from '../../types/Sentiment';
+import { getComments } from './comments';
 const vader = require('vader-sentiment');
 const { Language } = require('node-nlp');
 const LanguageDetector = new Language();
-
-export const getComments = async (
-  videoId: string,
-  channelId: string = '',
-  subtitles: boolean = true
-) => {
-  let response: any;
-  const comments = [];
-
-  try {
-    do {
-      response = await axios.get(`${URL_YOUTUBE_API}/commentThreads`, {
-        params: {
-          key: KEY,
-          part: 'snippet,replies',
-          maxResults: 100,
-          videoId: videoId,
-          pageToken: response?.data?.nextPageToken
-            ? response.data.nextPageToken
-            : '',
-        },
-      });
-
-      comments.push(
-        ...response.data.items.map((item: CommentThread) => {
-          if (subtitles === true && item.replies)
-            return [
-              {
-                text: item.snippet.topLevelComment.snippet.textOriginal.replace(
-                  '\n',
-                  ' '
-                ),
-                authorId:
-                  item.snippet.topLevelComment.snippet.authorChannelId.value,
-              } as Comment,
-
-              item.replies?.comments.map((comment: CommentThreadItem) => {
-                return {
-                  text: comment.snippet.textOriginal.replace('\n', ' '),
-                  authorId: comment.snippet.authorChannelId.value,
-                } as Comment;
-              }),
-            ];
-          else
-            return [
-              {
-                text: item.snippet.topLevelComment.snippet.textOriginal.replace(
-                  '\n',
-                  ' '
-                ),
-                authorId:
-                  item.snippet.topLevelComment.snippet.authorChannelId.value,
-              } as Comment,
-            ];
-        })
-      );
-    } while (response.data.nextPageToken);
-  } catch (error) {
-    throw { message: 'Server error', status: 500 };
-  }
-
-  if (comments.length === 0) {
-    throw { message: "Video hasn't got any comments.", status: 404 };
-  } else {
-    return comments.flat(2).filter((comment) => comment.authorId !== channelId);
-  }
-};
 
 export const stateCompound = (
   compound: number,
@@ -93,7 +32,7 @@ export const stateCompound = (
     positiveThreshold < PRIVILEGE_THRESHOLD
       ? PRIVILEGE_THRESHOLD
       : positiveThreshold;
-  let negativeThreshold = SENTIMENT_THRESHOLD + commentPrivilege;
+  let negativeThreshold = -SENTIMENT_THRESHOLD + commentPrivilege;
   negativeThreshold =
     negativeThreshold > -PRIVILEGE_THRESHOLD
       ? -PRIVILEGE_THRESHOLD
@@ -110,7 +49,42 @@ export const stateCompound = (
   return vote;
 };
 
-export const getVideoSentimentHelper = async (
+export const stateChannelCompound = (
+  compound: number,
+  videosNumber: number
+): string => {
+  let vote = '';
+
+  const videoPrivilege =
+    (videosNumber / CHANNEL_COUNT_VIDEOS_PRIVILEGE) *
+    CHANNEL_SENTIMENT_PRIVILEGE;
+
+  let positiveThreshold = CHANNEL_SENTIMENT_THRESHOLD - videoPrivilege;
+
+  positiveThreshold =
+    positiveThreshold < CHANNEL_PRIVILEGE_THRESHOLD
+      ? CHANNEL_PRIVILEGE_THRESHOLD
+      : positiveThreshold;
+
+  let negativeThreshold = -CHANNEL_PRIVILEGE_THRESHOLD + videoPrivilege;
+
+  negativeThreshold =
+    negativeThreshold > -CHANNEL_PRIVILEGE_THRESHOLD
+      ? -CHANNEL_PRIVILEGE_THRESHOLD
+      : negativeThreshold;
+
+  if (compound >= CHANNEL_BASIC_SENTIMENT_THRESHOLD) {
+    if (compound >= positiveThreshold) vote = 'very positive';
+    else vote = 'positive';
+  } else if (compound <= -CHANNEL_BASIC_SENTIMENT_THRESHOLD) {
+    if (compound <= negativeThreshold) vote = 'very negative';
+    else vote = 'negative';
+  } else vote = 'neutral';
+
+  return vote;
+};
+
+export const getVideoSentimentFunction = async (
   params: { videoId: string },
   query: { channelId: string; subcomments: boolean }
 ) => {
@@ -191,13 +165,19 @@ export const getVideoSentimentHelper = async (
         ? 'unknown'
         : stateCompound(avg.compound, commentCount.processed);
 
+    const evaluateParams = {
+      useSubcomments: query.subcomments,
+      useAuthorAnswers: query.channelId === null,
+    };
+
     return {
       vote,
       commentCount,
       commentVoteCount,
       avg,
+      evaluateParams,
       date: new Date().toISOString(),
-    };
+    } as VideoSentiment;
   } catch (error) {
     throw error;
   }

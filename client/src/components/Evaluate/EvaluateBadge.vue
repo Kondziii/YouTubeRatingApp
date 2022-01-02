@@ -6,7 +6,7 @@
   >
     <div class="badge-container">
       <p :style="{ margin: '4px 0 0' }">{{ title }}</p>
-      <p :style="{ margin: '0 0 4px' }">comments</p>
+      <p :style="{ margin: '0 0 4px' }">{{ subtitle }}</p>
       <p class="value">{{ value }}</p>
       <slot></slot>
     </div>
@@ -25,6 +25,10 @@ export default defineComponent({
       required: true,
     },
     title: {
+      type: String,
+      required: false,
+    },
+    subtitle: {
       type: String,
       required: false,
     },

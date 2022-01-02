@@ -6,12 +6,13 @@
       mode="out-in"
     >
       <evaluate-header
+        v-if="result === null"
         title="The selected channel is being evaluated"
       ></evaluate-header>
-      <!-- <evaluate-header
+      <evaluate-header
         v-else
-        title="The video has been evaluated"
-      ></evaluate-header> -->
+        title="The channel has been evaluated"
+      ></evaluate-header>
     </transition>
     <q-separator dark />
     <q-card-section v-if="!!channel">
@@ -92,11 +93,12 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, watchEffect } from 'vue';
+import { computed, defineComponent, ref, watchEffect } from 'vue';
 import { useStore } from '@/store';
 import EvaluateHeader from '@/components/Evaluate/EvaluateHeader.vue';
 import EvaluateWait from '@/components/Evaluate/EvaluateWait.vue';
 import { useChannelActions } from '@/store/channel/actions';
+import { Channel } from '@/types/Channel';
 
 export default defineComponent({
   name: 'EvaluateChannel',
@@ -116,7 +118,7 @@ export default defineComponent({
   setup(props) {
     const store = useStore();
     const channelActions = useChannelActions();
-    const channel = computed(
+    const channel = computed<Channel>(
       () => store.getters['channel/getConfirmedChannel']
     );
     const releaseDate = computed(() =>
@@ -127,20 +129,33 @@ export default defineComponent({
       () => `http://youtube.com/channel/${channel.value.id}`
     );
 
-    const result = null;
-
     watchEffect(() => {
       if (!channel.value) {
         store.dispatch(channelActions.fetchFullInfo, props.id);
       }
-      if (channel.value) console.log('elo');
+      if (channel.value) {
+        store.dispatch(channelActions.analyzeSentiment, {
+          channelId: channel.value.id,
+          playlistId: channel.value.uploads,
+        });
+      }
     });
+
+    const result = computed(() => store.getters['evaluate/getChannelResult']);
+
+    const isResultVisible = ref<boolean>(false);
+
+    const addToHistory = () => {
+      console.log(result);
+    };
 
     return {
       channel,
       releaseDate,
       moveToChannel,
       result,
+      isResultVisible,
+      addToHistory,
     };
   },
 });

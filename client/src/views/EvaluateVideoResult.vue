@@ -26,6 +26,7 @@
             :style="{ position: 'relative' }"
             :value="comment"
             :title="key"
+            subtitle="comments"
           >
             <basic-toolbar
               class="toolbarInfo"
@@ -38,6 +39,7 @@
           <evaluate-badge
             :value="parseFloat(result.avg.compound.toFixed(3))"
             title="score"
+            subtitle="comments"
             :style="{ position: 'relative' }"
           >
             <basic-toolbar
@@ -56,6 +58,8 @@
           <evaluate-chart
             :values="result.commentVoteCount"
             title="Classified comments amount"
+            :backgroundColor="backgroundColor"
+            :hoverBackgroundColor="hoverBackgroundColor"
           ></evaluate-chart>
           <basic-toolbar
             class="tooltip-chart"
@@ -66,7 +70,9 @@
         <div class="col-xs-12 col-md-6" :style="{ position: 'relative' }">
           <evaluate-chart
             :values="avgValues"
-            title="Average content of comment [%]"
+            title="Classified words [%]"
+            :backgroundColor="backgroundColor"
+            :hoverBackgroundColor="hoverBackgroundColor"
             percentage
           ></evaluate-chart>
           <basic-toolbar
@@ -76,9 +82,13 @@
           ></basic-toolbar>
         </div>
       </div>
+      <evaluate-params
+        :authorAnswers="result.evaluateParams.useAuthorAnswers"
+        :subcomments="result.evaluateParams.useSubcomments"
+      ></evaluate-params>
       <div class="flex justify-end">
         <p :style="{ margin: '2rem 0 0', fontSize: '0.9rem', color: '#aaa' }">
-          Analiza zakończona została: {{ evaluationDate }}
+          Evaluation was conducted on: {{ evaluationDate }}
         </p>
       </div>
     </q-card-section>
@@ -108,6 +118,7 @@ import {
 import EvaluateBanner from '@/components/Evaluate/EvaluateBanner.vue';
 import EvaluateChart from '@/components/Evaluate/EvaluateChart.vue';
 import EvaluateBadge from '@/components/Evaluate/EvaluateBadge.vue';
+import EvaluateParams from '@/components/Evaluate/EvaluateParams.vue';
 import { onBeforeRouteLeave } from 'vue-router';
 import BasicModal from '@/components/Modals/BasicModal.vue';
 import { useRoute } from 'vue-router';
@@ -120,6 +131,7 @@ export default defineComponent({
     EvaluateChart,
     EvaluateBadge,
     BasicModal,
+    EvaluateParams,
   },
 
   props: {
@@ -153,6 +165,17 @@ export default defineComponent({
       `The "score" is the result of evaluation process, it's an average sentiment value normalized by the number of words from processed comments. The value of "score" could be between -1 and 1. It can be interpreted as if the score is closer to first the video is perceived more negative and for the later similarly but more positive. `,
       `The chart displays the number of processed comments that was determined as positive, neutral or negative based on computed sentiment value.`,
       `The chart shows the average content of the comment in percentage with division on positive neutral and negative words. It can be also interpreted as words of processed comments that were classified to proper class i.e. positive, neutral and negative.`,
+    ];
+
+    const backgroundColor = [
+      'rgb(18, 155, 41)',
+      'rgb(201, 174, 20)',
+      'rgb(194, 54, 26)',
+    ];
+    const hoverBackgroundColor = [
+      'rgba(18, 155, 41, 0.9)',
+      'rgba(201, 174, 20, 0.9)',
+      'rgba(194, 54, 26, 0.9)',
     ];
 
     const modalLeave = reactive({
@@ -206,6 +229,8 @@ export default defineComponent({
       saveVideoResult,
       query,
       isResultKnown,
+      backgroundColor,
+      hoverBackgroundColor,
     };
   },
 });

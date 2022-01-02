@@ -1,10 +1,11 @@
+import { EvaluateParams } from './../types/EvaluateParams';
 import { Channel } from '@/types/Channel';
 import axios from 'axios';
 import Channel_url from '@/enums/Channel_url';
 import { Video } from '@/types/Video';
 import { Comment } from '@/types/CommentThread';
 import { URL_API } from '../../config';
-import { Sentiment } from '@/types/Sentiment';
+import { ChannelSentiment, Sentiment } from '@/types/Sentiment';
 
 const extractChannelIdFromUrl = (url: string): string => {
   if (url.lastIndexOf('/') === -1) {
@@ -105,6 +106,31 @@ export default {
         params: {
           channelId: channelId,
           subcomments: subcomments,
+        },
+      })
+    ).data;
+  },
+
+  getChannelSentiment: async (
+    channelId: string,
+    playlistId: string,
+    evaluateParams: {
+      minComments: number;
+      useSubComments: boolean;
+      useDates: boolean;
+      beginDate: string;
+      endDate: string;
+    }
+  ): Promise<ChannelSentiment> => {
+    return (
+      await axios.get(`${URL_API}/channels/getSentiment/${playlistId}`, {
+        params: {
+          channelId: channelId,
+          minComments: evaluateParams.minComments,
+          subcomments: evaluateParams.useSubComments,
+          useTime: evaluateParams.useDates,
+          beginDate: evaluateParams.beginDate,
+          endDate: evaluateParams.endDate,
         },
       })
     ).data;

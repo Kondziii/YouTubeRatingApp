@@ -23,6 +23,7 @@ const EvaluateModule: Module<EvaluateState, RootState> = {
     videoHistory: JSON.parse(
       window.localStorage.getItem('video-history') || '[]'
     ) as Array<VideoHistory>,
+    channelResult: null,
   }),
   mutations,
   actions,

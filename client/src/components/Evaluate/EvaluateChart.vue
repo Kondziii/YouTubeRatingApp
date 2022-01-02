@@ -10,7 +10,7 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent } from 'vue';
+import { computed, defineComponent, PropType } from 'vue';
 import { DoughnutChart, useDoughnutChart } from 'vue-chart-3';
 import { ChartData, ChartOptions, Chart, registerables } from 'chart.js';
 import ChartDataLabels from 'chartjs-plugin-datalabels';
@@ -24,6 +24,16 @@ export default defineComponent({
   props: {
     values: {
       type: Object,
+      required: true,
+    },
+
+    backgroundColor: {
+      type: Array as PropType<string[]>,
+      required: true,
+    },
+
+    hoverBackgroundColor: {
+      type: Array as PropType<string[]>,
       required: true,
     },
 
@@ -48,18 +58,10 @@ export default defineComponent({
       datasets: [
         {
           data: Object.values(props.values),
-          backgroundColor: [
-            'rgb(18, 155, 41)',
-            'rgb(201, 174, 20)',
-            'rgb(194, 54, 26)',
-          ],
+          backgroundColor: props.backgroundColor,
           hoverOffset: 3,
           borderColor: 'transparent',
-          hoverBackgroundColor: [
-            'rgba(18, 155, 41, 0.9)',
-            'rgba(201, 174, 20, 0.9)',
-            'rgba(194, 54, 26, 0.9)',
-          ],
+          hoverBackgroundColor: props.hoverBackgroundColor,
           datalabels: {
             color: 'white',
             formatter: function (value) {

@@ -1,6 +1,6 @@
 import { useErrorActions } from './../error/actions';
 import { Video, VideoHistory } from './../../types/Video';
-import { Sentiment } from './../../types/Sentiment';
+import { Sentiment, ChannelSentiment } from './../../types/Sentiment';
 import useActions from '@/hooks/useActions';
 import { EvaluateMutations } from './mutations';
 import { RootState } from './../types';
@@ -13,6 +13,7 @@ const EvaluateActions = {
   setVideoResult: 'setVideoResult',
   saveVideoResult: 'saveVideoResult',
   deleteVideoResult: 'deleteVideoResult',
+  setChannelResult: 'setChannelResult',
 };
 
 export const useEvaluateActions = (): typeof EvaluateActions => {
@@ -29,6 +30,10 @@ export default {
 
   [EvaluateActions.setVideoResult]({ commit }, payload: Sentiment) {
     commit(EvaluateMutations.SET_VIDEO_RESULT, payload);
+  },
+
+  [EvaluateActions.setChannelResult]({ commit }, payload: ChannelSentiment) {
+    commit(EvaluateMutations.SET_CHANNEL_RESULT, payload);
   },
 
   async [EvaluateActions.saveVideoResult](

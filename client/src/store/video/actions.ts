@@ -186,7 +186,7 @@ export default {
     try {
       const sentiment = await youtube.getVideoSentiment(
         payload.videoId,
-        !evaluateParams.useAuthorAnswers ? payload.channelId : '',
+        !evaluateParams.useAuthorAnswers ? payload.channelId : 'null',
         evaluateParams.useSubComments
       );
       commit(`evaluate/${EvaluateMutations.SET_VIDEO_RESULT}`, sentiment, {

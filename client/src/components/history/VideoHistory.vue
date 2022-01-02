@@ -21,7 +21,6 @@
             enter-active-class="animate__animated animate__slideInLeft"
             leave-active-class="animate__animated animate__slideInRight"
             appear
-            mode="out-in"
             name="list"
           >
             <the-list-item
@@ -55,7 +54,7 @@
           label="Move to evaluate"
           type="button"
           color="red"
-          :to="{ name: 'Home' }"
+          :to="{ name: 'Home', query: { value: 'videos' } }"
           icon-right="arrow_forward"
         />
       </div>
@@ -71,7 +70,6 @@ import { VideoHistory } from '@/types/Video';
 import TheListItem from '@/components/TheListItem.vue';
 import BasicModal from '@/components/Modals/BasicModal.vue';
 import { useRouter } from 'vue-router';
-import { useVideoActions } from '@/store/video/actions';
 import { VideoMutations } from '@/store/video/mutations';
 
 export default defineComponent({

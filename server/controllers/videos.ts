@@ -1,4 +1,5 @@
-import { getComments, getVideoSentimentHelper } from './helpers/sentiment';
+import { getVideoSentimentFunction } from './helpers/sentiment';
+import { getComments } from './helpers/comments';
 import { VideoBySearch, VideoById, Video } from './../types/Video';
 import axios from 'axios';
 import { KEY, URL_YOUTUBE_API } from '../config';
@@ -105,7 +106,7 @@ export const getVideoSentiment: RequestHandler = async (req, res, next) => {
   };
 
   try {
-    const result = await getVideoSentimentHelper(params, query);
+    const result = await getVideoSentimentFunction(params, query);
 
     res.status(200).json(result);
   } catch (error: any) {
