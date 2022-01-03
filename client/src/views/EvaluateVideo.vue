@@ -27,7 +27,7 @@
               <span>{{ video.channelTitle }}</span>
               <span>, {{ releaseDate }}</span>
             </li>
-            <li>
+            <li v-if="video.statistics">
               <ul
                 :style="{
                   listStyle: 'none',

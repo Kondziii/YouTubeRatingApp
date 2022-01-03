@@ -19,6 +19,7 @@ const ChannelActions: EvaluateActions = {
   toggleInfoModal: 'toggleInfoModal',
   resetConfirmed: 'resetConfirmed',
   analyzeSentiment: 'analyzeSentiment',
+  setConfirmed: 'setConfirmed',
 };
 
 export const useChannelActions = (): typeof ChannelActions => {
@@ -214,17 +215,17 @@ export default {
           excluded: 0,
         },
         videosVoteCount: {
-          'very positive': 2,
-          positive: 3,
+          'very positive': 0,
+          positive: 5,
           neutral: 0,
           negative: 0,
           'very negative': 0,
         },
         videosAvg: {
-          positive: 0.27590113342577205,
-          neutral: 0.7102135791297515,
-          negative: 0.013892694851883807,
-          compound: 0.29349183457221406,
+          positive: 0.275682170659624,
+          neutral: 0.709939471797774,
+          negative: 0.014385764950009433,
+          compound: 0.3001237409293844,
         },
         evaluateParams: {
           commentsLimit: 5,
@@ -258,31 +259,41 @@ export default {
                 useSubcomments: true,
                 useAuthorAnswers: false,
               },
-              date: '2022-01-02T13:46:12.307Z',
+              date: '2022-01-03T10:36:42.608Z',
+              videoId: 'hdnt-jdDlao',
+              title:
+                'Full Year view Calendar using Html CSS & Javascript | JS Year Calendar',
+              imageHigh: 'https://i.ytimg.com/vi/hdnt-jdDlao/hqdefault.jpg',
+              publishedAt: '2021-12-23T12:17:53Z',
             },
             {
               vote: 'positive',
               commentCount: {
-                all: 46,
-                processed: 41,
+                all: 50,
+                processed: 45,
                 excluded: 5,
               },
               commentVoteCount: {
-                positive: 24,
+                positive: 28,
                 neutral: 17,
                 negative: 0,
               },
               avg: {
-                positive: 0.30363414634146346,
-                neutral: 0.6963658536585366,
-                negative: 0,
-                compound: 0.30161463414634143,
+                positive: 0.29837777777777785,
+                neutral: 0.6986444444444444,
+                negative: 0.002977777777777778,
+                compound: 0.33019777777777776,
               },
               evaluateParams: {
                 useSubcomments: true,
                 useAuthorAnswers: false,
               },
-              date: '2022-01-02T13:46:12.902Z',
+              date: '2022-01-03T10:36:43.021Z',
+              videoId: 'GnllGn9Oifs',
+              title:
+                'CSS Water Drop Logo Effect | Html CSS Dropmorphism @Online Tutorials',
+              imageHigh: 'https://i.ytimg.com/vi/GnllGn9Oifs/hqdefault.jpg',
+              publishedAt: '2021-12-26T09:03:47Z',
             },
             {
               vote: 'positive',
@@ -306,31 +317,40 @@ export default {
                 useSubcomments: true,
                 useAuthorAnswers: false,
               },
-              date: '2022-01-02T13:46:13.424Z',
+              date: '2022-01-03T10:36:43.392Z',
+              videoId: 'i8t2ANI8Qyo',
+              title:
+                'New Year Text Animation Effects using Html CSS | CSS 3D Animated Christmas Tree @Online Tutorials',
+              imageHigh: 'https://i.ytimg.com/vi/i8t2ANI8Qyo/hqdefault.jpg',
+              publishedAt: '2021-12-24T07:17:48Z',
             },
             {
               vote: 'positive',
               commentCount: {
-                all: 72,
-                processed: 61,
+                all: 73,
+                processed: 62,
                 excluded: 11,
               },
               commentVoteCount: {
-                positive: 39,
+                positive: 40,
                 neutral: 18,
                 negative: 4,
               },
               avg: {
-                positive: 0.29898360655737705,
-                neutral: 0.6692459016393444,
-                negative: 0.03177049180327869,
-                compound: 0.29886393442622955,
+                positive: 0.3031451612903226,
+                neutral: 0.6655967741935486,
+                negative: 0.03125806451612904,
+                compound: 0.3034403225806452,
               },
               evaluateParams: {
                 useSubcomments: true,
                 useAuthorAnswers: false,
               },
-              date: '2022-01-02T13:46:14.202Z',
+              date: '2022-01-03T10:36:43.954Z',
+              videoId: 'pqny8c69LUY',
+              title: 'CSS Animation Effects | Html CSS  @Online Tutorials',
+              imageHigh: 'https://i.ytimg.com/vi/pqny8c69LUY/hqdefault.jpg',
+              publishedAt: '2021-12-22T10:41:44Z',
             },
             {
               vote: 'positive',
@@ -354,12 +374,47 @@ export default {
                 useSubcomments: true,
                 useAuthorAnswers: false,
               },
-              date: '2022-01-02T13:46:14.964Z',
+              date: '2022-01-03T10:36:44.453Z',
+              videoId: 'hrv2XAY27gU',
+              title:
+                'Animated Christmas Tree using Html & CSS Only | CSS 3D Animation Effects @Online Tutorials',
+              imageHigh: 'https://i.ytimg.com/vi/hrv2XAY27gU/hqdefault.jpg',
+              publishedAt: '2021-12-20T11:31:14Z',
             },
           ],
-          excluded: [],
+          excluded: [
+            {
+              vote: 'positive',
+              commentCount: {
+                all: 44,
+                processed: 38,
+                excluded: 6,
+              },
+              commentVoteCount: {
+                positive: 23,
+                neutral: 13,
+                negative: 2,
+              },
+              avg: {
+                positive: 0.2778684210526316,
+                neutral: 0.6981052631578948,
+                negative: 0.024026315789473684,
+                compound: 0.2884710526315789,
+              },
+              evaluateParams: {
+                useSubcomments: true,
+                useAuthorAnswers: false,
+              },
+              date: '2022-01-03T10:36:44.453Z',
+              videoId: 'hrv2XAY27gU',
+              title:
+                'Animated Christmas Tree using Html & CSS Only | CSS 3D Animation Effects @Online Tutorials',
+              imageHigh: 'https://i.ytimg.com/vi/hrv2XAY27gU/hqdefault.jpg',
+              publishedAt: '2021-12-20T11:31:14Z',
+            },
+          ],
         },
-        date: '2022-01-02T13:46:14.965Z',
+        date: '2022-01-03T10:36:44.454Z',
       };
 
       commit(

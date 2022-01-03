@@ -9,6 +9,7 @@ import youtube from '@/data/yt-api';
 import useActions from '@/hooks/useActions';
 import { namespaces } from '..';
 import EvaluateActions from '@/types/EvaluateActions';
+import { Video } from '@/types/Video';
 
 const videoActions: EvaluateActions = {
   fetchSimilarByTitle: 'fetchSimilarByTitle',
@@ -18,6 +19,7 @@ const videoActions: EvaluateActions = {
   toggleInfoModal: 'toggleInfoModal',
   resetConfirmed: 'resetConfirmed',
   analyzeSentiment: 'analyzeSentiment',
+  setConfirmed: 'setConfirmed',
 };
 
 export const useVideoActions = (): typeof videoActions => {
@@ -173,6 +175,10 @@ export default {
 
   [videoActions.toggleInfoModal]({ commit }, payload: boolean) {
     commit(VideoMutations.SET_INFO_MODAL_STATE, payload);
+  },
+
+  [videoActions.setConfirmed]({ commit }, payload: Video) {
+    commit(VideoMutations.SET_CONFIRMED_VIDEO, payload);
   },
 
   async [videoActions.analyzeSentiment](

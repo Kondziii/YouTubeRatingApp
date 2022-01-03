@@ -7,6 +7,10 @@ export interface Sentiment {
 
 export interface VideoSentiment {
   vote: string;
+  videoId?: string;
+  publishedAt?: string;
+  title?: string;
+  imageHigh?: string;
   commentCount: {
     all: number;
     processed: number;

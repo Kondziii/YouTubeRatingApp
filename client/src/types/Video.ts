@@ -5,7 +5,7 @@ export interface Video {
   channelTitle: string;
   title: string;
   publishedAt: string;
-  image: string;
+  image?: string;
   imageHigh: string;
   statistics?: {
     viewCount: number;

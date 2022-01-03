@@ -159,14 +159,20 @@ export const getChannelSentiment: RequestHandler = async (req, res, next) => {
     };
 
     for (const video of channelVideos) {
-      const videoSentiment = await getVideoSentimentFunction(
-        { videoId: video.id },
-        {
-          channelId: query.channelId || '',
-          subcomments:
-            query.subcomments === undefined ? true : query.subcomments,
-        }
-      );
+      const videoSentiment = {
+        ...(await getVideoSentimentFunction(
+          { videoId: video.id },
+          {
+            channelId: query.channelId || '',
+            subcomments:
+              query.subcomments === undefined ? true : query.subcomments,
+          }
+        )),
+        videoId: video.id,
+        title: video.title,
+        imageHigh: video.imageHigh,
+        publishedAt: video.publishedAt,
+      };
 
       if (
         query.minComments &&

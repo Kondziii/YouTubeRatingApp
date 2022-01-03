@@ -1,12 +1,5 @@
 <template>
-  <transition
-    appear
-    enter-active-class="animate__animated animate__fadeIn animate__delay-3s"
-    leave-active-class="animate__animated animate__fadeOut"
-    tag="div"
-  >
-    <DoughnutChart v-bind="doughnutChartProps"></DoughnutChart>
-  </transition>
+  <DoughnutChart v-bind="doughnutChartProps"></DoughnutChart>
 </template>
 
 <script lang="ts">

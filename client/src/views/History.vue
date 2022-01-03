@@ -12,7 +12,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, watch } from 'vue';
+import { defineComponent } from 'vue';
 import useTabs from '@/hooks/useTabs';
 import VideoHistory from '@/components/history/VideoHistory.vue';
 import ChannelHistory from '@/components/history/ChannelHistory.vue';

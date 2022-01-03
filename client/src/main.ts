@@ -8,6 +8,7 @@ import BasicContainer from './components/UI/BasicContainer.vue';
 import BasicTabs from './components/UI/BasicTabs.vue';
 import BasicToolbar from './components/UI/BasicToolbar.vue';
 import YouTube from 'vue3-youtube';
+import { dragscrollNext } from 'vue-dragscroll';
 
 createApp(App)
   .component('basic-container', BasicContainer)
@@ -17,4 +18,5 @@ createApp(App)
   .use(Quasar, quasarUserOptions)
   .use(store, key)
   .use(router)
+  .directive('dragscroll', dragscrollNext)
   .mount('#app');

@@ -1,16 +1,10 @@
 <template>
-  <transition
-    appear
-    enter-active-class="animate__animated animate__fadeIn animate__delay-2s"
-    leave-active-class="animate__animated animate__fadeOut"
-  >
-    <div class="badge-container">
-      <p :style="{ margin: '4px 0 0' }">{{ title }}</p>
-      <p :style="{ margin: '0 0 4px' }">{{ subtitle }}</p>
-      <p class="value">{{ value }}</p>
-      <slot></slot>
-    </div>
-  </transition>
+  <div class="badge-container" v-bind="$attrs">
+    <p v-if="title" :style="{ margin: '4px 0 0' }">{{ title }}</p>
+    <p v-if="subtitle" :style="{ margin: '0 0 4px' }">{{ subtitle }}</p>
+    <p class="value q-ma-none">{{ value }}</p>
+    <slot></slot>
+  </div>
 </template>
 
 <script lang="ts">
@@ -54,7 +48,7 @@ export default defineComponent({
   margin: 10px auto;
 
   .value {
-    font-size: 1.4rem;
+    font-size: 1.4em;
     font-weight: 500;
   }
 }

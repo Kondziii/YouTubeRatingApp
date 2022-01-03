@@ -10,9 +10,22 @@
       <li v-if="authorAnswers === true">
         Author answers were taken into account.
       </li>
-      <li v-else>Author answers weren't taken into account.</li>
+      <li v-else-if="authorAnswers === false">
+        Author answers weren't taken into account.
+      </li>
       <li v-if="subcomments === true">Subcomments were processed.</li>
-      <li v-else>Subcomments weren't processed.</li>
+      <li v-else-if="subcomments === false">Subcomments weren't processed.</li>
+      <li v-if="useTime === false">
+        The channel was evaluated from the published time (i.e. {{ beginDate }})
+        to current day (i.e. {{ endDate }}).
+      </li>
+      <li v-else-if="useTime === true">
+        The channel was evaluated from {{ beginDate }} to {{ endDate }}.
+      </li>
+      <li v-if="commentsLimit">
+        The videos below {{ commentsLimit }} were excluded from the result
+        outcome.
+      </li>
     </ul>
   </div>
 </template>
@@ -31,6 +44,27 @@ export default defineComponent({
 
     subcomments: {
       type: Boolean,
+      required: false,
+    },
+
+    useTime: {
+      type: [Boolean, String],
+      required: false,
+      default: 'noTime',
+    },
+
+    beginDate: {
+      type: String,
+      required: false,
+    },
+
+    endDate: {
+      type: String,
+      required: false,
+    },
+
+    commentsLimit: {
+      type: Number,
       required: false,
     },
   },

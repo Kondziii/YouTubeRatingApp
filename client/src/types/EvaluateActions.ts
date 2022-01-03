@@ -6,6 +6,7 @@ type EvaluateActions = {
   toggleInfoModal: 'toggleInfoModal';
   resetConfirmed: 'resetConfirmed';
   analyzeSentiment: 'analyzeSentiment';
+  setConfirmed: 'setConfirmed';
 };
 
 export default EvaluateActions;

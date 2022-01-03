@@ -1,5 +1,9 @@
 export interface Sentiment {
   vote: string;
+  videoId?: string;
+  publishedAt?: string;
+  title?: string;
+  imageHigh?: string;
   commentCount: {
     all: number;
     processed: number;

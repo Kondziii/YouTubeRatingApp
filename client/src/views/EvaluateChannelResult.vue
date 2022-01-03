@@ -1,5 +1,15 @@
 <template>
   <div>
+    <basic-modal
+      ref="modal"
+      v-if="modalLeave.is"
+      :title="modalLeave.title"
+      :message="modalLeave.message"
+      :confirm="modalLeave.confirm"
+      :htmlMessage="modalLeave.htmlMessage"
+      @close="modalLeave.cancelHandler"
+      @confirm="modalLeave.confirmHandler"
+    ></basic-modal>
     <header class="q-pa-lg text-center">
       <h1>Result</h1>
     </header>
@@ -71,6 +81,36 @@
           ></basic-toolbar>
         </div>
       </div>
+      <div
+        v-if="result.videosSentiment.processed.length > 0"
+        class="row q-my-md"
+      >
+        <div class="col-xs-12">
+          <evaluate-line-chart
+            title="Videos score over time"
+            :values="sortedValues"
+            @clickPoint="openVideoDetails"
+          ></evaluate-line-chart>
+        </div>
+      </div>
+      <evaluate-videos-list
+        :videosResult="result.videosSentiment.processed"
+        title="Results of processed videos"
+        @seeDetails="seeDetails"
+      ></evaluate-videos-list>
+      <evaluate-videos-list
+        :videosResult="result.videosSentiment.excluded"
+        title="Results of excluded videos"
+        @seeDetails="seeDetails"
+      ></evaluate-videos-list>
+      <evaluate-params
+        :authorAnswers="result.evaluateParams.useAuthorAnswers"
+        :subcomments="result.evaluateParams.useSubcomments"
+        :commentsLimit="result.evaluateParams.commentsLimit"
+        :useTime="result.evaluateParams.useTime"
+        :beginDate="result.evaluateParams.beginDate"
+        :endDate="result.evaluateParams.endDate"
+      ></evaluate-params>
     </q-card-section>
     <q-card-actions class="flex justify-end q-pa-lg">
       <q-btn color="red" flat @click="saveChannelResult">Save</q-btn>
@@ -81,12 +121,29 @@
 </template>
 
 <script lang="ts">
-import { ChannelSentiment } from '@/types/Sentiment';
-import { computed, defineComponent, PropType } from 'vue';
+import { ChannelSentiment, Sentiment } from '@/types/Sentiment';
+import {
+  computed,
+  defineComponent,
+  nextTick,
+  PropType,
+  reactive,
+  ref,
+} from 'vue';
 import EvaluateBanner from '@/components/Evaluate/EvaluateBanner.vue';
 import EvaluateBadge from '@/components/Evaluate/EvaluateBadge.vue';
 import BasicToolbar from '@/components/UI/BasicToolbar.vue';
 import EvaluateChart from '@/components/Evaluate/EvaluateChart.vue';
+import EvaluateLineChart from '@/components/Evaluate/EvaluateLineChart.vue';
+import EvaluateVideosList from '@/components/Evaluate/EvaluateVideosList.vue';
+import { useRouter } from 'vue-router';
+import { useStore } from '@/store/index';
+import { useVideoActions } from '@/store/video/actions';
+import { Channel } from '@/types/Channel';
+import { useEvaluateActions } from '@/store/evaluate/actions';
+import EvaluateParams from '@/components/Evaluate/EvaluateParams.vue';
+import BasicModal from '@/components/Modals/BasicModal.vue';
+import { onBeforeRouteLeave } from 'vue-router';
 
 export default defineComponent({
   name: 'EvaluateChannelResult',
@@ -103,9 +160,19 @@ export default defineComponent({
     EvaluateBadge,
     BasicToolbar,
     EvaluateChart,
+    EvaluateLineChart,
+    EvaluateVideosList,
+    EvaluateParams,
+    BasicModal,
   },
 
   setup(props, { emit }) {
+    const modal = ref<typeof BasicModal>();
+    const router = useRouter();
+    const store = useStore();
+    const videoActions = useVideoActions();
+    const evaluateActions = useEvaluateActions();
+
     const tooltipsContent = [
       'The number of all videos that were passed to the evaluation process.',
       'The number of videos that were processed and match to the evaluation process settings.',
@@ -164,6 +231,72 @@ export default defineComponent({
       return pom;
     });
 
+    const sortedValues = computed(() =>
+      props.result.videosSentiment.processed.slice().sort((a, b) => {
+        if (a.publishedAt && b.publishedAt) {
+          return (
+            new Date(a.publishedAt).getTime() -
+            new Date(b.publishedAt).getTime()
+          );
+        } else return 0;
+      })
+    );
+
+    const openVideoDetails = (index: number) => {
+      seeDetails(sortedValues.value[index]);
+    };
+
+    const channel = computed<Channel>(
+      () => store.getters['channel/getConfirmedChannel']
+    );
+
+    const seeDetails = (videoResult: Sentiment) => {
+      store.dispatch(videoActions.setConfirmed, {
+        id: videoResult.videoId,
+        channelId: channel.value.id,
+        channelTitle: channel.value.title,
+        title: videoResult.title,
+        publishedAt: videoResult.publishedAt,
+        imageHigh: videoResult.imageHigh,
+        image: videoResult.imageHigh,
+      });
+
+      store.dispatch(evaluateActions.setVideoResult, videoResult);
+
+      router.push({
+        path: `/evaluate/videos/${videoResult.videoId}/result`,
+        query: { history: 'true' },
+      });
+    };
+
+    const modalLeave = reactive({
+      is: false,
+      title: 'Warning!',
+      message: `<p class="q-mb-xs">Are you sure you want to close the result page?</p>
+        <p>The outcome won't be available unless u saved it.</p> `,
+      confirm: true,
+      htmlMessage: true,
+      confirmHandler: () => {
+        modalLeave.is = false;
+      },
+      cancelHandler: () => {
+        modalLeave.is = false;
+      },
+    });
+
+    onBeforeRouteLeave(async (to) => {
+      if (!to.fullPath.includes('/evaluate/videos/')) {
+        modalLeave.is = true;
+        const answer = await nextTick(async () => {
+          if (modal.value) {
+            return await modal.value.getConfirm();
+          }
+        });
+        return answer;
+      }
+      return true;
+    });
+
     return {
       tooltipsContent,
       isResultKnown,
@@ -173,6 +306,11 @@ export default defineComponent({
       hoverBackgroundColorVideos,
       saveChannelResult,
       avgValues,
+      sortedValues,
+      openVideoDetails,
+      seeDetails,
+      modal,
+      modalLeave,
     };
   },
 });
