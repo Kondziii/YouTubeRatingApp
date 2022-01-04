@@ -122,7 +122,14 @@
         >Close</q-btn
       >
       <div v-else>
-        <q-btn color="red" flat @click="saveChannelResult">Save</q-btn>
+        <q-btn
+          v-show="isSaveBtnVisible"
+          class="q-mr-sm"
+          color="red"
+          flat
+          @click="saveChannelResult"
+          >Save</q-btn
+        >
         <q-btn color="red" :to="{ name: 'Home' }" replace>Close</q-btn>
       </div>
     </q-card-actions>
@@ -184,6 +191,7 @@ export default defineComponent({
     const store = useStore();
     const modal = ref<typeof BasicModal>();
     const query = route.query as { history: string };
+    const isSaveBtnVisible = ref<boolean>(true);
 
     const videoActions = useVideoActions();
     const evaluateActions = useEvaluateActions();
@@ -228,6 +236,7 @@ export default defineComponent({
     ];
 
     const saveChannelResult = () => {
+      isSaveBtnVisible.value = false;
       emit('save');
     };
 
@@ -338,6 +347,7 @@ export default defineComponent({
       modalLeave,
       evaluationDate,
       query,
+      isSaveBtnVisible,
     };
   },
 });

@@ -61,7 +61,7 @@ const router = createRouter({
       setTimeout(() => {
         if (savedPosition) {
           resolve(savedPosition);
-        } else {
+        } else if (to.path != from.path) {
           resolve({ left: 0, top: 0 });
         }
       }, 100);

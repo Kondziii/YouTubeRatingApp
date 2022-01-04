@@ -10,9 +10,9 @@
           <p>
             YouTube is a website that was founded in 2005 and has become one of
             the most popular and most recognizable websites in Internet.
-            According to statistics from 2020, over 37 milion channels have been
-            registered and it is being estimated that people all over the world
-            provide around 500 hours of content in every minute.
+            According to the statistics from 2020, over 37 million channels have
+            been registered and it is being estimated that people all over the
+            world provide around 500 hours of content in every minute.
           </p>
           <p>
             Such a huge number of channels and videos has became an inspiration
@@ -21,6 +21,9 @@
             analysis. The app is using library called vader sentiment. If you
             want to get know more about it, you can just google it.
           </p>
+        </li>
+        <li>
+          <p>Information about sentiment analysis</p>
         </li>
         <li>
           <p>Instruction</p>

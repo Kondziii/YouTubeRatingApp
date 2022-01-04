@@ -114,7 +114,6 @@ export default {
     context,
     payload: { channel: Channel; result: ChannelSentiment }
   ) {
-    console.log('hej');
     const errorActions = useErrorActions();
     const id = payload.channel.id + new Date(payload.result.date).getTime();
     const item = { id, ...payload } as ChannelHistory;

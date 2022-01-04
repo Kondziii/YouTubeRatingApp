@@ -47,6 +47,7 @@
         <slot name="time-warn"></slot>
       </li>
     </ol>
+
     <p>
       If you get to this section, you probably know everything you have to know
       about the app. Now is the time to evaluate something!

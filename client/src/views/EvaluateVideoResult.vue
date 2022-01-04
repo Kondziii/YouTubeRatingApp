@@ -94,7 +94,12 @@
     </q-card-section>
     <q-separator dark></q-separator>
     <q-card-actions class="flex justify-end q-pa-lg">
-      <q-btn v-if="!query.history" color="red" flat @click="saveVideoResult"
+      <q-btn
+        v-show="isSaveBtnVisible"
+        v-if="!query.history"
+        color="red"
+        flat
+        @click="saveVideoResult"
         >Save</q-btn
       >
       <q-btn v-if="!query.history" color="red" :to="{ name: 'Home' }" replace
@@ -145,6 +150,7 @@ export default defineComponent({
 
   setup(props, { emit }) {
     const route = useRoute();
+    const isSaveBtnVisible = ref<boolean>(true);
     const query = route.query as unknown as { history: boolean };
 
     const modal = ref<typeof BasicModal>();
@@ -213,6 +219,7 @@ export default defineComponent({
     });
 
     const saveVideoResult = () => {
+      isSaveBtnVisible.value = false;
       emit('save');
     };
 
@@ -231,6 +238,7 @@ export default defineComponent({
       isResultKnown,
       backgroundColor,
       hoverBackgroundColor,
+      isSaveBtnVisible,
     };
   },
 });

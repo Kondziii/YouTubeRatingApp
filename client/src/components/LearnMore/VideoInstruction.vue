@@ -40,8 +40,8 @@
     </template>
     <template #time-warn>
       <p>
-        Analiza może potrwać do kilku minut w zależności od ilości komentarzy,
-        więc bądź cierliwy i nie zamykaj aplikacji.😃
+        Evaluation process may last for a while depending on the degree of
+        channel expansion so be patient and don't close the app.
       </p>
     </template>
   </basic-instruction>

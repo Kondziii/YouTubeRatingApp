@@ -121,10 +121,12 @@ export default defineComponent({
         store.dispatch(videoActions.fetchFullInfo, props.id);
       }
       if (video.value && !query.history)
-        store.dispatch(videoActions.analyzeSentiment, {
-          videoId: video.value.id,
-          channelId: video.value.channelId,
-        });
+        setTimeout(() => {
+          store.dispatch(videoActions.analyzeSentiment, {
+            videoId: video.value.id,
+            channelId: video.value.channelId,
+          });
+        }, 1000);
     });
 
     const result = computed<Sentiment>(

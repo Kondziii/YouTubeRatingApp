@@ -134,11 +134,11 @@ export default defineComponent({
       () => `http://youtube.com/channel/${channel.value.id}`
     );
 
-    onBeforeMount(() => {
-      if (!result.value) {
-        store.dispatch(evaluateActions.setChannelResultVisible, false);
-      }
-    });
+    // onBeforeMount(() => {
+    //   if (!result.value) {
+    //     store.dispatch(evaluateActions.setChannelResultVisible, false);
+    //   }
+    // });
 
     watchEffect(() => {
       if (!channel.value) {
