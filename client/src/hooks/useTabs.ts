@@ -1,5 +1,5 @@
 import Tab from '@/types/Tab';
-import { ref, watchEffect } from 'vue';
+import { ref } from 'vue';
 import { useRouter, useRoute } from 'vue-router';
 
 interface useTabInterface {

@@ -32,6 +32,10 @@
               model="history"
               :description="itemDescription(index)"
               :index="index"
+              :score="{
+                vote: item.result.vote,
+                score: item.result.avg.compound.toFixed(3),
+              }"
               @delete="deleteVideo"
               @onClick="showResult"
             ></the-list-item>

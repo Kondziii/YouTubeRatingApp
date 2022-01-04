@@ -1,4 +1,3 @@
-import { EvaluateParams } from './../types/EvaluateParams';
 import { Channel } from '@/types/Channel';
 import axios from 'axios';
 import Channel_url from '@/enums/Channel_url';

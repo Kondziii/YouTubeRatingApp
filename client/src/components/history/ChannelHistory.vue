@@ -26,12 +26,16 @@
             <the-list-item
               :key="item.id"
               :img="item.channel.image"
-              :title="item.channel.title"
+              :title="itemTitle(index)"
               :id="item.channel.id"
               type="channels"
               model="history"
               :description="itemDescription(index)"
               :index="index"
+              :score="{
+                vote: item.result.vote,
+                score: item.result.videosAvg.compound.toFixed(3),
+              }"
               @delete="deleteChannel"
               @onClick="showResult"
             ></the-list-item>
@@ -98,6 +102,23 @@ export default defineComponent({
       return 'Date of evaluation ' + date;
     };
 
+    const itemTitle = (index: string) => {
+      return (
+        channelItems.value[index].channel.title +
+        ' [' +
+        channelItems.value[index].result.evaluateParams.beginDate.replaceAll(
+          '/',
+          '.'
+        ) +
+        ' - ' +
+        channelItems.value[index].result.evaluateParams.endDate.replaceAll(
+          '/',
+          '.'
+        ) +
+        ']'
+      );
+    };
+
     const modalDelete = reactive({
       is: false,
       title: 'Warning!',
@@ -150,9 +171,10 @@ export default defineComponent({
       modalDelete,
       modal,
       showResult,
+      itemTitle,
     };
   },
 });
 </script>
 
-<style scoped></style>
+<style lang="scss" scoped></style>

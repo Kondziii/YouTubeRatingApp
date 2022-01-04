@@ -9,6 +9,13 @@
       <div class="flex column justify-start" :style="{ width: '100%' }">
         <p>{{ title }}</p>
         <p v-if="!!description" class="description">{{ description }}</p>
+        <q-badge
+          v-if="!!score"
+          :style="{ width: 'fit-content' }"
+          rounded
+          :color="badgeColor"
+          :label="score.score"
+        />
       </div>
     </div>
     <div class="col-4 flex justify-center items-center">
@@ -128,6 +135,11 @@ export default defineComponent({
       type: Number,
       required: false,
     },
+
+    score: {
+      type: Object,
+      required: false,
+    },
   },
 
   emits: ['onClick', 'openDetails', 'reset', 'showList', 'delete'],
@@ -175,6 +187,15 @@ export default defineComponent({
       context.emit('delete', props.index);
     };
 
+    const badgeColor = computed(() => {
+      if (props.score) {
+        if (props.score.vote.includes('positive')) return 'green';
+        else if (props.score.score.includes('negative')) return 'red';
+        else return 'yellow-8';
+      }
+      return '';
+    });
+
     return {
       urlLink,
       select,
@@ -182,6 +203,7 @@ export default defineComponent({
       openDetails,
       resetConfirmed,
       deleteItem,
+      badgeColor,
     };
   },
 });
@@ -219,6 +241,11 @@ p {
   font-size: 0.9rem;
 }
 
+.q-badge {
+  margin: 2px 5%;
+  font-size: 0.7rem;
+}
+
 .selected {
   background: $grey-8;
 }
@@ -246,6 +273,12 @@ p {
     width: 80px;
     height: auto;
   }
+
+  .avatar-channel {
+    width: 50px;
+    height: auto;
+    object-fit: cover;
+  }
 }
 
 .description {
@@ -258,6 +291,11 @@ p {
     .avatar-video {
       width: 100px;
       height: auto;
+    }
+    .avatar-channel {
+      width: 80px;
+      height: auto;
+      object-fit: cover;
     }
   }
 }
