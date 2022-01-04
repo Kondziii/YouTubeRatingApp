@@ -453,7 +453,8 @@ export default defineComponent({
             useAuthorAnswers: useAuthorAnswers.value,
           },
         });
-
+        store.dispatch(evaluateActions.setChannelResult, null);
+        store.dispatch(evaluateActions.setVideoResult, null);
         props.selectedTab === 'channels'
           ? router.push(`/evaluate/channels/${confirmedChannel.value.id}`)
           : router.push(`/evaluate/videos/${confirmedVideo.value.id}`);

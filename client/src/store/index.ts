@@ -5,6 +5,7 @@ import channelModule from './channel/index';
 import videoModule from './video/index';
 import errorModule from './error/index';
 import evaluateModule from './evaluate/index';
+import createPersistedState from 'vuex-persistedstate';
 
 export const key: InjectionKey<Store<RootState>> = Symbol();
 
@@ -26,6 +27,7 @@ export const store = createStore<RootState>({
     [namespaces.error]: errorModule,
     [namespaces.evaluate]: evaluateModule,
   },
+  plugins: [createPersistedState()],
 });
 
 export const useStore = (): Store<RootState> => {

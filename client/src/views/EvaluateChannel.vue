@@ -93,7 +93,13 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, onBeforeMount, watchEffect } from 'vue';
+import {
+  computed,
+  defineComponent,
+  onBeforeMount,
+  ref,
+  watchEffect,
+} from 'vue';
 import { useStore } from '@/store';
 import EvaluateHeader from '@/components/Evaluate/EvaluateHeader.vue';
 import EvaluateWait from '@/components/Evaluate/EvaluateWait.vue';
@@ -134,11 +140,11 @@ export default defineComponent({
       () => `http://youtube.com/channel/${channel.value.id}`
     );
 
-    // onBeforeMount(() => {
-    //   if (!result.value) {
-    //     store.dispatch(evaluateActions.setChannelResultVisible, false);
-    //   }
-    // });
+    onBeforeMount(() => {
+      if (!result.value) {
+        store.dispatch(evaluateActions.setChannelResultVisible, false);
+      }
+    });
 
     watchEffect(() => {
       if (!channel.value) {
