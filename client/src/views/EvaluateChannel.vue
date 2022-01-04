@@ -93,13 +93,14 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, watchEffect } from 'vue';
+import { computed, defineComponent, onBeforeMount, watchEffect } from 'vue';
 import { useStore } from '@/store';
 import EvaluateHeader from '@/components/Evaluate/EvaluateHeader.vue';
 import EvaluateWait from '@/components/Evaluate/EvaluateWait.vue';
 import { useChannelActions } from '@/store/channel/actions';
 import { Channel } from '@/types/Channel';
 import { useEvaluateActions } from '@/store/evaluate/actions';
+import { useRoute } from 'vue-router';
 
 export default defineComponent({
   name: 'EvaluateChannel',
@@ -118,6 +119,8 @@ export default defineComponent({
 
   setup(props) {
     const store = useStore();
+    const route = useRoute();
+    const query = route.query as { history: string };
     const channelActions = useChannelActions();
     const evaluateActions = useEvaluateActions();
     const channel = computed<Channel>(
@@ -131,15 +134,25 @@ export default defineComponent({
       () => `http://youtube.com/channel/${channel.value.id}`
     );
 
+    onBeforeMount(() => {
+      if (!result.value) {
+        store.dispatch(evaluateActions.setChannelResultVisible, false);
+      }
+    });
+
     watchEffect(() => {
       if (!channel.value) {
         store.dispatch(channelActions.fetchFullInfo, props.id);
       }
-      if (channel.value) {
+      if (channel.value && !query.history) {
         store.dispatch(channelActions.analyzeSentiment, {
           channelId: channel.value.id,
           playlistId: channel.value.uploads,
         });
+      }
+
+      if (query.history === 'true') {
+        store.dispatch(evaluateActions.setChannelResultVisible, true);
       }
     });
 
@@ -156,7 +169,10 @@ export default defineComponent({
     });
 
     const addToHistory = () => {
-      console.log(result);
+      store.dispatch(evaluateActions.saveChannelResult, {
+        channel: channel.value,
+        result: result.value,
+      });
     };
 
     return {

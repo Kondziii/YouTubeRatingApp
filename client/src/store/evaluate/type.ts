@@ -1,3 +1,4 @@
+import { ChannelHistory } from '@/types/Channel';
 import { VideoHistory } from '@/types/Video';
 import { EvaluateParams } from './../../types/EvaluateParams';
 import { Sentiment, ChannelSentiment } from './../../types/Sentiment';
@@ -8,4 +9,5 @@ export interface EvaluateState {
   videoHistory: VideoHistory[] | [];
   channelResult: ChannelSentiment | null;
   isChannelResultVisible: boolean;
+  channelHistory: ChannelHistory[] | [];
 }

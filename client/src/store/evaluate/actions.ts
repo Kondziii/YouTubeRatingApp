@@ -7,6 +7,7 @@ import { RootState } from './../types';
 import { ActionTree } from 'vuex';
 import { EvaluateState } from './type';
 import { namespaces } from '..';
+import { Channel, ChannelHistory } from '@/types/Channel';
 
 const EvaluateActions = {
   setParams: 'setParams',
@@ -15,6 +16,8 @@ const EvaluateActions = {
   deleteVideoResult: 'deleteVideoResult',
   setChannelResult: 'setChannelResult',
   setChannelResultVisible: 'setChannelResultVisible',
+  saveChannelResult: 'saveChannelResult',
+  deleteChannelResult: 'deleteChannelResult',
 };
 
 export const useEvaluateActions = (): typeof EvaluateActions => {
@@ -105,5 +108,64 @@ export default {
 
   [EvaluateActions.setChannelResultVisible]({ commit }, payload: boolean) {
     commit(EvaluateMutations.SET_CHANNEL_RESULT_VISIBLE, payload);
+  },
+
+  async [EvaluateActions.saveChannelResult](
+    context,
+    payload: { channel: Channel; result: ChannelSentiment }
+  ) {
+    console.log('hej');
+    const errorActions = useErrorActions();
+    const id = payload.channel.id + new Date(payload.result.date).getTime();
+    const item = { id, ...payload } as ChannelHistory;
+    const history: ChannelHistory[] = await context.getters.getChannelHistory;
+    const ifExists = history.findIndex((item) => item.id === id);
+    if (ifExists !== -1) {
+      context.dispatch(
+        errorActions.setError,
+        {
+          is: true,
+          title: 'Error',
+          message: `Oops. This result has already been saved.`,
+        },
+        { root: true }
+      );
+    } else {
+      history.push(item);
+      context.commit(EvaluateMutations.SET_CHANNEL_HISTORY, history);
+      window.localStorage.setItem('channel-history', JSON.stringify(history));
+      context.dispatch(
+        errorActions.setError,
+        {
+          is: true,
+          title: 'Success',
+          message: `The evaluation result successfully was added to your history.`,
+        },
+        { root: true }
+      );
+    }
+  },
+
+  async [EvaluateActions.deleteChannelResult](
+    { commit, dispatch, getters },
+    payload: number
+  ) {
+    const history = await getters.getChannelHistory;
+    const errorActions = useErrorActions();
+
+    history.splice(payload, 1);
+
+    commit(EvaluateMutations.SET_CHANNEL_HISTORY, history);
+
+    window.localStorage.setItem('channel-history', JSON.stringify(history));
+    dispatch(
+      errorActions.setError,
+      {
+        is: true,
+        title: 'Success',
+        message: `The item was successfully deleted.`,
+      },
+      { root: true }
+    );
   },
 } as ActionTree<EvaluateState, RootState>;

@@ -22,4 +22,8 @@ export default {
   getIsChannelResultVisible(state) {
     return state.isChannelResultVisible;
   },
+
+  getChannelHistory(state) {
+    return state.channelHistory;
+  },
 } as GetterTree<EvaluateState, RootState>;

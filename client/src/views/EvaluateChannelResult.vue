@@ -111,11 +111,20 @@
         :beginDate="result.evaluateParams.beginDate"
         :endDate="result.evaluateParams.endDate"
       ></evaluate-params>
+      <div class="flex justify-end">
+        <p :style="{ margin: '2rem 0 0', fontSize: '0.9rem', color: '#aaa' }">
+          Evaluation was conducted on: {{ evaluationDate }}
+        </p>
+      </div>
     </q-card-section>
     <q-card-actions class="flex justify-end q-pa-lg">
-      <q-btn color="red" flat @click="saveChannelResult">Save</q-btn>
-      <q-btn color="red" :to="{ name: 'Home' }" replace>Close</q-btn>
-      <!-- <q-btn  color="red" @click="$router.go(-1)">Close</q-btn> -->
+      <q-btn v-if="query.history" color="red" @click="$router.go(-1)"
+        >Close</q-btn
+      >
+      <div v-else>
+        <q-btn color="red" flat @click="saveChannelResult">Save</q-btn>
+        <q-btn color="red" :to="{ name: 'Home' }" replace>Close</q-btn>
+      </div>
     </q-card-actions>
   </div>
 </template>
@@ -137,6 +146,7 @@ import EvaluateChart from '@/components/Evaluate/EvaluateChart.vue';
 import EvaluateLineChart from '@/components/Evaluate/EvaluateLineChart.vue';
 import EvaluateVideosList from '@/components/Evaluate/EvaluateVideosList.vue';
 import { useRouter } from 'vue-router';
+import { useRoute } from 'vue-router';
 import { useStore } from '@/store/index';
 import { useVideoActions } from '@/store/video/actions';
 import { Channel } from '@/types/Channel';
@@ -166,10 +176,15 @@ export default defineComponent({
     BasicModal,
   },
 
+  emits: ['save'],
+
   setup(props, { emit }) {
-    const modal = ref<typeof BasicModal>();
     const router = useRouter();
+    const route = useRoute();
     const store = useStore();
+    const modal = ref<typeof BasicModal>();
+    const query = route.query as { history: string };
+
     const videoActions = useVideoActions();
     const evaluateActions = useEvaluateActions();
 
@@ -285,6 +300,10 @@ export default defineComponent({
     });
 
     onBeforeRouteLeave(async (to) => {
+      if (query.history) {
+        return true;
+      }
+
       if (!to.fullPath.includes('/evaluate/videos/')) {
         modalLeave.is = true;
         const answer = await nextTick(async () => {
@@ -295,6 +314,12 @@ export default defineComponent({
         return answer;
       }
       return true;
+    });
+
+    const evaluationDate = computed(() => {
+      const date = new Date(props.result.date);
+
+      return date.toLocaleDateString() + ', ' + date.toLocaleTimeString();
     });
 
     return {
@@ -311,6 +336,8 @@ export default defineComponent({
       seeDetails,
       modal,
       modalLeave,
+      evaluationDate,
+      query,
     };
   },
 });

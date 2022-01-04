@@ -10,6 +10,7 @@ import { namespaces } from '../index';
 import Channel_url from '@/enums/Channel_url';
 import useActions from '@/hooks/useActions';
 import EvaluateActions from '@/types/EvaluateActions';
+import { Channel } from '@/types/Channel';
 
 const ChannelActions: EvaluateActions = {
   fetchSimilarByTitle: 'fetchSimilarByTitle',
@@ -185,6 +186,10 @@ export default {
 
   [ChannelActions.resetConfirmed]({ commit }) {
     commit(ChannelMutations.SET_CONFIRMED_CHANNEL, null);
+  },
+
+  [ChannelActions.setConfirmed]({ commit }, payload: Channel) {
+    commit(ChannelMutations.SET_CONFIRMED_CHANNEL, payload);
   },
 
   async [ChannelActions.analyzeSentiment](

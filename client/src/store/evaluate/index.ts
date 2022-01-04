@@ -6,6 +6,7 @@ import mutations from './mutations';
 import actions from './actions';
 import getters from './getters';
 import { VideoHistory } from '@/types/Video';
+import { ChannelHistory } from '@/types/Channel';
 
 const EvaluateModule: Module<EvaluateState, RootState> = {
   namespaced: true,
@@ -25,6 +26,9 @@ const EvaluateModule: Module<EvaluateState, RootState> = {
     ) as Array<VideoHistory>,
     channelResult: null,
     isChannelResultVisible: false,
+    channelHistory: JSON.parse(
+      window.localStorage.getItem('channel-history') || '[]'
+    ) as Array<ChannelHistory>,
   }),
   mutations,
   actions,

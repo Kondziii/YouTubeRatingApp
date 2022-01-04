@@ -1,3 +1,4 @@
+import { ChannelSentiment } from './Sentiment';
 export interface Channel {
   id: string;
   title: string;
@@ -11,4 +12,10 @@ export interface Channel {
     videoCount: number;
   };
   uploads: string;
+}
+
+export interface ChannelHistory {
+  id: string;
+  channel: Channel;
+  result: ChannelSentiment;
 }

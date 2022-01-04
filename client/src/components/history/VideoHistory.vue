@@ -24,7 +24,7 @@
             name="list"
           >
             <the-list-item
-              :key="item.video.id"
+              :key="item.id"
               :img="item.video.image"
               :title="item.video.title"
               :id="item.video.id"

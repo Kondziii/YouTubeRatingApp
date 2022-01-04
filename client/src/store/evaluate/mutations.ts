@@ -2,6 +2,7 @@ import { VideoHistory } from '@/types/Video';
 import { Sentiment, ChannelSentiment } from './../../types/Sentiment';
 import { MutationTree } from 'vuex';
 import { EvaluateState } from './type';
+import { ChannelHistory } from '@/types/Channel';
 
 export enum EvaluateMutations {
   SET_PARAMS = 'SET_PARAMS',
@@ -9,6 +10,7 @@ export enum EvaluateMutations {
   SET_VIDEO_HISTORY = 'SET_VIDEO_HISTORY',
   SET_CHANNEL_RESULT = 'SET_CHANNEL_RESULT',
   SET_CHANNEL_RESULT_VISIBLE = 'SET_CHANNEL_RESULT_VISIBLE',
+  SET_CHANNEL_HISTORY = 'SET_CHANNEL_HISTORY',
 }
 
 export default {
@@ -30,5 +32,9 @@ export default {
 
   [EvaluateMutations.SET_CHANNEL_RESULT_VISIBLE](state, payload: boolean) {
     state.isChannelResultVisible = payload;
+  },
+
+  [EvaluateMutations.SET_CHANNEL_HISTORY](state, payload: ChannelHistory[]) {
+    state.channelHistory = payload;
   },
 } as MutationTree<EvaluateState>;
