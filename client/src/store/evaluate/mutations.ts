@@ -8,6 +8,7 @@ export enum EvaluateMutations {
   SET_VIDEO_RESULT = 'SET_VIDEO_RESULT',
   SET_VIDEO_HISTORY = 'SET_VIDEO_HISTORY',
   SET_CHANNEL_RESULT = 'SET_CHANNEL_RESULT',
+  SET_CHANNEL_RESULT_VISIBLE = 'SET_CHANNEL_RESULT_VISIBLE',
 }
 
 export default {
@@ -25,5 +26,9 @@ export default {
 
   [EvaluateMutations.SET_CHANNEL_RESULT](state, payload: ChannelSentiment) {
     state.channelResult = payload;
+  },
+
+  [EvaluateMutations.SET_CHANNEL_RESULT_VISIBLE](state, payload: boolean) {
+    state.isChannelResultVisible = payload;
   },
 } as MutationTree<EvaluateState>;

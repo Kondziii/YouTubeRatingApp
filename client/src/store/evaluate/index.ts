@@ -24,6 +24,7 @@ const EvaluateModule: Module<EvaluateState, RootState> = {
       window.localStorage.getItem('video-history') || '[]'
     ) as Array<VideoHistory>,
     channelResult: null,
+    isChannelResultVisible: false,
   }),
   mutations,
   actions,

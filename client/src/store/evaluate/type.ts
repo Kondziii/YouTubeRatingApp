@@ -7,4 +7,5 @@ export interface EvaluateState {
   videoResult: Sentiment | null;
   videoHistory: VideoHistory[] | [];
   channelResult: ChannelSentiment | null;
+  isChannelResultVisible: boolean;
 }

@@ -14,6 +14,7 @@ const EvaluateActions = {
   saveVideoResult: 'saveVideoResult',
   deleteVideoResult: 'deleteVideoResult',
   setChannelResult: 'setChannelResult',
+  setChannelResultVisible: 'setChannelResultVisible',
 };
 
 export const useEvaluateActions = (): typeof EvaluateActions => {
@@ -100,5 +101,9 @@ export default {
       },
       { root: true }
     );
+  },
+
+  [EvaluateActions.setChannelResultVisible]({ commit }, payload: boolean) {
+    commit(EvaluateMutations.SET_CHANNEL_RESULT_VISIBLE, payload);
   },
 } as ActionTree<EvaluateState, RootState>;

@@ -93,12 +93,13 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, ref, watchEffect } from 'vue';
+import { computed, defineComponent, watchEffect } from 'vue';
 import { useStore } from '@/store';
 import EvaluateHeader from '@/components/Evaluate/EvaluateHeader.vue';
 import EvaluateWait from '@/components/Evaluate/EvaluateWait.vue';
 import { useChannelActions } from '@/store/channel/actions';
 import { Channel } from '@/types/Channel';
+import { useEvaluateActions } from '@/store/evaluate/actions';
 
 export default defineComponent({
   name: 'EvaluateChannel',
@@ -118,6 +119,7 @@ export default defineComponent({
   setup(props) {
     const store = useStore();
     const channelActions = useChannelActions();
+    const evaluateActions = useEvaluateActions();
     const channel = computed<Channel>(
       () => store.getters['channel/getConfirmedChannel']
     );
@@ -143,7 +145,15 @@ export default defineComponent({
 
     const result = computed(() => store.getters['evaluate/getChannelResult']);
 
-    const isResultVisible = ref<boolean>(false);
+    const isResultVisible = computed<boolean>({
+      get() {
+        return store.getters['evaluate/getIsChannelResultVisible'];
+      },
+
+      set(val: boolean) {
+        store.dispatch(evaluateActions.setChannelResultVisible, val);
+      },
+    });
 
     const addToHistory = () => {
       console.log(result);

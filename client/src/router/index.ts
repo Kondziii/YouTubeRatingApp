@@ -56,10 +56,14 @@ const routes: Array<RouteRecordRaw> = [
 const router = createRouter({
   history: createWebHistory(process.env.BASE_URL),
   routes,
-  scrollBehavior() {
+  scrollBehavior(to, from, savedPosition) {
     return new Promise((resolve) => {
       setTimeout(() => {
-        resolve({ left: 0, top: 0 });
+        if (savedPosition) {
+          resolve(savedPosition);
+        } else {
+          resolve({ left: 0, top: 0 });
+        }
       }, 100);
     });
   },

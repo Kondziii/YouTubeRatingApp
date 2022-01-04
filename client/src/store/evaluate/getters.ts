@@ -18,4 +18,8 @@ export default {
   getChannelResult(state) {
     return state.channelResult;
   },
+
+  getIsChannelResultVisible(state) {
+    return state.isChannelResultVisible;
+  },
 } as GetterTree<EvaluateState, RootState>;
