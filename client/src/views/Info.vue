@@ -40,7 +40,11 @@
           <p>
             There is one very important issue about this library. It supports
             only English language so it means that
-            <span :style="{ textDecoration: 'underline' }"
+            <span
+              :style="{
+                textDecoration: 'underline',
+                textTransform: 'uppercase',
+              }"
               >app enables to perform sentiment analysis only based on english
               comments</span
             >. Any others comments would be excluded from the process.
