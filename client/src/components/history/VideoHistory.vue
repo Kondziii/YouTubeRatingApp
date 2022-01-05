@@ -1,69 +1,70 @@
 <template>
-  <div>
-    <basic-modal
-      ref="modal"
-      v-if="modalDelete.is"
-      :title="modalDelete.title"
-      :message="modalDelete.message"
-      :confirm="modalDelete.confirm"
-      :htmlMessage="modalDelete.htmlMessage"
-      @close="modalDelete.cancelHandler"
-      @confirm="modalDelete.confirmHandler"
-    ></basic-modal>
-    <q-card-section>
-      <q-virtual-scroll
-        v-if="videoItems.length !== 0"
-        style="max-height: 100vh"
-        :items="videoItems"
-      >
-        <template v-slot="{ item, index }">
-          <transition-group
-            enter-active-class="animate__animated animate__slideInLeft"
-            leave-active-class="animate__animated animate__slideInRight"
-            appear
-            name="list"
+  <transition
+    enter-active-class="animate__animated animate__slideInLeft"
+    leave-active-class="animate__animated animate__slideOutRight"
+    appear
+    mode="out-in"
+  >
+    <div>
+      <basic-modal
+        ref="modal"
+        v-if="modalDelete.is"
+        :title="modalDelete.title"
+        :message="modalDelete.message"
+        :confirm="modalDelete.confirm"
+        :htmlMessage="modalDelete.htmlMessage"
+        @close="modalDelete.cancelHandler"
+        @confirm="modalDelete.confirmHandler"
+      ></basic-modal>
+      <q-card-section>
+        <q-virtual-scroll v-if="videoItems.length !== 0" :items="videoItems">
+          <template v-slot="{ item }">
+            <transition-group name="list">
+              <the-list-item
+                class="list-item"
+                :key="item.id"
+                :img="item.video.image"
+                :title="item.video.title"
+                :id="item.video.id"
+                :historyId="item.id"
+                type="videos"
+                model="history"
+                :description="`Date of evaluation ${new Date(
+                  item.result.date
+                ).toLocaleString()}`"
+                :score="{
+                  vote: item.result.vote,
+                  score: item.result.avg.compound.toFixed(3),
+                }"
+                @delete="deleteVideo"
+                @onClick="showResult"
+              ></the-list-item>
+            </transition-group>
+          </template>
+        </q-virtual-scroll>
+        <div v-else class="flex column justify-center">
+          <p
+            :style="{
+              fontSize: '1rem',
+              fontStyle: 'italic',
+              textAlign: 'center',
+            }"
           >
-            <the-list-item
-              :key="item.id"
-              :img="item.video.image"
-              :title="item.video.title"
-              :id="item.video.id"
-              type="videos"
-              model="history"
-              :description="itemDescription(index)"
-              :index="index"
-              :score="{
-                vote: item.result.vote,
-                score: item.result.avg.compound.toFixed(3),
-              }"
-              @delete="deleteVideo"
-              @onClick="showResult"
-            ></the-list-item>
-          </transition-group>
-        </template>
-      </q-virtual-scroll>
-      <div v-else class="flex column justify-center">
-        <p
-          :style="{
-            fontSize: '1rem',
-            fontStyle: 'italic',
-            textAlign: 'center',
-          }"
-        >
-          You haven't got any saved video evaluation results.
-        </p>
-        <q-btn
-          class="q-mx-auto"
-          :style="{ fontSize: '0.8rem !important', width: 'fit-content' }"
-          label="Move to evaluate"
-          type="button"
-          color="red"
-          :to="{ name: 'Home', query: { value: 'videos' } }"
-          icon-right="arrow_forward"
-        />
-      </div>
-    </q-card-section>
-  </div>
+            You haven't got any saved video evaluation results.
+          </p>
+          <q-btn
+            class="q-mx-auto"
+            :style="{ fontSize: '0.8rem !important', width: 'fit-content' }"
+            label="Move to evaluate"
+            type="button"
+            color="red"
+            :to="{ name: 'Home', query: { value: 'videos' } }"
+            icon-right="arrow_forward"
+          />
+        </div>
+      </q-card-section>
+    </div>
+  </transition>
 </template>
 
 <script lang="ts">
@@ -93,13 +94,6 @@ export default defineComponent({
       () => store.getters['evaluate/getVideoHistory']
     );
 
-    const itemDescription = (index: string) => {
-      const date = new Date(
-        videoItems.value[index].result.date
-      ).toLocaleString();
-      return 'Date of evaluation ' + date;
-    };
-
     const modalDelete = reactive({
       is: false,
       title: 'Warning!',
@@ -114,38 +108,35 @@ export default defineComponent({
       },
     });
 
-    const deleteVideo = async (index: number) => {
+    const deleteVideo = async (id: string) => {
       modalDelete.is = true;
       nextTick(async () => {
         if (modal.value) {
           const answer = await modal.value.getConfirm();
           if (answer) {
-            store.dispatch(evaluateActions.deleteVideoResult, index);
+            store.dispatch(evaluateActions.deleteVideoResult, id);
           }
         }
       });
     };
 
-    const showResult = (index: string) => {
-      store.commit(
-        `video/${VideoMutations.SET_CONFIRMED_VIDEO}`,
-        videoItems.value[index].video
-      );
-      store.dispatch(
-        evaluateActions.setVideoResult,
-        videoItems.value[index].result
-      );
+    const showResult = (id: string) => {
+      const item = videoItems.value.find((videoItem) => videoItem.id === id);
 
-      router.push({
-        path: `/evaluate/videos/${videoItems.value[index].video.id}/result`,
-        query: { history: 'true' },
-      });
+      if (item) {
+        store.commit(`video/${VideoMutations.SET_CONFIRMED_VIDEO}`, item.video);
+        store.dispatch(evaluateActions.setVideoResult, item.result);
+
+        router.push({
+          path: `/evaluate/videos/${item.video.id}/result`,
+          query: { history: 'true' },
+        });
+      }
     };
 
     return {
       deleteVideo,
       videoItems,
-      itemDescription,
       modalDelete,
       modal,
       showResult,

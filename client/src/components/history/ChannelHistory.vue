@@ -1,69 +1,70 @@
 <template>
-  <div>
-    <basic-modal
-      ref="modal"
-      v-if="modalDelete.is"
-      :title="modalDelete.title"
-      :message="modalDelete.message"
-      :confirm="modalDelete.confirm"
-      :htmlMessage="modalDelete.htmlMessage"
-      @close="modalDelete.cancelHandler"
-      @confirm="modalDelete.confirmHandler"
-    ></basic-modal>
-    <q-card-section>
-      <q-virtual-scroll
-        v-if="channelItems.length !== 0"
-        style="max-height: 100vh"
-        :items="channelItems"
-      >
-        <template v-slot="{ item, index }">
-          <transition-group
-            enter-active-class="animate__animated animate__slideInLeft"
-            leave-active-class="animate__animated animate__slideInRight"
-            appear
-            name="list"
-          >
-            <the-list-item
-              :key="item.id"
-              :img="item.channel.image"
-              :title="itemTitle(index)"
-              :id="item.channel.id"
-              type="channels"
-              model="history"
-              :description="itemDescription(index)"
-              :index="index"
-              :score="{
-                vote: item.result.vote,
-                score: item.result.videosAvg.compound.toFixed(3),
-              }"
-              @delete="deleteChannel"
-              @onClick="showResult"
-            ></the-list-item>
-          </transition-group>
-        </template>
-      </q-virtual-scroll>
-      <div v-else class="flex column justify-center">
-        <p
-          :style="{
-            fontSize: '1rem',
-            fontStyle: 'italic',
-            textAlign: 'center',
-          }"
+  <transition
+    enter-active-class="animate__animated animate__slideInLeft"
+    leave-active-class="animate__animated animate__slideOutRight"
+    appear
+    mode="out-in"
+  >
+    <div>
+      <basic-modal
+        ref="modal"
+        v-if="modalDelete.is"
+        :title="modalDelete.title"
+        :message="modalDelete.message"
+        :confirm="modalDelete.confirm"
+        :htmlMessage="modalDelete.htmlMessage"
+        @close="modalDelete.cancelHandler"
+        @confirm="modalDelete.confirmHandler"
+      ></basic-modal>
+      <q-card-section>
+        <q-virtual-scroll
+          v-if="channelItems.length !== 0"
+          :items="channelItems"
         >
-          You haven't got any saved video evaluation results.
-        </p>
-        <q-btn
-          class="q-mx-auto"
-          :style="{ fontSize: '0.8rem !important', width: 'fit-content' }"
-          label="Move to evaluate"
-          type="button"
-          color="red"
-          :to="{ name: 'Home', query: { value: 'channels' } }"
-          icon-right="arrow_forward"
-        />
-      </div>
-    </q-card-section>
-  </div>
+          <template v-slot="{ item, index }">
+            <transition-group name="list">
+              <the-list-item
+                :key="item.id"
+                :img="item.channel.image"
+                :title="itemTitle(index)"
+                :id="item.channel.id"
+                :historyId="item.id"
+                type="channels"
+                model="history"
+                :description="itemDescription(index)"
+                :score="{
+                  vote: item.result.vote,
+                  score: item.result.videosAvg.compound.toFixed(3),
+                }"
+                @delete="deleteChannel"
+                @onClick="showResult"
+              ></the-list-item>
+            </transition-group>
+          </template>
+        </q-virtual-scroll>
+        <div v-else class="flex column justify-center">
+          <p
+            :style="{
+              fontSize: '1rem',
+              fontStyle: 'italic',
+              textAlign: 'center',
+            }"
+          >
+            You haven't got any saved video evaluation results.
+          </p>
+          <q-btn
+            class="q-mx-auto"
+            :style="{ fontSize: '0.8rem !important', width: 'fit-content' }"
+            label="Move to evaluate"
+            type="button"
+            color="red"
+            :to="{ name: 'Home', query: { value: 'channels' } }"
+            icon-right="arrow_forward"
+          />
+        </div>
+      </q-card-section>
+    </div>
+  </transition>
 </template>
 
 <script lang="ts">
@@ -133,35 +134,31 @@ export default defineComponent({
       },
     });
 
-    const deleteChannel = (index: number) => {
+    const deleteChannel = (id: string) => {
       modalDelete.is = true;
       nextTick(async () => {
         if (modal.value) {
           const answer = await modal.value.getConfirm();
           if (answer) {
-            store.dispatch(evaluateActions.deleteChannelResult, index);
+            store.dispatch(evaluateActions.deleteChannelResult, id);
           }
         }
       });
     };
 
-    const showResult = (index: string) => {
-      store
-        .dispatch(
-          channelActions.setConfirmed,
-          channelItems.value[index].channel
-        )
-        .then(() => {
-          store.dispatch(
-            evaluateActions.setChannelResult,
-            channelItems.value[index].result
-          );
+    const showResult = (id: string) => {
+      const item = channelItems.value.find(
+        (channelItem) => channelItem.id === id
+      );
+      if (item) {
+        store.dispatch(channelActions.setConfirmed, item.channel).then(() => {
+          store.dispatch(evaluateActions.setChannelResult, item.result);
         });
-
-      router.push({
-        path: `/evaluate/channels/${channelItems.value[index].channel.id}/result`,
-        query: { history: 'true' },
-      });
+        router.push({
+          path: `/evaluate/channels/${item.channel.id}/result`,
+          query: { history: 'true' },
+        });
+      }
     };
 
     return {
@@ -177,4 +174,8 @@ export default defineComponent({
 });
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.list-move {
+  transition: transform 1s;
+}
+</style>

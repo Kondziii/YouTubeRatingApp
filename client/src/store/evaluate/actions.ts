@@ -83,18 +83,14 @@ export default {
 
   async [EvaluateActions.deleteVideoResult](
     { dispatch, commit, getters },
-    payload: number
+    payload: string
   ) {
     const errorActions = useErrorActions();
-
-    const history = await getters.getVideoHistory;
-
-    history.splice(payload, 1);
-
+    const history: VideoHistory[] = await getters.getVideoHistory;
+    const index = history.findIndex((item) => item.id === payload);
+    history.splice(index, 1);
     commit(EvaluateMutations.SET_VIDEO_RESULT, history);
-
     window.localStorage.setItem('video-history', JSON.stringify(history));
-
     dispatch(
       errorActions.setError,
       {
@@ -147,15 +143,13 @@ export default {
 
   async [EvaluateActions.deleteChannelResult](
     { commit, dispatch, getters },
-    payload: number
+    payload: string
   ) {
-    const history = await getters.getChannelHistory;
+    const history: ChannelHistory[] = await getters.getChannelHistory;
     const errorActions = useErrorActions();
-
-    history.splice(payload, 1);
-
+    const index = history.findIndex((item) => item.id === payload);
+    history.splice(index, 1);
     commit(EvaluateMutations.SET_CHANNEL_HISTORY, history);
-
     window.localStorage.setItem('channel-history', JSON.stringify(history));
     dispatch(
       errorActions.setError,

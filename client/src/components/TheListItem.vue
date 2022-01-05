@@ -131,8 +131,8 @@ export default defineComponent({
       required: false,
     },
 
-    index: {
-      type: Number,
+    historyId: {
+      type: String,
       required: false,
     },
 
@@ -158,7 +158,7 @@ export default defineComponent({
       if (props.model === 'formItem') {
         context.emit('showList');
       } else if (props.model === 'history') {
-        context.emit('onClick', props.index);
+        context.emit('onClick', props.historyId);
       } else {
         context.emit('onClick', props.id);
       }
@@ -184,7 +184,7 @@ export default defineComponent({
     };
 
     const deleteItem = () => {
-      context.emit('delete', props.index);
+      context.emit('delete', props.historyId);
     };
 
     const badgeColor = computed(() => {
