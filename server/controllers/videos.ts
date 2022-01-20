@@ -24,7 +24,7 @@ export const getVideosByKeyWord: RequestHandler = async (req, res, next) => {
   }
 
   if (!response || response.data.items.length === 0) {
-    next({ message: 'Video has not be found!', status: 404 });
+    next({ message: 'Video has not been found!', status: 404 });
   } else {
     res.status(200).json(
       response.data.items.map((item: VideoBySearch) => {
@@ -61,7 +61,7 @@ export const getVideoById: RequestHandler = async (req, res, next) => {
   }
 
   if (!response || response.data.items.length === 0) {
-    next({ message: 'Video has not be found!', status: 404 });
+    next({ message: 'Video has not been found!', status: 404 });
   } else {
     res.status(200).json(
       response.data.items.map((item: VideoById) => {
@@ -91,7 +91,11 @@ export const getVideoComments: RequestHandler = async (req, res, next) => {
     res
       .status(200)
       .json(
-        await getComments(params.videoId, query.channelId, query.subcomments)
+        await getComments(
+          params.videoId,
+          query.channelId,
+          query.subcomments || true
+        )
       );
   } catch (error: any) {
     next({ message: error.message, status: error.status });

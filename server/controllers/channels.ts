@@ -1,14 +1,13 @@
 import { VideoSentiment } from './../types/Sentiment';
-import { VideoByChannel } from './../types/Video';
 import { ChannelBySearch, ChannelById } from './../types/Channel';
 import axios from 'axios';
 import { KEY, URL_YOUTUBE_API } from '../config';
-import { RequestHandler, Response } from 'express';
-import { Video } from '../types/Video';
+import { RequestHandler } from 'express';
 import { Channel } from '../types/Channel';
 import { getChannelVideosFunction } from './helpers/videos';
 import {
   getVideoSentimentFunction,
+  getChannelSentimentFunction,
   stateChannelCompound,
 } from './helpers/sentiment';
 
@@ -109,120 +108,9 @@ export const getChannelSentiment: RequestHandler = async (req, res, next) => {
   };
 
   try {
-    let channelVideos = await getChannelVideosFunction(params.playlistId);
-    // filter videos according to passed dates as query params
-    if (query.useTime === true && query.beginDate && query.endDate) {
-      const begin = new Date(
-        query.beginDate.split('/').reverse().join('/')
-      ).getTime();
-      const end = new Date(
-        query.endDate.split('/').reverse().join('/')
-      ).getTime();
+    const result = await getChannelSentimentFunction(params, query);
 
-      channelVideos = channelVideos.filter((video) => {
-        const published = new Date(
-          video.publishedAt.split('/').reverse().join('/')
-        ).getTime();
-
-        return published >= begin && published <= end;
-      });
-    }
-
-    const videosSentiment = {
-      processed: [] as VideoSentiment[],
-      excluded: [] as VideoSentiment[],
-    };
-
-    const videosCount = {
-      all: 0,
-      processed: 0,
-      excluded: 0,
-    };
-
-    type options = {
-      [key: string]: number;
-    };
-
-    const videosVoteCount: options = {
-      'very positive': 0,
-      positive: 0,
-      neutral: 0,
-      negative: 0,
-      'very negative': 0,
-    };
-
-    const videosAvg: options = {
-      positive: 0,
-      neutral: 0,
-      negative: 0,
-      compound: 0,
-    };
-
-    for (const video of channelVideos) {
-      const videoSentiment = {
-        ...(await getVideoSentimentFunction(
-          { videoId: video.id },
-          {
-            channelId: query.channelId || '',
-            subcomments:
-              query.subcomments === undefined ? true : query.subcomments,
-          }
-        )),
-        videoId: video.id,
-        title: video.title,
-        imageHigh: video.imageHigh,
-        publishedAt: video.publishedAt,
-      };
-
-      if (
-        query.minComments &&
-        videoSentiment.commentCount.processed < query.minComments
-      ) {
-        videosCount.excluded++;
-        videosSentiment.excluded.push(videoSentiment);
-      } else {
-        videosSentiment.processed.push(videoSentiment);
-
-        videosVoteCount[videoSentiment.vote]++;
-
-        videosAvg.compound += videoSentiment.avg.compound || 0;
-        videosAvg.positive += videoSentiment.avg.positive;
-        videosAvg.neutral += videoSentiment.avg.neutral;
-        videosAvg.negative += videoSentiment.avg.negative;
-      }
-      videosCount.all++;
-    }
-    videosCount.processed = videosCount.all - videosCount.excluded;
-
-    Object.keys(videosAvg).forEach((key) => {
-      if (videosAvg[key] !== 0) {
-        videosAvg[key] /= videosCount.processed;
-      }
-    });
-
-    const vote =
-      videosCount.processed === 0
-        ? 'unknown'
-        : stateChannelCompound(videosAvg.compound, videosCount.processed);
-
-    const evaluateParams = {
-      commentsLimit: query.minComments,
-      useTime: query.useTime,
-      beginDate: query.beginDate,
-      endDate: query.endDate,
-      useSubcomments: query.subcomments,
-      useAuthorAnswers: query.channelId === null,
-    };
-
-    res.json({
-      vote,
-      videosCount,
-      videosVoteCount,
-      videosAvg,
-      evaluateParams,
-      videosSentiment,
-      date: new Date().toISOString(),
-    });
+    res.status(200).json(result);
   } catch (error: any) {
     next({ message: error.message, status: error.status });
   }

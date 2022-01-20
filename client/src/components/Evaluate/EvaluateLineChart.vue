@@ -54,7 +54,7 @@ export default defineComponent({
           hoverBackgroundColor: 'rgb(24, 114, 114)',
           hoverBorderColor: 'rgb(24, 114, 114)',
           pointBorderWidth: 2,
-          pointRadius: 6,
+          pointRadius: 5,
           pointBackgroundColor: 'rgb(48, 136, 136)',
           pointBorderColor: 'rgb(48, 136, 136)',
           drawActiveElementsOnTop: true,

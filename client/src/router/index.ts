@@ -7,6 +7,7 @@ const EvaluateVideoResult = () => import('../views/EvaluateVideoResult.vue');
 const History = () => import('../views/History.vue');
 const EvaluateChannelResult = () =>
   import('../views/EvaluateChannelResult.vue');
+const NotFound = () => import('../views/NotFound.vue');
 
 const routes: Array<RouteRecordRaw> = [
   {
@@ -50,6 +51,11 @@ const routes: Array<RouteRecordRaw> = [
     path: '/history',
     name: 'History',
     component: History,
+  },
+  {
+    path: '/:pathMatch(.*)*',
+    name: 'NotFound',
+    component: NotFound,
   },
 ];
 

@@ -190,7 +190,8 @@ export default defineComponent({
     const badgeColor = computed(() => {
       if (props.score) {
         if (props.score.vote.includes('positive')) return 'green';
-        else if (props.score.score.includes('negative')) return 'red';
+        else if (props.score.vote.includes('negative')) return 'red';
+        else if (props.score.vote.includes('unknown')) return 'grey';
         else return 'yellow-8';
       }
       return '';

@@ -45,16 +45,11 @@ export default {
     payload: { video: Video; result: Sentiment }
   ) {
     const errorActions = useErrorActions();
-
     const id: string =
       payload.video.id + new Date(payload.result.date).getTime();
-
     const item = { id, ...payload } as VideoHistory;
-
     const history = await context.getters.getVideoHistory;
-
     const ifExists = history.findIndex((item: VideoHistory) => item.id === id);
-
     if (ifExists !== -1) {
       context.dispatch(
         errorActions.setError,
@@ -66,7 +61,7 @@ export default {
         { root: true }
       );
     } else {
-      history.push(item);
+      history.unshift(item);
       context.commit(EvaluateMutations.SET_VIDEO_HISTORY, history);
       window.localStorage.setItem('video-history', JSON.stringify(history));
       context.dispatch(
@@ -74,7 +69,7 @@ export default {
         {
           is: true,
           title: 'Success',
-          message: `The evaluation result successfully was added to your history.`,
+          message: `The evaluation result was successfully added to your history.`,
         },
         { root: true }
       );
@@ -126,7 +121,7 @@ export default {
         { root: true }
       );
     } else {
-      history.push(item);
+      history.unshift(item);
       context.commit(EvaluateMutations.SET_CHANNEL_HISTORY, history);
       window.localStorage.setItem('channel-history', JSON.stringify(history));
       context.dispatch(
@@ -134,7 +129,7 @@ export default {
         {
           is: true,
           title: 'Success',
-          message: `The evaluation result successfully was added to your history.`,
+          message: `The evaluation result was successfully added to your history.`,
         },
         { root: true }
       );
