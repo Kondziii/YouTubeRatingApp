@@ -62,9 +62,9 @@ export const getComments = async (
     throw { message: 'Server error', status: 500 };
   }
 
-  if (comments.length === 0) {
-    throw { message: "Video hasn't got any comments.", status: 404 };
-  } else {
-    return comments.flat(2).filter((comment) => comment.authorId !== channelId);
-  }
+  // if (comments.length === 0) {
+  //   throw { message: "Video hasn't got any comments.", status: 404 };
+  // } else {
+  return comments.flat(2).filter((comment) => comment.authorId !== channelId);
+  // }
 };
